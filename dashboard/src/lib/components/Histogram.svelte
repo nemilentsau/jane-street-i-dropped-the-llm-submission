@@ -1,15 +1,11 @@
 <script lang="ts">
-	/**
-	 * Overlapping histogram for two distributions.
-	 * Shows correct vs incorrect score separation.
-	 */
 	let {
 		seriesA,
 		seriesB,
 		labelA = 'A',
 		labelB = 'B',
-		colorA = 'var(--accent-green)',
-		colorB = 'var(--accent-red)',
+		colorA = 'var(--color-accent-green)',
+		colorB = 'var(--color-accent-red)',
 		title = '',
 		xlabel = '',
 		bins = 40,
@@ -63,40 +59,23 @@
 	}
 </script>
 
-<div class="histogram">
-	{#if title}<h4 class="chart-title">{title}</h4>{/if}
+<div class="inline-block">
+	{#if title}<h4 class="mb-1 text-xs font-semibold text-text-secondary">{title}</h4>{/if}
 	<svg {width} {height}>
-		<!-- Axes -->
-		<line x1={pad.left} x2={pad.left + pw} y1={pad.top + ph} y2={pad.top + ph} stroke="var(--border-medium)" />
-		<line x1={pad.left} x2={pad.left} y1={pad.top} y2={pad.top + ph} stroke="var(--border-medium)" />
+		<line x1={pad.left} x2={pad.left + pw} y1={pad.top + ph} y2={pad.top + ph} stroke="var(--color-border-medium)" />
+		<line x1={pad.left} x2={pad.left} y1={pad.top} y2={pad.top + ph} stroke="var(--color-border-medium)" />
 
-		<!-- Series B (incorrect) behind -->
 		{#each histData.binsB as count, i}
 			{#if count > 0}
-				<rect
-					x={barX(i)}
-					y={pad.top + ph - barH(count)}
-					width={barW()}
-					height={barH(count)}
-					fill={colorB}
-					opacity="0.5"
-				>
+				<rect x={barX(i)} y={pad.top + ph - barH(count)} width={barW()} height={barH(count)} fill={colorB} opacity="0.5">
 					<title>{labelB}: {(histData.lo + i * histData.binW).toFixed(2)}–{(histData.lo + (i + 1) * histData.binW).toFixed(2)}, count={count}</title>
 				</rect>
 			{/if}
 		{/each}
 
-		<!-- Series A (correct) in front -->
 		{#each histData.binsA as count, i}
 			{#if count > 0}
-				<rect
-					x={barX(i)}
-					y={pad.top + ph - barH(count)}
-					width={barW()}
-					height={barH(count)}
-					fill={colorA}
-					opacity="0.7"
-				>
+				<rect x={barX(i)} y={pad.top + ph - barH(count)} width={barW()} height={barH(count)} fill={colorA} opacity="0.7">
 					<title>{labelA}: {(histData.lo + i * histData.binW).toFixed(2)}–{(histData.lo + (i + 1) * histData.binW).toFixed(2)}, count={count}</title>
 				</rect>
 			{/if}
@@ -104,24 +83,12 @@
 
 		<!-- Legend -->
 		<rect x={pad.left + pw - 130} y={pad.top + 2} width={10} height={10} fill={colorA} opacity="0.7" rx="1" />
-		<text x={pad.left + pw - 116} y={pad.top + 11} class="legend">{labelA}</text>
+		<text x={pad.left + pw - 116} y={pad.top + 11} fill="var(--color-text-secondary)" font-size="10">{labelA}</text>
 		<rect x={pad.left + pw - 130} y={pad.top + 18} width={10} height={10} fill={colorB} opacity="0.5" rx="1" />
-		<text x={pad.left + pw - 116} y={pad.top + 27} class="legend">{labelB}</text>
+		<text x={pad.left + pw - 116} y={pad.top + 27} fill="var(--color-text-secondary)" font-size="10">{labelB}</text>
 
 		{#if xlabel}
-			<text x={pad.left + pw / 2} y={height - 4} text-anchor="middle" class="axis-label">{xlabel}</text>
+			<text x={pad.left + pw / 2} y={height - 4} text-anchor="middle" fill="var(--color-text-tertiary)" font-size="10">{xlabel}</text>
 		{/if}
 	</svg>
 </div>
-
-<style>
-	.histogram { display: inline-block; }
-	.chart-title {
-		margin: 0 0 4px;
-		font-size: 12px;
-		font-weight: 600;
-		color: var(--text-secondary);
-	}
-	.axis-label { font-size: 10px; fill: var(--text-tertiary); }
-	.legend { font-size: 10px; fill: var(--text-secondary); }
-</style>

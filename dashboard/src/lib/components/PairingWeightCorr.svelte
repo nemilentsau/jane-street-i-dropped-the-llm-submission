@@ -44,44 +44,44 @@
 </script>
 
 {#if error}
-	<div class="no-data">
+	<div class="rounded-xl border border-border-medium bg-bg-card p-8 text-center text-text-secondary">
 		<p>Data not available. Run the script first:</p>
-		<code>python pairing/01_weight_correlation.py</code>
+		<code class="mt-2 inline-block rounded bg-bg-inset px-3 py-1 font-mono text-[13px] text-accent-cyan">python pairing/01_weight_correlation.py</code>
 	</div>
 {:else if !data}
-	<div class="loading">Loading...</div>
+	<div class="py-12 text-center text-text-tertiary">Loading...</div>
 {:else}
 	<!-- Stat cards row -->
-	<div class="stats-row">
-		<div class="stat-card hero">
-			<span class="stat-value mono accent-green">{data.accuracy}/48</span>
-			<span class="stat-label">Correct Pairs</span>
+	<div class="mb-5 flex gap-2">
+		<div class="flex flex-1 flex-col items-center rounded-lg border border-border-medium bg-bg-card-hover px-4 py-3 text-center">
+			<span class="font-mono text-2xl font-bold text-accent-green">{data.accuracy}/48</span>
+			<span class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-secondary">Correct Pairs</span>
 		</div>
-		<div class="stat-card hero">
-			<span class="stat-value mono accent-green">{data.separation.ratio}x</span>
-			<span class="stat-label">Signal / Noise Ratio</span>
+		<div class="flex flex-1 flex-col items-center rounded-lg border border-border-medium bg-bg-card-hover px-4 py-3 text-center">
+			<span class="font-mono text-2xl font-bold text-accent-green">{data.separation.ratio}x</span>
+			<span class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-secondary">Signal / Noise</span>
 		</div>
-		<div class="stat-card">
-			<span class="stat-value mono">{fmt(data.separation.correct_mean)}</span>
-			<span class="stat-label">Correct Mean</span>
+		<div class="flex flex-1 flex-col items-center rounded-lg border border-border-subtle bg-bg-card px-4 py-3 text-center">
+			<span class="font-mono text-xl font-bold text-text-primary">{fmt(data.separation.correct_mean)}</span>
+			<span class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-secondary">Correct Mean</span>
 		</div>
-		<div class="stat-card">
-			<span class="stat-value mono">{fmt(data.separation.incorrect_mean)}</span>
-			<span class="stat-label">Incorrect Mean</span>
+		<div class="flex flex-1 flex-col items-center rounded-lg border border-border-subtle bg-bg-card px-4 py-3 text-center">
+			<span class="font-mono text-xl font-bold text-text-primary">{fmt(data.separation.incorrect_mean)}</span>
+			<span class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-secondary">Incorrect Mean</span>
 		</div>
-		<div class="stat-card">
-			<span class="stat-value mono" class:accent-green={data.separation.clean}>{data.separation.clean ? 'Yes' : 'No'}</span>
-			<span class="stat-label">Clean Separation</span>
+		<div class="flex flex-1 flex-col items-center rounded-lg border border-border-subtle bg-bg-card px-4 py-3 text-center">
+			<span class="font-mono text-xl font-bold {data.separation.clean ? 'text-accent-green' : 'text-accent-red'}">{data.separation.clean ? 'Yes' : 'No'}</span>
+			<span class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-secondary">Clean Separation</span>
 		</div>
-		<div class="stat-card">
-			<span class="stat-value mono">{data.elapsed_s}s</span>
-			<span class="stat-label">Runtime</span>
+		<div class="flex flex-1 flex-col items-center rounded-lg border border-border-subtle bg-bg-card px-4 py-3 text-center">
+			<span class="font-mono text-xl font-bold text-text-primary">{data.elapsed_s}s</span>
+			<span class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-secondary">Runtime</span>
 		</div>
 	</div>
 
 	<!-- Visualizations -->
-	<div class="viz-grid">
-		<div class="viz-card">
+	<div class="mb-5 flex items-start gap-4">
+		<div class="rounded-xl border border-border-subtle bg-bg-card p-4">
 			<Heatmap
 				data={data.cost_matrix}
 				title="|tr(W_out · W_inp)| — 48×48 cost matrix"
@@ -92,8 +92,8 @@
 			/>
 		</div>
 
-		<div class="viz-stack">
-			<div class="viz-card">
+		<div class="flex flex-1 flex-col gap-3">
+			<div class="rounded-xl border border-border-subtle bg-bg-card p-4">
 				<Histogram
 					seriesA={data.correct_scores}
 					seriesB={data.incorrect_scores}
@@ -105,7 +105,7 @@
 					height={220}
 				/>
 			</div>
-			<div class="viz-card">
+			<div class="rounded-xl border border-border-subtle bg-bg-card p-4">
 				<MarginPlot
 					margins={data.margins}
 					title="Per-pair Assignment Margin (correct − best incorrect)"
@@ -117,24 +117,24 @@
 	</div>
 
 	<!-- Detail stats -->
-	<div class="detail-row">
-		<div class="detail-card">
-			<h4>Separation Detail</h4>
-			<div class="detail-grid">
-				<span class="detail-label">Correct min</span>
-				<span class="detail-value mono">{fmt(data.separation.correct_min)}</span>
-				<span class="detail-label">Incorrect max</span>
-				<span class="detail-value mono">{fmt(data.separation.incorrect_max)}</span>
-				<span class="detail-label">Gap (min correct − max incorrect)</span>
-				<span class="detail-value mono accent-green">{fmt(data.separation.correct_min - data.separation.incorrect_max)}</span>
-				<span class="detail-label">Verification MSE (GT ordering)</span>
-				<span class="detail-value mono">{data.mse.toExponential(2)}</span>
+	<div class="flex gap-4">
+		<div class="flex-1 rounded-xl border border-border-subtle bg-bg-card px-5 py-4">
+			<h4 class="mb-3 text-[11px] font-semibold uppercase tracking-wider text-text-tertiary">Separation Detail</h4>
+			<div class="grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-1.5">
+				<span class="text-[13px] text-text-secondary">Correct min</span>
+				<span class="text-right font-mono text-[13px] font-semibold text-text-primary">{fmt(data.separation.correct_min)}</span>
+				<span class="text-[13px] text-text-secondary">Incorrect max</span>
+				<span class="text-right font-mono text-[13px] font-semibold text-text-primary">{fmt(data.separation.incorrect_max)}</span>
+				<span class="text-[13px] text-text-secondary">Gap (min correct − max incorrect)</span>
+				<span class="text-right font-mono text-[13px] font-semibold text-accent-green">{fmt(data.separation.correct_min - data.separation.incorrect_max)}</span>
+				<span class="text-[13px] text-text-secondary">Verification MSE (GT ordering)</span>
+				<span class="text-right font-mono text-[13px] font-semibold text-text-primary">{data.mse.toExponential(2)}</span>
 			</div>
 		</div>
-		<div class="detail-card">
-			<h4>Method</h4>
-			<p class="method-desc">
-				Computes <code>|tr(W_out · W_inp)|</code> for every candidate (inp, out) pair.
+		<div class="flex-1 rounded-xl border border-border-subtle bg-bg-card px-5 py-4">
+			<h4 class="mb-3 text-[11px] font-semibold uppercase tracking-wider text-text-tertiary">Method</h4>
+			<p class="text-[13px] leading-relaxed text-text-secondary">
+				Computes <code class="rounded bg-bg-inset px-1.5 py-px font-mono text-xs text-accent-cyan">|tr(W_out · W_inp)|</code> for every candidate (inp, out) pair.
 				Training-induced weight correlation makes correct pairs score ~{data.separation.ratio}x higher
 				than incorrect pairs. Hungarian algorithm recovers the optimal assignment in O(n³).
 				Requires no data — only the weight matrices.
@@ -142,154 +142,3 @@
 		</div>
 	</div>
 {/if}
-
-<style>
-	/* ─── Stats row ──────────────────────────────────────────── */
-	.stats-row {
-		display: flex;
-		gap: 8px;
-		margin-bottom: 20px;
-	}
-
-	.stat-card {
-		flex: 1;
-		background: var(--bg-card);
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-md);
-		padding: 12px 16px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-	}
-
-	.stat-card.hero {
-		border-color: var(--border-medium);
-		background: var(--bg-card-hover);
-	}
-
-	.stat-value {
-		font-size: 20px;
-		font-weight: 700;
-		color: var(--text-primary);
-	}
-
-	.stat-card.hero .stat-value {
-		font-size: 24px;
-	}
-
-	.stat-label {
-		font-size: 10px;
-		font-weight: 600;
-		color: var(--text-secondary);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		margin-top: 2px;
-	}
-
-	.accent-green { color: var(--accent-green); }
-
-	/* ─── Viz grid ───────────────────────────────────────────── */
-	.viz-grid {
-		display: flex;
-		gap: 16px;
-		margin-bottom: 20px;
-		align-items: flex-start;
-	}
-
-	.viz-stack {
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-		flex: 1;
-	}
-
-	.viz-card {
-		background: var(--bg-card);
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-lg);
-		padding: 16px;
-	}
-
-	/* ─── Detail row ─────────────────────────────────────────── */
-	.detail-row {
-		display: flex;
-		gap: 16px;
-	}
-
-	.detail-card {
-		flex: 1;
-		background: var(--bg-card);
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-lg);
-		padding: 16px 20px;
-	}
-
-	.detail-card h4 {
-		font-size: 11px;
-		font-weight: 600;
-		color: var(--text-tertiary);
-		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		margin-bottom: 12px;
-	}
-
-	.detail-grid {
-		display: grid;
-		grid-template-columns: 1fr auto;
-		gap: 6px 16px;
-		align-items: baseline;
-	}
-
-	.detail-label {
-		font-size: 13px;
-		color: var(--text-secondary);
-	}
-
-	.detail-value {
-		font-size: 13px;
-		font-weight: 600;
-		color: var(--text-primary);
-		text-align: right;
-	}
-
-	.method-desc {
-		font-size: 13px;
-		color: var(--text-secondary);
-		line-height: 1.6;
-	}
-
-	.method-desc code {
-		background: var(--bg-inset);
-		padding: 1px 5px;
-		border-radius: 3px;
-		font-size: 12px;
-		color: var(--accent-cyan);
-	}
-
-	/* ─── States ─────────────────────────────────────────────── */
-	.no-data {
-		background: var(--bg-card);
-		border: 1px solid var(--border-medium);
-		border-radius: var(--radius-lg);
-		padding: 32px;
-		text-align: center;
-		color: var(--text-secondary);
-	}
-
-	.no-data code {
-		display: inline-block;
-		margin-top: 8px;
-		background: var(--bg-inset);
-		padding: 4px 12px;
-		border-radius: var(--radius-sm);
-		font-size: 13px;
-		color: var(--accent-cyan);
-	}
-
-	.loading {
-		padding: 48px;
-		text-align: center;
-		color: var(--text-tertiary);
-	}
-</style>

@@ -77,35 +77,37 @@
 	];
 </script>
 
-<div class="shell">
+<div class="flex min-h-screen flex-col">
 	<!-- ─── HEADER ──────────────────────────────────────────────── -->
-	<header class="header">
-		<div class="header-top">
-			<div class="brand">
-				<h1 class="title">I Dropped the LLM</h1>
-				<p class="subtitle">Reassembling a shuffled 48-block residual network from 97 linear layers</p>
+	<header class="sticky top-0 z-50 border-b border-border-subtle bg-bg-surface px-8">
+		<div class="flex items-baseline justify-between pt-4 pb-2">
+			<div>
+				<h1 class="font-display text-xl font-bold tracking-tight text-text-primary">I Dropped the LLM</h1>
+				<p class="mt-0.5 text-[13px] text-text-secondary">Reassembling a shuffled 48-block residual network from 97 linear layers</p>
 			</div>
 		</div>
 
 		<!-- KPI Summary Bar -->
-		<div class="kpi-bar">
+		<div class="flex gap-0.5 border-b border-border-subtle py-3">
 			{#each kpis as kpi}
-				<div class="kpi" class:kpi-green={kpi.status === 'green'} class:kpi-pending={kpi.status === 'pending'}>
-					<span class="kpi-value mono">{kpi.value}</span>
+				<div class="flex flex-1 flex-col items-center rounded-lg bg-bg-card px-3 py-2 first:rounded-l-lg last:rounded-r-lg">
+					<span class="font-mono text-lg font-bold {kpi.status === 'green' ? 'text-accent-green' : kpi.status === 'pending' ? 'italic text-text-tertiary' : 'text-text-primary'}">{kpi.value}</span>
 					{#if kpi.detail}
-						<span class="kpi-detail mono">{kpi.detail}</span>
+						<span class="font-mono text-[11px] text-text-tertiary">{kpi.detail}</span>
 					{/if}
-					<span class="kpi-label">{kpi.label}</span>
+					<span class="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-secondary">{kpi.label}</span>
 				</div>
 			{/each}
 		</div>
 
 		<!-- Main Tabs -->
-		<nav class="tabs">
+		<nav class="flex pt-1">
 			{#each tabs as tab}
 				<button
-					class="tab"
-					class:active={activeTab === tab.id}
+					class="cursor-pointer border-b-2 px-5 py-2.5 font-display text-[13px] font-semibold transition-colors
+						{activeTab === tab.id
+							? 'border-accent-green text-text-primary'
+							: 'border-transparent text-text-secondary hover:text-text-primary'}"
 					onclick={() => { activeTab = tab.id; }}
 				>
 					{tab.label}
@@ -115,19 +117,21 @@
 	</header>
 
 	<!-- ─── CONTENT ─────────────────────────────────────────────── -->
-	<main class="content">
+	<main class="mx-auto w-full max-w-[1200px] flex-1 px-8 pt-6 pb-16">
 		<!-- Tab description -->
-		<div class="tab-header">
-			<h2 class="tab-title">{currentTab.label}</h2>
-			<p class="tab-desc">{currentTab.desc}</p>
+		<div class="mb-4">
+			<h2 class="text-lg font-semibold text-text-primary">{currentTab.label}</h2>
+			<p class="mt-0.5 text-[13px] text-text-secondary">{currentTab.desc}</p>
 		</div>
 
 		<!-- Subtabs -->
-		<nav class="subtabs">
+		<nav class="mb-5 flex gap-1 overflow-x-auto rounded-lg bg-bg-card p-1">
 			{#each currentTab.subtabs as sub}
 				<button
-					class="subtab"
-					class:active={currentSubtab === sub.id}
+					class="cursor-pointer whitespace-nowrap rounded px-3.5 py-1.5 font-display text-xs font-medium transition-colors
+						{currentSubtab === sub.id
+							? 'bg-bg-surface text-text-primary shadow-sm'
+							: 'text-text-secondary hover:bg-bg-card-hover hover:text-text-primary'}"
 					onclick={() => { activeSubtabs[activeTab] = sub.id; }}
 				>
 					{sub.label}
@@ -136,197 +140,197 @@
 		</nav>
 
 		<!-- Content area -->
-		<div class="panel">
+		<div class="min-h-[400px]">
 			{#if activeTab === 'pairing'}
 				{#if currentSubtab === 'overview'}
-					<div class="placeholder-grid">
-						<div class="placeholder-card tall">
-							<div class="placeholder-icon">&#9638;</div>
-							<span class="placeholder-title">Pairing Accuracy Comparison</span>
-							<span class="placeholder-desc">Bar chart: all 5 methods at 48/48</span>
+					<div class="grid grid-cols-2 gap-4">
+						<div class="flex min-h-[220px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9638;</span>
+							<span class="text-sm font-semibold text-text-primary">Pairing Accuracy Comparison</span>
+							<span class="mt-1 text-xs text-text-secondary">Bar chart: all 5 methods at 48/48</span>
 						</div>
-						<div class="placeholder-card tall">
-							<div class="placeholder-icon">&#9638;</div>
-							<span class="placeholder-title">Method Comparison Table</span>
-							<span class="placeholder-desc">Method | Accuracy | Data needed | Time</span>
+						<div class="flex min-h-[220px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9638;</span>
+							<span class="text-sm font-semibold text-text-primary">Method Comparison Table</span>
+							<span class="mt-1 text-xs text-text-secondary">Method | Accuracy | Data needed | Time</span>
 						</div>
-						<div class="placeholder-card wide">
-							<div class="placeholder-icon">&#9632;</div>
-							<span class="placeholder-title">Weight Correlation Heatmap (48x48)</span>
-							<span class="placeholder-desc">Strongest signal — correct pairs on diagonal</span>
+						<div class="col-span-2 flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9632;</span>
+							<span class="text-sm font-semibold text-text-primary">Weight Correlation Heatmap (48x48)</span>
+							<span class="mt-1 text-xs text-text-secondary">Strongest signal — correct pairs on diagonal</span>
 						</div>
 					</div>
 				{:else if currentSubtab === '01-weight-corr'}
 					<PairingWeightCorr />
 				{:else}
-					<div class="placeholder-grid">
-						<div class="placeholder-card wide">
-							<div class="placeholder-icon">&#9632;</div>
-							<span class="placeholder-title">Cost Matrix (48x48)</span>
-							<span class="placeholder-desc">Script output for {currentSubtab}</span>
+					<div class="grid grid-cols-2 gap-4">
+						<div class="col-span-2 flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9632;</span>
+							<span class="text-sm font-semibold text-text-primary">Cost Matrix (48x48)</span>
+							<span class="mt-1 text-xs text-text-secondary">Script output for {currentSubtab}</span>
 						</div>
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9650;</div>
-							<span class="placeholder-title">Separation Stats</span>
-							<span class="placeholder-desc">Correct vs incorrect pair scores</span>
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9650;</span>
+							<span class="text-sm font-semibold text-text-primary">Separation Stats</span>
+							<span class="mt-1 text-xs text-text-secondary">Correct vs incorrect pair scores</span>
 						</div>
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9654;</div>
-							<span class="placeholder-title">Script Output</span>
-							<span class="placeholder-desc">Raw terminal output</span>
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9654;</span>
+							<span class="text-sm font-semibold text-text-primary">Script Output</span>
+							<span class="mt-1 text-xs text-text-secondary">Raw terminal output</span>
 						</div>
 					</div>
 				{/if}
 
 			{:else if activeTab === 'ordering'}
 				{#if currentSubtab === 'overview'}
-					<div class="placeholder-grid">
-						<div class="placeholder-card wide">
-							<div class="placeholder-icon">&#9638;</div>
-							<span class="placeholder-title">Ordering Comparison Table</span>
-							<span class="placeholder-desc">Method | Raw positions | Polished | Raw MSE | Polished MSE</span>
+					<div class="grid grid-cols-2 gap-4">
+						<div class="col-span-2 flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9638;</span>
+							<span class="text-sm font-semibold text-text-primary">Ordering Comparison Table</span>
+							<span class="mt-1 text-xs text-text-secondary">Method | Raw positions | Polished | Raw MSE | Polished MSE</span>
 						</div>
-						<div class="placeholder-card tall">
-							<div class="placeholder-icon">&#9650;</div>
-							<span class="placeholder-title">Raw vs Polished Positions</span>
-							<span class="placeholder-desc">Grouped bar chart: raw vs 97/97 polished</span>
+						<div class="flex min-h-[220px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9650;</span>
+							<span class="text-sm font-semibold text-text-primary">Raw vs Polished Positions</span>
+							<span class="mt-1 text-xs text-text-secondary">Grouped bar chart: raw vs 97/97 polished</span>
 						</div>
-						<div class="placeholder-card tall">
-							<div class="placeholder-icon">&#9644;</div>
-							<span class="placeholder-title">Stiffness by Block Position</span>
-							<span class="placeholder-desc">Frobenius norm through GT ordering</span>
+						<div class="flex min-h-[220px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9644;</span>
+							<span class="text-sm font-semibold text-text-primary">Stiffness by Block Position</span>
+							<span class="mt-1 text-xs text-text-secondary">Frobenius norm through GT ordering</span>
 						</div>
 					</div>
 				{:else}
-					<div class="placeholder-grid">
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9650;</div>
-							<span class="placeholder-title">Ordering Quality</span>
-							<span class="placeholder-desc">Raw positions, MSE, convergence</span>
+					<div class="grid grid-cols-2 gap-4">
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9650;</span>
+							<span class="text-sm font-semibold text-text-primary">Ordering Quality</span>
+							<span class="mt-1 text-xs text-text-secondary">Raw positions, MSE, convergence</span>
 						</div>
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9644;</div>
-							<span class="placeholder-title">Position Comparison</span>
-							<span class="placeholder-desc">Found ordering vs GT ordering</span>
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9644;</span>
+							<span class="text-sm font-semibold text-text-primary">Position Comparison</span>
+							<span class="mt-1 text-xs text-text-secondary">Found ordering vs GT ordering</span>
 						</div>
-						<div class="placeholder-card wide">
-							<div class="placeholder-icon">&#9654;</div>
-							<span class="placeholder-title">Script Output</span>
-							<span class="placeholder-desc">Raw terminal output for {currentSubtab}</span>
+						<div class="col-span-2 flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9654;</span>
+							<span class="text-sm font-semibold text-text-primary">Script Output</span>
+							<span class="mt-1 text-xs text-text-secondary">Raw terminal output for {currentSubtab}</span>
 						</div>
 					</div>
 				{/if}
 
 			{:else if activeTab === 'e2e'}
 				{#if currentSubtab === 'overview'}
-					<div class="placeholder-grid">
-						<div class="placeholder-card wide">
-							<div class="placeholder-icon">&#9733;</div>
-							<span class="placeholder-title">Fastest Path</span>
-							<span class="placeholder-desc">Weight correlation + delta greedy + polish</span>
+					<div class="grid grid-cols-2 gap-4">
+						<div class="col-span-2 flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9733;</span>
+							<span class="text-sm font-semibold text-text-primary">Fastest Path</span>
+							<span class="mt-1 text-xs text-text-secondary">Weight correlation + delta greedy + polish</span>
 						</div>
-						<div class="placeholder-card tall">
-							<div class="placeholder-icon">&#9632;</div>
-							<span class="placeholder-title">Pairing x Ordering Grid</span>
-							<span class="placeholder-desc">Which combos reach perfect MSE</span>
+						<div class="flex min-h-[220px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9632;</span>
+							<span class="text-sm font-semibold text-text-primary">Pairing x Ordering Grid</span>
+							<span class="mt-1 text-xs text-text-secondary">Which combos reach perfect MSE</span>
 						</div>
-						<div class="placeholder-card tall">
-							<div class="placeholder-icon">&#9650;</div>
-							<span class="placeholder-title">Timing Breakdown</span>
-							<span class="placeholder-desc">Time per stage across methods</span>
+						<div class="flex min-h-[220px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9650;</span>
+							<span class="text-sm font-semibold text-text-primary">Timing Breakdown</span>
+							<span class="mt-1 text-xs text-text-secondary">Time per stage across methods</span>
 						</div>
 					</div>
 				{:else}
-					<div class="placeholder-grid">
-						<div class="placeholder-card wide">
-							<div class="placeholder-icon">&#9654;</div>
-							<span class="placeholder-title">Script Output</span>
-							<span class="placeholder-desc">Full results for {currentSubtab}</span>
+					<div class="grid grid-cols-2 gap-4">
+						<div class="col-span-2 flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9654;</span>
+							<span class="text-sm font-semibold text-text-primary">Script Output</span>
+							<span class="mt-1 text-xs text-text-secondary">Full results for {currentSubtab}</span>
 						</div>
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9650;</div>
-							<span class="placeholder-title">Results Summary</span>
-							<span class="placeholder-desc">Key metrics from this run</span>
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9650;</span>
+							<span class="text-sm font-semibold text-text-primary">Results Summary</span>
+							<span class="mt-1 text-xs text-text-secondary">Key metrics from this run</span>
 						</div>
 					</div>
 				{/if}
 
 			{:else if activeTab === 'interpretability'}
 				{#if currentSubtab === 'overview'}
-					<div class="placeholder-grid">
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9670;</div>
-							<span class="placeholder-title">Jacobian Analysis</span>
-							<span class="placeholder-desc">All contractive, mean-reverting</span>
+					<div class="grid grid-cols-2 gap-4">
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9670;</span>
+							<span class="text-sm font-semibold text-text-primary">Jacobian Analysis</span>
+							<span class="mt-1 text-xs text-text-secondary">All contractive, mean-reverting</span>
 						</div>
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9638;</div>
-							<span class="placeholder-title">Phase Structure</span>
-							<span class="placeholder-desc">Early stabilize, mid compress, late correct</span>
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9638;</span>
+							<span class="text-sm font-semibold text-text-primary">Phase Structure</span>
+							<span class="mt-1 text-xs text-text-secondary">Early stabilize, mid compress, late correct</span>
 						</div>
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9650;</div>
-							<span class="placeholder-title">Shock Response</span>
-							<span class="placeholder-desc">22x prediction gap: top vs bottom PCs</span>
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9650;</span>
+							<span class="text-sm font-semibold text-text-primary">Shock Response</span>
+							<span class="mt-1 text-xs text-text-secondary">22x prediction gap: top vs bottom PCs</span>
 						</div>
-						<div class="placeholder-card wide">
-							<div class="placeholder-icon">&#9644;</div>
-							<span class="placeholder-title">Trajectory PCA</span>
-							<span class="placeholder-desc">48-step trajectory is effectively 3-dimensional</span>
+						<div class="col-span-2 flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9644;</span>
+							<span class="text-sm font-semibold text-text-primary">Trajectory PCA</span>
+							<span class="mt-1 text-xs text-text-secondary">48-step trajectory is effectively 3-dimensional</span>
 						</div>
 					</div>
 				{:else if currentSubtab === '01-structure'}
-					<div class="placeholder-grid">
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9670;</div>
-							<span class="placeholder-title">Jacobian Traces</span>
-							<span class="placeholder-desc">Per-block trace values, all negative</span>
+					<div class="grid grid-cols-2 gap-4">
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9670;</span>
+							<span class="text-sm font-semibold text-text-primary">Jacobian Traces</span>
+							<span class="mt-1 text-xs text-text-secondary">Per-block trace values, all negative</span>
 						</div>
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9638;</div>
-							<span class="placeholder-title">Phase Delta Chart</span>
-							<span class="placeholder-desc">Early (blue) / Mid (green) / Late (red)</span>
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9638;</span>
+							<span class="text-sm font-semibold text-text-primary">Phase Delta Chart</span>
+							<span class="mt-1 text-xs text-text-secondary">Early (blue) / Mid (green) / Late (red)</span>
 						</div>
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9644;</div>
-							<span class="placeholder-title">Cumulative Operator SVs</span>
-							<span class="placeholder-desc">Scree plot: factor compression</span>
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9644;</span>
+							<span class="text-sm font-semibold text-text-primary">Cumulative Operator SVs</span>
+							<span class="mt-1 text-xs text-text-secondary">Scree plot: factor compression</span>
 						</div>
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9679;</div>
-							<span class="placeholder-title">Trajectory PCA</span>
-							<span class="placeholder-desc">Mean state projected onto top PCs</span>
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9679;</span>
+							<span class="text-sm font-semibold text-text-primary">Trajectory PCA</span>
+							<span class="mt-1 text-xs text-text-secondary">Mean state projected onto top PCs</span>
 						</div>
 					</div>
 				{:else if currentSubtab === '02-shock'}
-					<div class="placeholder-grid">
-						<div class="placeholder-card wide">
-							<div class="placeholder-icon">&#9650;</div>
-							<span class="placeholder-title">Shock Response Curves</span>
-							<span class="placeholder-desc">Top-PC (amplified) vs bottom-PC (damped) through depth</span>
+					<div class="grid grid-cols-2 gap-4">
+						<div class="col-span-2 flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9650;</span>
+							<span class="text-sm font-semibold text-text-primary">Shock Response Curves</span>
+							<span class="mt-1 text-xs text-text-secondary">Top-PC (amplified) vs bottom-PC (damped) through depth</span>
 						</div>
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9670;</div>
-							<span class="placeholder-title">Damping Ratios</span>
-							<span class="placeholder-desc">Per-direction damping summary</span>
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9670;</span>
+							<span class="text-sm font-semibold text-text-primary">Damping Ratios</span>
+							<span class="mt-1 text-xs text-text-secondary">Per-direction damping summary</span>
 						</div>
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9638;</div>
-							<span class="placeholder-title">Regime Stability</span>
-							<span class="placeholder-desc">Gap persists across data subsets</span>
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9638;</span>
+							<span class="text-sm font-semibold text-text-primary">Regime Stability</span>
+							<span class="mt-1 text-xs text-text-secondary">Gap persists across data subsets</span>
 						</div>
 					</div>
 				{:else}
-					<div class="placeholder-grid">
-						<div class="placeholder-card wide">
-							<div class="placeholder-icon">&#9654;</div>
-							<span class="placeholder-title">Script Output</span>
-							<span class="placeholder-desc">Results for {currentSubtab}</span>
+					<div class="grid grid-cols-2 gap-4">
+						<div class="col-span-2 flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9654;</span>
+							<span class="text-sm font-semibold text-text-primary">Script Output</span>
+							<span class="mt-1 text-xs text-text-secondary">Results for {currentSubtab}</span>
 						</div>
-						<div class="placeholder-card">
-							<div class="placeholder-icon">&#9650;</div>
-							<span class="placeholder-title">Model Comparison</span>
-							<span class="placeholder-desc">Autonomous vs observer surrogate</span>
+						<div class="flex min-h-[180px] flex-col items-center justify-center rounded-xl border border-dashed border-border-medium bg-bg-card p-8 text-center transition-colors hover:border-border-accent hover:bg-bg-card-hover">
+							<span class="mb-3 text-3xl text-text-secondary opacity-50">&#9650;</span>
+							<span class="text-sm font-semibold text-text-primary">Model Comparison</span>
+							<span class="mt-1 text-xs text-text-secondary">Autonomous vs observer surrogate</span>
 						</div>
 					</div>
 				{/if}
@@ -334,243 +338,3 @@
 		</div>
 	</main>
 </div>
-
-<style>
-	/* ─── Shell ──────────────────────────────────────────────── */
-	.shell {
-		min-height: 100vh;
-		display: flex;
-		flex-direction: column;
-	}
-
-	/* ─── Header ─────────────────────────────────────────────── */
-	.header {
-		position: sticky;
-		top: 0;
-		z-index: 100;
-		background: var(--bg-surface);
-		border-bottom: 1px solid var(--border-subtle);
-		padding: 0 32px;
-	}
-
-	.header-top {
-		display: flex;
-		align-items: baseline;
-		justify-content: space-between;
-		padding: 16px 0 8px;
-	}
-
-	.title {
-		font-family: var(--font-display);
-		font-size: 20px;
-		font-weight: 700;
-		letter-spacing: -0.02em;
-		color: var(--text-primary);
-	}
-
-	.subtitle {
-		font-size: 13px;
-		color: var(--text-secondary);
-		margin-top: 2px;
-	}
-
-	/* ─── KPI Bar ────────────────────────────────────────────── */
-	.kpi-bar {
-		display: flex;
-		gap: 2px;
-		padding: 12px 0;
-		border-bottom: 1px solid var(--border-subtle);
-	}
-
-	.kpi {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		padding: 8px 12px;
-		background: var(--bg-card);
-		border-radius: var(--radius-md);
-	}
-
-	.kpi:first-child { border-radius: var(--radius-md) var(--radius-sm) var(--radius-sm) var(--radius-md); }
-	.kpi:last-child { border-radius: var(--radius-sm) var(--radius-md) var(--radius-md) var(--radius-sm); }
-	.kpi:not(:first-child):not(:last-child) { border-radius: var(--radius-sm); }
-
-	.kpi-value {
-		font-size: 18px;
-		font-weight: 700;
-		color: var(--text-primary);
-	}
-
-	.kpi-green .kpi-value {
-		color: var(--accent-green);
-	}
-
-	.kpi-pending .kpi-value {
-		color: var(--text-tertiary);
-		font-style: italic;
-	}
-
-	.kpi-detail {
-		font-size: 11px;
-		font-weight: 400;
-		color: var(--text-tertiary);
-		margin-top: -2px;
-	}
-
-	.kpi-label {
-		font-size: 10px;
-		font-weight: 600;
-		color: var(--text-secondary);
-		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		margin-top: 2px;
-	}
-
-	/* ─── Main Tabs ──────────────────────────────────────────── */
-	.tabs {
-		display: flex;
-		gap: 0;
-		padding-top: 4px;
-	}
-
-	.tab {
-		all: unset;
-		cursor: pointer;
-		padding: 10px 20px;
-		font-family: var(--font-display);
-		font-size: 13px;
-		font-weight: 600;
-		color: var(--text-secondary);
-		border-bottom: 2px solid transparent;
-		transition: color 0.15s, border-color 0.15s;
-	}
-
-	.tab:hover {
-		color: var(--text-primary);
-	}
-
-	.tab.active {
-		color: var(--text-primary);
-		border-bottom-color: var(--accent-green);
-	}
-
-	/* ─── Content ────────────────────────────────────────────── */
-	.content {
-		flex: 1;
-		padding: 24px 32px 64px;
-		max-width: 1200px;
-		width: 100%;
-		margin: 0 auto;
-	}
-
-	.tab-header {
-		margin-bottom: 16px;
-	}
-
-	.tab-title {
-		font-size: 18px;
-		font-weight: 600;
-		color: var(--text-primary);
-	}
-
-	.tab-desc {
-		font-size: 13px;
-		color: var(--text-secondary);
-		margin-top: 2px;
-	}
-
-	/* ─── Subtabs ────────────────────────────────────────────── */
-	.subtabs {
-		display: flex;
-		gap: 4px;
-		padding: 4px;
-		background: var(--bg-card);
-		border-radius: var(--radius-md);
-		margin-bottom: 20px;
-		overflow-x: auto;
-	}
-
-	.subtab {
-		all: unset;
-		cursor: pointer;
-		padding: 6px 14px;
-		font-family: var(--font-display);
-		font-size: 12px;
-		font-weight: 500;
-		color: var(--text-secondary);
-		border-radius: var(--radius-sm);
-		white-space: nowrap;
-		transition: color 0.15s, background 0.15s;
-	}
-
-	.subtab:hover {
-		color: var(--text-primary);
-		background: var(--bg-card-hover);
-	}
-
-	.subtab.active {
-		color: var(--text-primary);
-		background: var(--bg-surface);
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-	}
-
-	/* ─── Panel ──────────────────────────────────────────────── */
-	.panel {
-		min-height: 400px;
-	}
-
-	/* ─── Placeholder Grid ───────────────────────────────────── */
-	.placeholder-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 16px;
-	}
-
-	.placeholder-card {
-		background: var(--bg-card);
-		border: 1px dashed var(--border-medium);
-		border-radius: var(--radius-lg);
-		padding: 32px 24px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-		min-height: 180px;
-		transition: border-color 0.15s, background 0.15s;
-	}
-
-	.placeholder-card:hover {
-		border-color: var(--border-accent);
-		background: var(--bg-card-hover);
-	}
-
-	.placeholder-card.wide {
-		grid-column: span 2;
-	}
-
-	.placeholder-card.tall {
-		min-height: 220px;
-	}
-
-	.placeholder-icon {
-		font-size: 28px;
-		color: var(--text-secondary);
-		margin-bottom: 12px;
-		opacity: 0.5;
-	}
-
-	.placeholder-title {
-		font-size: 14px;
-		font-weight: 600;
-		color: var(--text-primary);
-		margin-bottom: 4px;
-	}
-
-	.placeholder-desc {
-		font-size: 12px;
-		color: var(--text-secondary);
-		max-width: 280px;
-	}
-</style>

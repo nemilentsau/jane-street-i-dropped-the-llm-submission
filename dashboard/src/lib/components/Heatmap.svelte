@@ -34,10 +34,8 @@
 		return { vmin, vmax };
 	});
 
-	// Sequential palette: dark navy → cyan → bright yellow (perceptually uniform-ish, dark-mode safe)
 	function color(val: number): string {
 		const t = range.vmax > range.vmin ? (val - range.vmin) / (range.vmax - range.vmin) : 0.5;
-		// 4-stop gradient: #0d1117 → #1a5276 → #2dd4bf → #fbbf24
 		if (t < 0.33) {
 			const s = t / 0.33;
 			return `rgb(${lerp(13, 26, s)}, ${lerp(17, 82, s)}, ${lerp(23, 118, s)})`;
@@ -55,8 +53,8 @@
 	}
 </script>
 
-<div class="heatmap">
-	{#if title}<h4 class="chart-title">{title}</h4>{/if}
+<div class="inline-block">
+	{#if title}<h4 class="mb-1 text-xs font-semibold text-text-secondary">{title}</h4>{/if}
 	<svg {width} {height}>
 		{#each data as row, i}
 			{#each row as val, j}
@@ -72,23 +70,11 @@
 				</rect>
 			{/each}
 		{/each}
-
 		{#if xlabel}
-			<text x={pad.left + pw / 2} y={height - 4} text-anchor="middle" class="axis-label">{xlabel}</text>
+			<text x={pad.left + pw / 2} y={height - 4} text-anchor="middle" fill="var(--color-text-tertiary)" font-size="10">{xlabel}</text>
 		{/if}
 		{#if ylabel}
-			<text x={10} y={pad.top + ph / 2} text-anchor="middle" class="axis-label" transform="rotate(-90,10,{pad.top + ph / 2})">{ylabel}</text>
+			<text x={10} y={pad.top + ph / 2} text-anchor="middle" fill="var(--color-text-tertiary)" font-size="10" transform="rotate(-90,10,{pad.top + ph / 2})">{ylabel}</text>
 		{/if}
 	</svg>
 </div>
-
-<style>
-	.heatmap { display: inline-block; }
-	.chart-title {
-		margin: 0 0 4px;
-		font-size: 12px;
-		font-weight: 600;
-		color: var(--text-secondary);
-	}
-	.axis-label { font-size: 10px; fill: var(--text-tertiary); }
-</style>
