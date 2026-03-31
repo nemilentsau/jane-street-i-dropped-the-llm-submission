@@ -37,13 +37,27 @@ python answer.py
 python e2e/01_fastest_solve.py
 ```
 
+## Dashboard
+
+An interactive evidence dashboard visualizes all key results: pairing cost matrices, Jacobian analysis, phase structure, shock response curves, and trajectory PCA.
+
+```bash
+# Generate data artifacts (~2s)
+python generate_artifacts.py
+
+# Run dashboard
+cd dashboard && npm install && npm run dev
+```
+
+Or build a static site: `npm run build` (output in `dashboard/build/`).
+
 ## Scripts
 
 ### Pairing (5 methods, all recover 48/48 correct pairs)
 
 | Script | Method | Data needed? |
 |--------|--------|-------------|
-| `pairing/01_weight_correlation.py` | Frobenius inner product `|tr(W_out W_inp)|` | No |
+| `pairing/01_weight_correlation.py` | Frobenius inner product `\|tr(W_out W_inp)\|` | No |
 | `pairing/02_operator_moments.py` | Spectral invariants of `W_out @ W_inp` | No |
 | `pairing/03_svd_cross_alignment.py` | SVD alignment in shared 96-D hidden space | No |
 | `pairing/04_affine_linearization.py` | Gated product with ReLU activation stats | Yes |
@@ -82,6 +96,7 @@ python e2e/01_fastest_solve.py
 .
 ├── answer.py                  # The final permutation
 ├── submission.md              # Full writeup
+├── generate_artifacts.py      # Generates JSON data for dashboard (~2s)
 ├── requirements.txt
 ├── model/                     # Puzzle data (not included)
 ├── lib/                       # Shared utilities
@@ -92,7 +107,10 @@ python e2e/01_fastest_solve.py
 ├── pairing/                   # 5 pairing method scripts
 ├── ordering/                  # 5 ordering method scripts
 ├── distillation/              # 3 interpretability scripts
-└── e2e/                       # 4 end-to-end demonstration scripts
+├── e2e/                       # 4 end-to-end demonstration scripts
+└── dashboard/                 # Svelte 5 evidence dashboard
+    ├── static/data/           # Generated JSON artifacts
+    └── src/                   # Dashboard source
 ```
 
 ## Key Insight
