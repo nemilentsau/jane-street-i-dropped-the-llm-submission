@@ -38,21 +38,27 @@
 
 		return {
 			tooltip: {
-				formatter: (p: any) => `(${p.value[1]}, ${p.value[0]}): ${p.value[2].toFixed(3)}`,
+				formatter: (p: any) => {
+					const v = p.value[2].toFixed(3);
+					return `<span style="color:#8690a2">row</span> ${p.value[1]}, <span style="color:#8690a2">col</span> ${p.value[0]}<br/><strong style="font-size:13px">${v}</strong>`;
+				},
+				backgroundColor: '#1c2128',
+				borderColor: '#363e4a',
+				textStyle: { color: '#eceff4', fontSize: 12 },
 			},
 			grid: {
-				top: title ? 32 : 8,
-				right: 60,
-				bottom: xlabel ? 36 : 16,
-				left: ylabel ? 44 : 16,
+				top: title ? 36 : 8,
+				right: 65,
+				bottom: xlabel ? 40 : 16,
+				left: ylabel ? 48 : 16,
 			},
 			xAxis: {
 				type: 'category' as const,
 				data: Array.from({ length: data[0]?.length ?? 0 }, (_, i) => i),
 				name: xlabel,
 				nameLocation: 'middle' as const,
-				nameGap: 24,
-				nameTextStyle: { color: '#8690a2', fontSize: 10 },
+				nameGap: 28,
+				nameTextStyle: { color: '#b0b8c8', fontSize: 12, fontFamily: 'Instrument Sans' },
 				axisLabel: { show: false },
 				axisTick: { show: false },
 				axisLine: { lineStyle: { color: '#363e4a' } },
@@ -63,8 +69,8 @@
 				data: Array.from({ length: data.length }, (_, i) => i),
 				name: ylabel,
 				nameLocation: 'middle' as const,
-				nameGap: 32,
-				nameTextStyle: { color: '#8690a2', fontSize: 10 },
+				nameGap: 36,
+				nameTextStyle: { color: '#b0b8c8', fontSize: 12, fontFamily: 'Instrument Sans' },
 				axisLabel: { show: false },
 				axisTick: { show: false },
 				axisLine: { lineStyle: { color: '#363e4a' } },
@@ -82,7 +88,7 @@
 				inRange: {
 					color: ['#0d1117', '#1a5276', '#2dd4bf', '#fbbf24'],
 				},
-				textStyle: { color: '#8690a2', fontSize: 10 },
+				textStyle: { color: '#b0b8c8', fontSize: 11 },
 			},
 			series: [{
 				type: 'heatmap' as const,

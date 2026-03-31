@@ -18,7 +18,7 @@
 	--color-text-secondary: #b0b8c8;
 	--color-text-tertiary: #8690a2;
 
-	/* Accents */
+	/* Phase accents — semantic per pipeline stage */
 	--color-accent-green: #3dd68c;
 	--color-accent-green-muted: #2a9d68;
 	--color-accent-blue: #6cb0f6;
@@ -26,6 +26,16 @@
 	--color-accent-red: #ee7a7a;
 	--color-accent-purple: #a78bfa;
 	--color-accent-cyan: #4fd1d9;
+
+	/* Phase color aliases */
+	--color-phase-pairing: #3dd68c;
+	--color-phase-ordering: #6cb0f6;
+	--color-phase-e2e: #f0b429;
+	--color-phase-interpret: #a78bfa;
+
+	/* Shadows */
+	--shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+	--shadow-card-elevated: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
 
 	/* Fonts */
 	--font-display: 'Instrument Sans', system-ui, sans-serif;
@@ -45,4 +55,77 @@
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}
+}
+
+/* Dot grid background texture */
+.bg-dot-grid {
+	background-image: radial-gradient(circle, #262d38 0.75px, transparent 0.75px);
+	background-size: 24px 24px;
+}
+
+/* Glow effect for key metrics */
+.glow-green {
+	text-shadow: 0 0 20px rgba(61, 214, 140, 0.3), 0 0 40px rgba(61, 214, 140, 0.1);
+}
+.glow-blue {
+	text-shadow: 0 0 20px rgba(108, 176, 246, 0.3), 0 0 40px rgba(108, 176, 246, 0.1);
+}
+.glow-amber {
+	text-shadow: 0 0 20px rgba(240, 180, 41, 0.3), 0 0 40px rgba(240, 180, 41, 0.1);
+}
+.glow-purple {
+	text-shadow: 0 0 20px rgba(167, 139, 250, 0.3), 0 0 40px rgba(167, 139, 250, 0.1);
+}
+
+/* Card elevation */
+.card-elevated {
+	box-shadow: var(--shadow-card);
+	transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.card-elevated:hover {
+	box-shadow: var(--shadow-card-elevated);
+}
+
+/* Staggered fade-in animation */
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+.fade-in-up {
+	animation: fadeInUp 0.35s ease-out both;
+}
+
+/* Sidebar nav item hover bar */
+.nav-item {
+	position: relative;
+	transition: background-color 0.15s ease, color 0.15s ease;
+}
+.nav-item::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 25%;
+	bottom: 25%;
+	width: 2px;
+	border-radius: 1px;
+	background: transparent;
+	transition: background-color 0.15s ease;
+}
+.nav-item-active::before {
+	background: var(--color-accent-green);
+}
+
+/* Status badge pulse */
+@keyframes pulse-dot {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.5; }
+}
+.pulse-dot {
+	animation: pulse-dot 2.5s ease-in-out infinite;
 }
