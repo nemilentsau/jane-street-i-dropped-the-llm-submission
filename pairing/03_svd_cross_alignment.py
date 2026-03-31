@@ -9,8 +9,10 @@ Key insight: E23 originally aligned the wrong spaces (outer 48-D) and failed (16
 E28 repaired this by aligning the correct hidden-space interface and succeeded (48/48).
 """
 import itertools
+import json
 import os
 import sys
+from collections import Counter
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np
@@ -86,4 +88,42 @@ with Timer("Total") as t:
     print(f"  Raw delta-greedy MSE: {e2e['mse_delta']:.6e}")
     print(f"  After polish MSE:     {e2e['polished_mse']:.6e}")
 
-print(f"\nDone in {t.elapsed:.2f}s")
+    # ── Single feature performance ──
+    single_perf = []
+    for name in FEATURE_NAMES:
+        for item in results:
+            if item["names"] == (name,) and item["weights"] == (1.0,):
+                single_perf.append({"name": name, "accuracy": item["correct_pairs"]})
+                break
+
+elapsed = t.elapsed
+print(f"\nDone in {elapsed:.2f}s")
+
+# ── Emit dashboard JSON ──────────────────────────────────────────────
+DASHBOARD_DATA = os.path.join(
+    os.path.dirname(__file__), "..", "dashboard", "static", "data"
+)
+os.makedirs(DASHBOARD_DATA, exist_ok=True)
+
+accuracy_dist = Counter(item["correct_pairs"] for item in results)
+
+artifact = {
+    "method": "SVD Cross-Alignment (Hidden Space)",
+    "script": "pairing/03_svd_cross_alignment.py",
+    "total_recipes": len(results),
+    "exact_count": exact_count,
+    "accuracy_distribution": {int(k): v for k, v in sorted(accuracy_dist.items())},
+    "single_features": sorted(single_perf, key=lambda x: -x["accuracy"]),
+    "best": {"recipe": best["recipe"], "accuracy": best["correct_pairs"]},
+    "e2e": {
+        "mse_delta": e2e["mse_delta"],
+        "polished_mse": e2e["polished_mse"],
+    },
+    "elapsed_s": round(elapsed, 2),
+}
+
+out_path = os.path.join(DASHBOARD_DATA, "pairing_03_svd_cross_alignment.json")
+with open(out_path, "w") as f:
+    json.dump(artifact, f, separators=(",", ":"))
+
+print(f"Dashboard artifact: {out_path} ({os.path.getsize(out_path) // 1024}KB)")

@@ -2,6 +2,7 @@
 	import Placeholder from './Placeholder.svelte';
 	import PairingWeightCorr from './PairingWeightCorr.svelte';
 	import PairingOperatorMoments from './PairingOperatorMoments.svelte';
+	import PairingSvdAlignment from './PairingSvdAlignment.svelte';
 
 	let { subtab }: { subtab: string } = $props();
 </script>
@@ -19,6 +20,10 @@
 {:else if subtab === '02-operator-moments'}
 	<div class="fade-in-up">
 		<PairingOperatorMoments />
+	</div>
+{:else if subtab === '03-svd-alignment'}
+	<div class="fade-in-up">
+		<PairingSvdAlignment />
 	</div>
 {:else}
 	<div class="grid grid-cols-2 gap-4">

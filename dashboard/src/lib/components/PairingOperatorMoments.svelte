@@ -157,7 +157,7 @@
 
 			<div class="grid grid-cols-[1fr_auto] gap-5">
 				{#if barOptions}
-					<div style="width: 520px; height: 320px;">
+					<div style="width: 640px; height: 320px;">
 						<Chart {init} options={barOptions} theme="dark" />
 					</div>
 				{/if}
@@ -168,7 +168,7 @@
 						<h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-accent-green">Exact alone (48/48)</h4>
 						{#each exactFeatures as f}
 							<div class="flex items-start gap-2 py-1">
-								<span class="mt-0.5 shrink-0 text-[10px] text-accent-green">&bull;</span>
+								<span class="mt-0.5 shrink-0 text-sm text-accent-green">&#10003;</span>
 								<div>
 									<span class="text-sm font-medium text-text-primary">{info(f.name).label}</span>
 									<p class="text-xs text-text-tertiary">{info(f.name).desc}</p>
@@ -208,11 +208,11 @@
 					<div class="mt-1 text-xs text-text-tertiary">recipes tested</div>
 				</div>
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-accent-green">{data.exact_count.toLocaleString()}</div>
+					<div class="font-mono text-2xl font-bold text-accent-green glow-green">{data.exact_count.toLocaleString()}</div>
 					<div class="mt-1 text-xs text-text-tertiary">exact (48/48)</div>
 				</div>
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-accent-green">{data.e2e.polished_mse.toExponential(2)}</div>
+					<div class="font-mono text-2xl font-bold text-accent-green glow-green">{data.e2e.polished_mse.toExponential(2)}</div>
 					<div class="mt-1 text-xs text-text-tertiary">polished MSE</div>
 				</div>
 			</div>
