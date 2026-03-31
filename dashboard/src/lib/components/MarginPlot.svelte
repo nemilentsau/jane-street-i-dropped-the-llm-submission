@@ -65,16 +65,19 @@
 				markLine: {
 					silent: true,
 					symbol: 'none',
-					lineStyle: { color: '#f0b429', type: 'dashed' as const, width: 1 },
+					lineStyle: { color: '#eceff4', type: 'dashed' as const, width: 1.5 },
 					data: [
 						{
 							yAxis: minMargin,
 							label: {
 								formatter: `min margin = ${minMargin.toFixed(2)}  (all positive → clean assignment)`,
-								color: '#f0b429',
+								color: '#eceff4',
 								fontSize: 11,
 								fontFamily: 'JetBrains Mono, monospace',
 								position: 'insideEndTop' as const,
+								backgroundColor: 'rgba(13, 17, 23, 0.85)',
+								padding: [3, 6],
+								borderRadius: 3,
 							},
 						},
 					],
