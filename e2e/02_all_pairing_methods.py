@@ -3,8 +3,8 @@
 Runs all 5 pairing methods and compares their accuracy.
 All should achieve 48/48 correct pairs.
 """
-import itertools
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np

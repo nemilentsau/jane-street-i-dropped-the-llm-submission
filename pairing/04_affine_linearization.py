@@ -6,7 +6,8 @@ Features from both the operator matrix A and offset c are used. The full affine 
 is required -- c-only features fail completely (0/48).
 """
 import itertools
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np

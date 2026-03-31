@@ -11,7 +11,8 @@ The observer wins on final prediction accuracy and shock-response fidelity:
 The best compact summary is a low-rank stable factor system with observer-like
 correction from the current high-dimensional state.
 """
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np
@@ -19,7 +20,7 @@ import torch
 
 from shared import Block, GT_ORDERING, GT_PAIRING_CANONICAL, LAST_PIECE, Timer, load_all_pieces, load_data
 from dynamics_utils import (
-    build_direction_library, run_order_capture, predict_from_state,
+    run_order_capture, predict_from_state,
 )
 
 print("=" * 60)
@@ -54,7 +55,6 @@ def spectral_clip(mat, radius=MAX_RADIUS):
 
 def fit_models(states_np, z_states, mean, basis, train_idx):
     x_t = np.concatenate([states_np[t][train_idx] for t in range(48)], axis=0)
-    x_next = np.concatenate([states_np[t + 1][train_idx] for t in range(48)], axis=0)
     z_t = np.concatenate([z_states[t][train_idx] for t in range(48)], axis=0)
     z_next = np.concatenate([z_states[t + 1][train_idx] for t in range(48)], axis=0)
 
@@ -139,7 +139,7 @@ with Timer("Total") as t:
                   f"{metrics['final_prediction_mse']:>12.6f} {model['spectral_radius']:>12.4f}")
 
     # Best rank comparison
-    print(f"\n--- Best Rank (rank=9) Detail ---")
+    print("\n--- Best Rank (rank=9) Detail ---")
     mean, basis = fit_pca_basis(states_np, train_idx, 9)
     z_states = project_states_np(states_np, mean, basis)
     models = fit_models(states_np, z_states, mean, basis, train_idx)

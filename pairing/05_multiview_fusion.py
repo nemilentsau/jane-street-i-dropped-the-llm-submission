@@ -9,7 +9,8 @@ None of the three is exact on its own, but their errors are complementary.
 Under equal-weight fusion with robust normalization, Hungarian assignment
 recovers all 48 pairs. Stable across random subsets as small as 500 rows.
 """
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np

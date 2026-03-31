@@ -3,7 +3,8 @@
 Uses GT pairing to isolate the ordering question.
 Runs all ordering methods and compares raw and polished results.
 """
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np
@@ -11,7 +12,7 @@ import torch
 from scipy.optimize import linear_sum_assignment
 
 from shared import (
-    Block, GT_ORDERING, GT_PAIRING_CANONICAL,
+    GT_PAIRING_CANONICAL,
     Timer, load_all_pieces, load_data, score_ordering, eval_solution,
 )
 from fusion_utils import (
@@ -91,6 +92,7 @@ with Timer("Total") as t_total:
                 if s.item() > best_score:
                     best_score = s.item()
                     best_soft = Q.detach().clone()
+            assert best_soft is not None
             ri, ci = linear_sum_assignment(-best_soft.numpy())
             sk_ord = ci.tolist()
             sk_mse = eval_solution(pairing, sk_ord, X, y_pred, pieces)
@@ -133,15 +135,15 @@ with Timer("Total") as t_total:
             jacobians.append(A.numpy())
 
         d = jacobians[0].shape[0]
-        I = np.eye(d)
-        J = I.copy()
+        eye = np.eye(d)
+        J = eye.copy()
         remaining = set(range(N_BLOCKS))
         sf_ord = []
         prev_eig = np.sort(np.abs(np.linalg.eigvals(J)))
         for step in range(N_BLOCKS):
             best_idx, best_jitter, best_J, best_eig = -1, float("inf"), None, None
             for idx in remaining:
-                Jc = (I + jacobians[idx]) @ J
+                Jc = (eye + jacobians[idx]) @ J
                 ev = np.sort(np.abs(np.linalg.eigvals(Jc)))
                 jit = float(np.sum((ev - prev_eig) ** 2))
                 if jit < best_jitter:

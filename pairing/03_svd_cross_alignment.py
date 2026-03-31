@@ -9,15 +9,16 @@ Key insight: E23 originally aligned the wrong spaces (outer 48-D) and failed (16
 E28 repaired this by aligning the correct hidden-space interface and succeeded (48/48).
 """
 import itertools
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np
 import torch
 from scipy.optimize import linear_sum_assignment
 
-from shared import INP_PIECES, OUT_PIECES, Timer, load_all_pieces, load_data, score_pairing
-from fusion_utils import robust_normalize, pairing_from_cost
+from shared import INP_PIECES, OUT_PIECES, Timer, load_all_pieces, load_data
+from fusion_utils import robust_normalize
 from alt_philosophy_utils import end_to_end_from_pairing, search_weighted_recipes
 
 print("=" * 60)

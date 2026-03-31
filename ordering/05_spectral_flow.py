@@ -7,14 +7,15 @@ greedily minimizes eigenvalue jitter in the cumulative Jacobian product.
 Raw ordering is weak (9/97 correct, MSE 0.663) but lands in the right basin.
 Exact after greedy polish.
 """
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np
 import torch
 
 from shared import (
-    Block, GT_ORDERING, GT_PAIRING_CANONICAL,
+    GT_ORDERING, GT_PAIRING_CANONICAL,
     Timer, load_all_pieces, load_data,
     score_ordering, eval_solution,
 )
@@ -43,11 +44,11 @@ def compute_linearized_jacobians(pairing, X, pieces):
 def running_eigenvalues(ordering, jacobians):
     n = len(ordering)
     d = jacobians[0].shape[0]
-    I = np.eye(d)
-    J = I.copy()
+    eye = np.eye(d)
+    J = eye.copy()
     eig_trajectories = np.zeros((n, d))
     for step, block_idx in enumerate(ordering):
-        J = (I + jacobians[block_idx]) @ J
+        J = (eye + jacobians[block_idx]) @ J
         eigvals = np.abs(np.linalg.eigvals(J))
         eigvals.sort()
         eig_trajectories[step] = eigvals
@@ -61,8 +62,8 @@ def spectral_smoothness(eig_trajectories):
 
 def spectral_flow_greedy(jacobians, n_blocks):
     d = jacobians[0].shape[0]
-    I = np.eye(d)
-    J = I.copy()
+    eye = np.eye(d)
+    J = eye.copy()
     remaining = set(range(n_blocks))
     ordering = []
     prev_eigvals = np.sort(np.abs(np.linalg.eigvals(J)))
@@ -74,7 +75,7 @@ def spectral_flow_greedy(jacobians, n_blocks):
         best_eigvals = None
 
         for idx in remaining:
-            J_candidate = (I + jacobians[idx]) @ J
+            J_candidate = (eye + jacobians[idx]) @ J
             eigvals = np.sort(np.abs(np.linalg.eigvals(J_candidate)))
             jitter = float(np.sum((eigvals - prev_eigvals) ** 2))
             if jitter < best_jitter:
@@ -123,7 +124,7 @@ with Timer("Total") as t:
     sf_mse_raw = eval_solution(pairing, sf_ordering, X, y_pred, pieces)
     sf_pos_raw, _ = score_ordering(sf_ordering, pairing)
 
-    print(f"\n  Spectral flow greedy:")
+    print("\n  Spectral flow greedy:")
     print(f"    Smoothness: {sf_smoothness:.4f} (GT: {gt_smoothness:.4f}, random: {np.mean(random_smoothnesses):.4f})")
     print(f"    Raw positions: {sf_pos_raw}/97")
     print(f"    Raw MSE: {sf_mse_raw:.6e}")

@@ -7,13 +7,13 @@ Analyzes the recovered network as a discretized ODE and maps to finance concepts
 - Factor structure: SVD of the cumulative operator
 - Phase structure: early/mid/late dynamics
 """
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np
-import torch
 
-from shared import Block, GT_ORDERING, GT_PAIRING_CANONICAL, LAST_PIECE, Timer, load_all_pieces, load_data
+from shared import Block, GT_ORDERING, GT_PAIRING_CANONICAL, Timer, load_all_pieces, load_data
 from dynamics_utils import compute_static_jacobians, run_order_capture, phase_slices
 
 print("=" * 60)
@@ -60,12 +60,12 @@ with Timer("Total") as t:
 
     # 4. Cumulative drift analysis
     print("\n--- Cumulative Drift ---")
-    I = np.eye(48)
-    P = I.copy()
+    eye = np.eye(48)
+    P = eye.copy()
     cum_sr = []
     cum_eff_rank = []
     for step, block_idx in enumerate(ordering):
-        P = (I + jacobians[block_idx]) @ P
+        P = (eye + jacobians[block_idx]) @ P
         eigs = np.abs(np.linalg.eigvals(P))
         cum_sr.append(float(np.max(eigs)))
         sv = np.linalg.svd(P, compute_uv=False)
@@ -73,7 +73,7 @@ with Timer("Total") as t:
         probs = probs[probs > 1e-10]
         cum_eff_rank.append(float(np.exp(-np.sum(probs * np.log(probs)))))
 
-    print(f"  Spectral radius trajectory:")
+    print("  Spectral radius trajectory:")
     for step in [0, 11, 23, 35, 47]:
         print(f"    step {step:2d}: rho={cum_sr[step]:.4f}, eff_rank={cum_eff_rank[step]:.2f}")
     print(f"  Net contractive: final rho={cum_sr[-1]:.4f} {'(< 1.0)' if cum_sr[-1] < 1 else '(>= 1.0)'}")

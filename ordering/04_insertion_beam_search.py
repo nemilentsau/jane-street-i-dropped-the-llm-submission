@@ -6,7 +6,8 @@ positions). Exact after polish.
 
 Non-monotone in beam width: widths 1, 20 are worse than width 5.
 """
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np
@@ -75,7 +76,7 @@ with Timer("Total") as t:
         print(f"    raw: pos={raw_pos}/97, MSE={raw_mse:.6e}")
         print(f"    polished: pos={polished_pos}/97, MSE={polished_mse:.6e}")
 
-    print(f"\n  Summary:")
+    print("\n  Summary:")
     print(f"  {'Width':>6} {'Raw pos':>8} {'Raw MSE':>12} {'Polish pos':>11} {'Polish MSE':>12}")
     for w, r in beam_results.items():
         print(f"  {w:>6d} {r['raw_pos']:>5d}/97 {r['raw_mse']:>12.6e} {r['polished_pos']:>8d}/97 {r['polished_mse']:>12.6e}")

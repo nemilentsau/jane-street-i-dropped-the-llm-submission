@@ -8,12 +8,13 @@ late blocks make larger ones.
 The strongest raw extractor: 77/97 correct positions, MSE 0.000288.
 Exact after greedy polish.
 """
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 from shared import (
     GT_PAIRING_CANONICAL, Timer, load_all_pieces, load_data,
-    score_ordering, eval_solution, print_report,
+    score_ordering, eval_solution,
 )
 from fusion_utils import delta_greedy_ordering, mse_polish
 
@@ -33,7 +34,7 @@ with Timer("Total") as t:
 
     raw_mse = eval_solution(pairing, ordering, X, y_pred, pieces)
     raw_pos, _ = score_ordering(ordering, pairing)
-    print(f"\n  Raw results:")
+    print("\n  Raw results:")
     print(f"    Correct positions: {raw_pos}/97")
     print(f"    MSE: {raw_mse:.6e}")
 
@@ -42,7 +43,7 @@ with Timer("Total") as t:
         polished, polished_mse = mse_polish(pairing, ordering, X, y_pred, pieces, max_iters=5)
 
     polished_pos, _ = score_ordering(polished, pairing)
-    print(f"\n  After polish:")
+    print("\n  After polish:")
     print(f"    Correct positions: {polished_pos}/97")
     print(f"    MSE: {polished_mse:.6e}")
 

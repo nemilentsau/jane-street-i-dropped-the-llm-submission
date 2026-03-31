@@ -1,13 +1,10 @@
 """Shared utilities for all scripts."""
 import os
-import sys
 import time
 
-import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
-from scipy.optimize import linear_sum_assignment
 
 # Ensure we can find the data directory regardless of where the script is run from.
 # Convention: model/ lives at the project root (next to lib/, pairing/, etc.)
@@ -89,7 +86,7 @@ def score_pairing(candidate_pairing):
 
 def score_ordering(candidate_ordering, candidate_pairing):
     """Build full permutation and compare to ground truth."""
-    perm = [None] * 97
+    perm = [0] * 97
     for pos, block_idx in enumerate(candidate_ordering):
         inp_idx, out_idx = candidate_pairing[block_idx]
         perm[2 * pos] = inp_idx

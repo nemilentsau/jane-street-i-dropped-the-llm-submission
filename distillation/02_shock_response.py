@@ -9,16 +9,15 @@ how the network responds through all 48 blocks:
 The network selectively preserves factor-like directions and suppresses
 nuisance directions, consistently across the input distribution.
 """
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
-import numpy as np
-import torch
 
 from shared import Block, GT_ORDERING, GT_PAIRING_CANONICAL, LAST_PIECE, Timer, load_all_pieces, load_data
 from dynamics_utils import (
     build_direction_library, build_regime_splits,
-    run_order_capture, predict_from_state, shock_response_atlas, summarize_shock_groups,
+    run_order_capture, shock_response_atlas, summarize_shock_groups,
 )
 
 print("=" * 60)
@@ -53,7 +52,7 @@ with Timer("Total") as t:
         )
 
     summary = summarize_shock_groups(results)
-    print(f"\n--- Shock Response Summary ---")
+    print("\n--- Shock Response Summary ---")
     print(f"  {'Kind':<12} {'Count':>5} {'Damping':>10} {'Pred shift':>12} {'Peak step':>10}")
     for kind, s in sorted(summary.items()):
         print(f"  {kind:<12} {s['count']:>5d} {s['mean_damping_ratio']:>10.4f} "

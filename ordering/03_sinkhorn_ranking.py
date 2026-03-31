@@ -6,10 +6,10 @@ annealing from multiple random restarts.
 
 Best restart: raw MSE ~0.123, 9/97 positions. Exact after polish.
 """
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
-import numpy as np
 import torch
 from scipy.optimize import linear_sum_assignment
 
@@ -79,6 +79,7 @@ with Timer("Total") as t:
                 best_score = score.item()
                 best_soft = Q.detach().clone()
 
+        assert best_soft is not None
         soft_np = best_soft.numpy()
         row_ind, col_ind = linear_sum_assignment(-soft_np)
         ordering = col_ind.tolist()
@@ -101,7 +102,7 @@ with Timer("Total") as t:
         polished, polished_mse = mse_polish(pairing, best_ordering, X, y_pred, pieces)
     polished_pos, _ = score_ordering(polished, pairing)
 
-    print(f"\n  Final results:")
+    print("\n  Final results:")
     print(f"    Correct positions: {polished_pos}/97")
     print(f"    MSE: {polished_mse:.6e}")
 

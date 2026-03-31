@@ -1,4 +1,6 @@
 """Shared helpers for pairing cost matrices and ordering methods."""
+from __future__ import annotations
+
 import numpy as np
 import torch
 from scipy.optimize import linear_sum_assignment
@@ -68,7 +70,7 @@ def compute_geodesic_matrix(pieces, progress_every=12):
     return matrix
 
 
-def compute_single_block_mse_matrix(X_eval, y_eval, pieces, progress_every=12):
+def compute_single_block_mse_matrix(X_eval, y_eval, pieces, progress_every: int | None = 12):
     matrix = np.zeros((48, 48), dtype=np.float64)
     last_data = pieces[LAST_PIECE]
     w_last, b_last = last_data["weight"], last_data["bias"]
@@ -131,7 +133,7 @@ def delta_greedy_ordering(pairing, X, pieces):
     return ordering
 
 
-def pairwise_margin_data(pairing, X_sub, y_sub, pieces, progress_every=12):
+def pairwise_margin_data(pairing, X_sub, y_sub, pieces, progress_every: int | None = 12):
     blocks = [Block(inp, out, pieces) for inp, out in pairing]
     last_data = pieces[LAST_PIECE]
     w_last, b_last = last_data["weight"], last_data["bias"]

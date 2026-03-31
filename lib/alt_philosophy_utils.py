@@ -2,7 +2,6 @@
 import itertools
 
 import numpy as np
-import torch
 
 from fusion_utils import assigned_row_top1_count, delta_greedy_ordering, mse_polish, pairing_from_cost
 from shared import GT_ORDERING, score_ordering, eval_solution, score_pairing

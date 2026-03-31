@@ -9,7 +9,8 @@ Extracts a global ordering via:
 
 Raw MSE ~0.111, exact after MSE polish.
 """
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np
@@ -61,7 +62,7 @@ with Timer("Total") as t:
         polished, polished_mse = mse_polish(pairing, ordering_refined, X, y_pred, pieces)
     polished_pos, _ = score_ordering(polished, pairing)
 
-    print(f"\n  Final results:")
+    print("\n  Final results:")
     print(f"    Correct positions: {polished_pos}/97")
     print(f"    MSE: {polished_mse:.6e}")
 

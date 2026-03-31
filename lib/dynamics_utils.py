@@ -67,12 +67,12 @@ def compute_static_jacobians(X, pieces, pairing):
 def compute_future_sensitivities(ordering, jacobians, readout):
     """Approximate output sensitivity at each state using static linearized future flow."""
     d = len(readout)
-    I = np.eye(d)
+    eye = np.eye(d)
     q = [None] * (len(ordering) + 1)
     q[-1] = readout.astype(np.float64).copy()
     for step in range(len(ordering) - 1, -1, -1):
         A = jacobians[ordering[step]]
-        q[step] = ((I + A).T @ q[step + 1]).astype(np.float64)
+        q[step] = ((eye + A).T @ q[step + 1]).astype(np.float64)
     return q
 
 

@@ -3,17 +3,14 @@
 Tests every combination of pairing method x ordering method.
 Shows that multiple independent paths reach the exact answer.
 """
-import itertools
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np
-import torch
-from scipy.optimize import linear_sum_assignment
 
 from shared import (
-    INP_PIECES, OUT_PIECES, LAST_PIECE, Block,
-    Timer, load_all_pieces, load_data, score_pairing, score_ordering, eval_solution,
+    INP_PIECES, OUT_PIECES, Timer, load_all_pieces, load_data, score_pairing, score_ordering,
 )
 from fusion_utils import (
     compute_weight_correlation_matrix, compute_effective_rank_matrix,
@@ -78,7 +75,7 @@ with Timer("Total") as t_total:
         fused = robust_normalize(eff_rank) + robust_normalize(geodesic) + robust_normalize(sb_mse)
         pairings["Fusion"], _, _ = pairing_from_cost(fused)
 
-    print(f"\n  Pairing accuracy:")
+    print("\n  Pairing accuracy:")
     for name, pairing in pairings.items():
         print(f"    {name}: {score_pairing(pairing)}/48")
 

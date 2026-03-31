@@ -5,7 +5,8 @@ The fastest path to the exact answer:
 
 Demonstrates the full pipeline from shuffled pieces to verified MSE = 3.16e-14.
 """
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np

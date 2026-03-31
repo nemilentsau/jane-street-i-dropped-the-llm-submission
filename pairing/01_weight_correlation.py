@@ -4,7 +4,8 @@ The simplest pairing method. Computes score(inp_i, out_j) = |tr(W_out_j @ W_inp_
 for every candidate pair, then solves the optimal assignment via the Hungarian algorithm.
 Requires no data -- only the weight matrices. Recovers all 48/48 pairs.
 """
-import os, sys
+import os
+import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np
@@ -41,7 +42,7 @@ with Timer("Total") as t:
             else:
                 incorrect_scores.append(score)
 
-    print(f"\nScore separation:")
+    print("\nScore separation:")
     print(f"  Correct pairs:   mean={np.mean(correct_scores):.4f}, min={np.min(correct_scores):.4f}")
     print(f"  Incorrect pairs: mean={np.mean(incorrect_scores):.4f}, max={np.max(incorrect_scores):.4f}")
     print(f"  Ratio (correct/incorrect mean): {np.mean(correct_scores)/np.mean(incorrect_scores):.2f}x")
