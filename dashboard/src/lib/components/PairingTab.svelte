@@ -4,6 +4,7 @@
 	import PairingOperatorMoments from './PairingOperatorMoments.svelte';
 	import PairingSvdAlignment from './PairingSvdAlignment.svelte';
 	import PairingAffineLinear from './PairingAffineLinear.svelte';
+	import PairingMultiview from './PairingMultiview.svelte';
 
 	let { subtab }: { subtab: string } = $props();
 </script>
@@ -29,6 +30,10 @@
 {:else if subtab === '04-affine-linear'}
 	<div class="fade-in-up">
 		<PairingAffineLinear />
+	</div>
+{:else if subtab === '05-multiview'}
+	<div class="fade-in-up">
+		<PairingMultiview />
 	</div>
 {:else}
 	<div class="grid grid-cols-2 gap-4">
