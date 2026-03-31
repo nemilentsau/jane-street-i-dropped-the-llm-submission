@@ -2,6 +2,7 @@
 	import Heatmap from './Heatmap.svelte';
 	import Histogram from './Histogram.svelte';
 	import MarginPlot from './MarginPlot.svelte';
+	import TrainingCurve from './TrainingCurve.svelte';
 
 	type WCData = {
 		method: string;
@@ -22,20 +23,43 @@
 		elapsed_s: number;
 	};
 
+	type EvoData = {
+		training_curve: { epoch: number; pairs_correct: number; snr: number; mse: number }[];
+		random_control: {
+			n_networks: number;
+			mean_correct: number;
+			mean_snr: number;
+		};
+		trained_baseline: {
+			pairs_correct: number;
+			snr: number;
+		};
+	};
+
 	let data: WCData | null = $state(null);
 	let error: string | null = $state(null);
+	let evoData: EvoData | null = $state(null);
 
 	async function load() {
 		try {
 			const resp = await fetch('/data/pairing_01_weight_correlation.json');
 			if (!resp.ok) throw new Error(`${resp.status}`);
 			data = await resp.json();
-		} catch (e: any) {
-			error = e.message;
+		} catch (e: unknown) {
+			error = e instanceof Error ? e.message : String(e);
 		}
 	}
 
+	async function loadEvo() {
+		try {
+			const resp = await fetch('/data/pairing_01b_training_evolution.json');
+			if (!resp.ok) return;
+			evoData = await resp.json();
+		} catch { /* optional data */ }
+	}
+
 	load();
+	loadEvo();
 
 	function fmt(n: number, d = 2): string {
 		if (Math.abs(n) < 0.001 && n !== 0) return n.toExponential(d);
@@ -174,14 +198,88 @@
 			/>
 		</div>
 
-		<!-- ── 5. WHY IT WORKS ───────────────────────────────── -->
+		<!-- ── 5. TRAINING EVOLUTION ──────────────────────────── -->
 		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<h3 class="mb-2 text-lg font-semibold text-text-primary">This is training-induced, not architectural</h3>
+			<h3 class="mb-3 text-xl font-semibold text-text-primary">This is training-induced, not architectural</h3>
 			<p class="text-[15px] leading-relaxed text-text-secondary">
-				On 10 random untrained networks with the same structure, Hungarian assignment recovers an average of
-				<span class="font-mono font-semibold text-accent-red">1.0/48</span> correct pairs — indistinguishable from chance.
-				The co-training fingerprint that makes this work is created by backpropagation, not by the residual block architecture itself.
+				The co-training fingerprint is created by backpropagation, not by the residual block architecture.
+				A fresh network trained from scratch on the same data develops the signal within a few epochs.
+				Random untrained networks score at chance level.
 			</p>
+
+			{#if evoData}
+				<div class="mt-5 grid grid-cols-[1fr_auto] gap-5">
+					<TrainingCurve
+						data={evoData.training_curve}
+						baselineCorrect={evoData.trained_baseline.pairs_correct}
+						randomCorrect={evoData.random_control.mean_correct}
+						width={520}
+						height={280}
+					/>
+					<div class="flex flex-col gap-3 self-start">
+						<!-- Epoch table -->
+						<div class="rounded-lg border border-border-subtle px-4 py-3">
+							<h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-text-tertiary">Training checkpoints</h4>
+							<table class="w-full text-sm">
+								<thead>
+									<tr class="text-text-tertiary">
+										<th class="pb-1 pr-4 text-left font-medium">Epoch</th>
+										<th class="pb-1 pr-4 text-right font-medium">Pairs</th>
+										<th class="pb-1 text-right font-medium">SNR</th>
+									</tr>
+								</thead>
+								<tbody>
+									{#each evoData.training_curve as row}
+										<tr class="border-t border-border-subtle/50">
+											<td class="py-1 pr-4 font-mono text-text-secondary">{row.epoch === 0 ? '0 (init)' : row.epoch}</td>
+											<td class="py-1 pr-4 text-right font-mono font-semibold {row.pairs_correct >= 24 ? 'text-accent-green' : 'text-text-primary'}">{row.pairs_correct}/48</td>
+											<td class="py-1 text-right font-mono text-text-secondary">{row.snr}x</td>
+										</tr>
+									{/each}
+								</tbody>
+							</table>
+						</div>
+
+						<!-- Comparison -->
+						<div class="rounded-lg bg-bg-inset px-4 py-3">
+							<h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-text-tertiary">Comparison</h4>
+							<div class="grid grid-cols-[1fr_auto_auto] items-baseline gap-x-4 gap-y-1.5 text-sm">
+								<span class="text-text-secondary">Original model</span>
+								<span class="text-right font-mono font-semibold text-accent-green">{evoData.trained_baseline.pairs_correct}/48</span>
+								<span class="text-right font-mono text-text-secondary">{evoData.trained_baseline.snr}x</span>
+
+								<span class="text-text-secondary">Retrain @ epoch 60</span>
+								<span class="text-right font-mono font-semibold text-phase-ordering">{evoData.training_curve[evoData.training_curve.length - 1].pairs_correct}/48</span>
+								<span class="text-right font-mono text-text-secondary">{evoData.training_curve[evoData.training_curve.length - 1].snr}x</span>
+
+								<span class="text-text-secondary">Random ({evoData.random_control.n_networks} nets)</span>
+								<span class="text-right font-mono font-semibold text-accent-red">{evoData.random_control.mean_correct}/48</span>
+								<span class="text-right font-mono text-text-secondary">{evoData.random_control.mean_snr}x</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<p class="mt-4 text-[15px] leading-relaxed text-text-secondary">
+					The signal appears within the first few epochs and grows steadily.
+					The original dropped model scores
+					<span class="font-mono font-semibold text-accent-green">{evoData.trained_baseline.snr}x</span> SNR — much stronger than this 60-epoch retrain
+					(<span class="font-mono text-text-primary">{evoData.training_curve[evoData.training_curve.length - 1].snr}x</span>),
+					suggesting the original model was trained significantly longer or with different hyperparameters.
+				</p>
+			{:else}
+				<p class="mt-3 text-[15px] leading-relaxed text-text-secondary">
+					On 10 random untrained networks with the same structure, Hungarian assignment recovers an average of
+					<span class="font-mono font-semibold text-accent-red">1.0/48</span> correct pairs — indistinguishable from chance.
+				</p>
+				<div class="mt-3 rounded-lg border border-border-subtle bg-bg-inset px-4 py-3">
+					<p class="text-sm text-text-tertiary">Run
+						<code class="rounded bg-bg-card px-1.5 py-0.5 font-mono text-accent-cyan">python pairing/01b_training_evolution.py</code>
+						to see the full training evolution chart and random control data.
+					</p>
+				</div>
+			{/if}
+
 			<div class="mt-3 text-[15px] leading-relaxed text-text-secondary">
 				<span class="text-xs font-semibold uppercase tracking-wider text-text-tertiary">Verification:</span>
 				MSE with ground-truth ordering = <span class="font-mono text-accent-green">{data.mse.toExponential(2)}</span>

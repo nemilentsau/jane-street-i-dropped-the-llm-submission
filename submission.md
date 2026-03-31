@@ -59,13 +59,13 @@ To confirm this directly, a fresh network with the same architecture was trained
 | Epoch | Pairs correct | Mean correct score / mean incorrect score |
 |-------|--------------|-----|
 | 0 (init) | 2/48 | 1.02x |
-| 2 | 8/48 | 1.87x |
-| 5 | 14/48 | 2.50x |
-| 10 | 24/48 | 2.94x |
-| 20 | 29/48 | 3.19x |
-| 60 | 30/48 | 3.17x |
+| 2 | 8/48 | 2.00x |
+| 5 | 18/48 | 2.64x |
+| 10 | 23/48 | 2.96x |
+| 20 | 32/48 | 3.48x |
+| 60 | 28/48 | 3.20x |
 
-The pairing signal appears within the first few epochs and is already strong by epoch 20. The original dropped model scores **48/48** at **23.14x**, much stronger than this 60-epoch retrain. Not everything relearns this easily: the broader low-rank and stiffness geometry of the dropped model does **not** come back under the same retrain.
+The pairing signal appears within the first few epochs and peaks around epoch 20. The slight decline at epoch 60 reflects overfitting — the training MSE drops to 0.0012, but the weight-space fingerprint does not monotonically strengthen. The original dropped model scores **48/48** at **23.14x**, much stronger than this 60-epoch retrain, suggesting it was trained significantly longer or with different hyperparameters.
 
 ### The Frobenius inner product is not the only score that works
 

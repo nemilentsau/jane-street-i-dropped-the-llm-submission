@@ -1,0 +1,103 @@
+{
+    "script": "pairing/01b_training_evolution.py",
+    "training_curve": [
+        {
+            "epoch": 0,
+            "pairs_correct": 2,
+            "snr": 1.02,
+            "mse": 6.2665
+        },
+        {
+            "epoch": 2,
+            "pairs_correct": 8,
+            "snr": 2.0,
+            "mse": 0.4193
+        },
+        {
+            "epoch": 5,
+            "pairs_correct": 18,
+            "snr": 2.64,
+            "mse": 0.1524
+        },
+        {
+            "epoch": 10,
+            "pairs_correct": 23,
+            "snr": 2.96,
+            "mse": 0.0612
+        },
+        {
+            "epoch": 20,
+            "pairs_correct": 32,
+            "snr": 3.48,
+            "mse": 0.0144
+        },
+        {
+            "epoch": 60,
+            "pairs_correct": 28,
+            "snr": 3.2,
+            "mse": 0.0012
+        }
+    ],
+    "random_control": {
+        "n_networks": 10,
+        "mean_correct": 1.0,
+        "mean_snr": 1.02,
+        "results": [
+            {
+                "seed": 0,
+                "pairs_correct": 0,
+                "snr": 1.05
+            },
+            {
+                "seed": 1,
+                "pairs_correct": 1,
+                "snr": 0.98
+            },
+            {
+                "seed": 2,
+                "pairs_correct": 1,
+                "snr": 1.01
+            },
+            {
+                "seed": 3,
+                "pairs_correct": 0,
+                "snr": 1.04
+            },
+            {
+                "seed": 4,
+                "pairs_correct": 2,
+                "snr": 1.0
+            },
+            {
+                "seed": 5,
+                "pairs_correct": 2,
+                "snr": 1.24
+            },
+            {
+                "seed": 6,
+                "pairs_correct": 0,
+                "snr": 1.0
+            },
+            {
+                "seed": 7,
+                "pairs_correct": 2,
+                "snr": 1.02
+            },
+            {
+                "seed": 8,
+                "pairs_correct": 1,
+                "snr": 0.97
+            },
+            {
+                "seed": 9,
+                "pairs_correct": 1,
+                "snr": 0.9
+            }
+        ]
+    },
+    "trained_baseline": {
+        "pairs_correct": 48,
+        "snr": 23.14
+    },
+    "elapsed_s": 22.9
+}
