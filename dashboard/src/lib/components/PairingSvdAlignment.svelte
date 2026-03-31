@@ -140,35 +140,42 @@
 		<!-- ── 2. OUTER VS HIDDEN ──────────────────────────────── -->
 		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
 			<h3 class="mb-3 text-lg font-semibold text-text-primary">Where you look matters more than how you look</h3>
+			<p class="mb-4 text-[15px] leading-relaxed text-text-secondary">
+				Each weight matrix touches two spaces: the outer 48-D input/output space and the
+				shared 96-D hidden space. The alignment signal lives exclusively at the hidden-space interface
+				where blocks actually write and read.
+			</p>
 			<div class="grid grid-cols-2 gap-4">
 				<div class="rounded-lg border border-accent-red/30 bg-accent-red/5 px-5 py-4">
 					<div class="mb-2 flex items-baseline gap-2">
 						<span class="font-mono text-2xl font-bold text-accent-red">16/48</span>
-						<span class="text-xs font-semibold uppercase tracking-wider text-accent-red/70">Failed</span>
+						<span class="text-xs font-semibold uppercase tracking-wider text-accent-red/70">Outer space</span>
 					</div>
-					<h4 class="mb-1 text-sm font-semibold text-text-primary">Outer 48-D space alignment</h4>
+					<h4 class="mb-1 text-sm font-semibold text-text-primary">Outer 48-D alignment</h4>
 					<p class="text-xs leading-relaxed text-text-tertiary">
-						Aligned right-singular vectors of W_inp with left-singular vectors of W_out
+						Aligning right-singular vectors of W_inp with left-singular vectors of W_out
 						in their respective 48-D input/output spaces.
-						These spaces are disconnected from where the block actually computes.
+						These spaces are disconnected from where the block computes &mdash;
+						no training pressure aligns modes here.
 					</p>
 				</div>
 				<div class="rounded-lg border border-accent-green/30 bg-accent-green/5 px-5 py-4">
 					<div class="mb-2 flex items-baseline gap-2">
 						<span class="font-mono text-2xl font-bold text-accent-green">{data.best.accuracy}/48</span>
-						<span class="text-xs font-semibold uppercase tracking-wider text-accent-green/70">Exact</span>
+						<span class="text-xs font-semibold uppercase tracking-wider text-accent-green/70">Hidden space</span>
 					</div>
-					<h4 class="mb-1 text-sm font-semibold text-text-primary">Hidden 96-D space alignment</h4>
+					<h4 class="mb-1 text-sm font-semibold text-text-primary">Hidden 96-D alignment</h4>
 					<p class="text-xs leading-relaxed text-text-tertiary">
-						Aligned left-singular vectors of W_inp with right-singular vectors of W_out
-						in the shared 96-D hidden space where the block writes and reads.
-						The signal lives at the actual interface.
+						Aligning left-singular vectors of W_inp with right-singular vectors of W_out
+						in the shared 96-D hidden space. Co-trained layers develop
+						coordinated write/read directions at this interface.
 					</p>
 				</div>
 			</div>
 			<p class="mt-4 text-[15px] leading-relaxed text-text-secondary">
-				The SVD idea was correct; the original implementation looked in the outer 48-D spaces instead of the
-				shared 96-D interface. Moving to hidden space turned a 33% method into a 100% method.
+				The 16/48 &rarr; 48/48 gap confirms that the co-training fingerprint is spatial:
+				it lives at the hidden-space interface where blocks communicate, not in
+				the outer spaces where the architecture merely defines dimensionality.
 			</p>
 		</div>
 

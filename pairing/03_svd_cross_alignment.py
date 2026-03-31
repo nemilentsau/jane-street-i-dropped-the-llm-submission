@@ -5,8 +5,9 @@ For each inp, its left-singular vectors are the directions it writes into hidden
 for each out, its right-singular vectors are the directions it reads from.
 Correctly paired layers have aligned principal modes at this hidden-space interface.
 
-Key insight: E23 originally aligned the wrong spaces (outer 48-D) and failed (16/48).
-E28 repaired this by aligning the correct hidden-space interface and succeeded (48/48).
+Key finding: alignment in the shared 96-D hidden space recovers all 48 pairs (48/48),
+while alignment in the outer 48-D input/output spaces fails (16/48). The co-training
+fingerprint lives at the interface where blocks actually communicate.
 """
 import itertools
 import json
