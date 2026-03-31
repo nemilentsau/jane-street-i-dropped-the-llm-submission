@@ -9,13 +9,13 @@
 </script>
 
 <div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-	<h3 class="mb-4 text-[11px] font-semibold uppercase tracking-wider text-text-tertiary">Recovery Pipeline</h3>
+	<h3 class="mb-4 text-xs font-semibold uppercase tracking-wider text-text-tertiary">Recovery Pipeline</h3>
 	<div class="flex items-center gap-0">
 		{#each stages as stage, i}
 			{#if i > 0}
 				<div class="flex-1 flex items-center justify-center px-1" style="margin-bottom: 24px;">
 					<div class="h-px flex-1 bg-border-medium"></div>
-					<span class="px-1 text-[10px] text-text-tertiary">&#9654;</span>
+					<span class="px-1 text-[11px] text-text-tertiary">&#9654;</span>
 					<div class="h-px flex-1 bg-border-medium"></div>
 				</div>
 			{/if}
@@ -23,13 +23,13 @@
 				<div class="flex h-12 w-12 items-center justify-center rounded-lg border {stage.borderClass} {stage.bgClass}">
 					<span class="text-lg {stage.textClass}">{stage.icon}</span>
 				</div>
-				<span class="mt-2 text-[10px] font-semibold {stage.textClass}">
+				<span class="mt-2 text-xs font-semibold {stage.textClass}">
 					{#each stage.label.split('\n') as line, j}
 						{#if j > 0}<br/>{/if}{line}
 					{/each}
 				</span>
 				{#if stage.value}
-					<span class="text-[10px] font-mono {i === stages.length - 1 ? stage.textClass : 'text-text-tertiary'}">{stage.value}</span>
+					<span class="text-[11px] font-mono {i === stages.length - 1 ? stage.textClass : 'text-text-tertiary'}">{stage.value}</span>
 				{/if}
 			</div>
 		{/each}

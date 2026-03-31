@@ -25,8 +25,8 @@
 	style={delay ? `animation-delay: ${delay}s` : ''}
 >
 	<span class="mb-3 text-3xl {p.textClass} opacity-40">{icon}</span>
-	<span class="text-sm font-semibold text-text-primary">{title}</span>
+	<span class="text-base font-semibold text-text-primary">{title}</span>
 	{#if subtitle}
-		<span class="mt-1 text-xs text-text-secondary">{subtitle}</span>
+		<span class="mt-1 text-sm text-text-secondary">{subtitle}</span>
 	{/if}
 </div>
