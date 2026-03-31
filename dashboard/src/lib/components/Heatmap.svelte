@@ -1,9 +1,18 @@
 <script lang="ts">
+	import { Chart } from 'svelte-echarts';
+	import { HeatmapChart } from 'echarts/charts';
+	import { init } from 'echarts/core';
+	import { TooltipComponent, VisualMapComponent, GridComponent } from 'echarts/components';
+	import { CanvasRenderer } from 'echarts/renderers';
+	import { use } from 'echarts/core';
+
+	use([HeatmapChart, TooltipComponent, VisualMapComponent, GridComponent, CanvasRenderer]);
+
 	let {
 		data,
 		title = '',
-		width = 400,
-		height = 400,
+		width = 420,
+		height = 420,
 		xlabel = '',
 		ylabel = '',
 	}: {
@@ -15,66 +24,79 @@
 		ylabel?: string;
 	} = $props();
 
-	const pad = { top: 8, right: 8, bottom: 28, left: 28 };
-	let rows = $derived(data.length);
-	let cols = $derived(data[0]?.length ?? 0);
-	let pw = $derived(width - pad.left - pad.right);
-	let ph = $derived(height - pad.top - pad.bottom);
-	let cellW = $derived(pw / cols);
-	let cellH = $derived(ph / rows);
-
-	let range = $derived.by(() => {
+	let options = $derived.by(() => {
+		const flat: [number, number, number][] = [];
 		let vmin = Infinity, vmax = -Infinity;
-		for (const row of data) {
-			for (const v of row) {
+		for (let i = 0; i < data.length; i++) {
+			for (let j = 0; j < data[i].length; j++) {
+				const v = data[i][j];
+				flat.push([j, i, v]);
 				if (v < vmin) vmin = v;
 				if (v > vmax) vmax = v;
 			}
 		}
-		return { vmin, vmax };
+
+		return {
+			tooltip: {
+				formatter: (p: any) => `(${p.value[1]}, ${p.value[0]}): ${p.value[2].toFixed(3)}`,
+			},
+			grid: {
+				top: title ? 32 : 8,
+				right: 60,
+				bottom: xlabel ? 36 : 16,
+				left: ylabel ? 44 : 16,
+			},
+			xAxis: {
+				type: 'category' as const,
+				data: Array.from({ length: data[0]?.length ?? 0 }, (_, i) => i),
+				name: xlabel,
+				nameLocation: 'middle' as const,
+				nameGap: 24,
+				nameTextStyle: { color: '#8690a2', fontSize: 10 },
+				axisLabel: { show: false },
+				axisTick: { show: false },
+				axisLine: { lineStyle: { color: '#363e4a' } },
+				splitLine: { show: false },
+			},
+			yAxis: {
+				type: 'category' as const,
+				data: Array.from({ length: data.length }, (_, i) => i),
+				name: ylabel,
+				nameLocation: 'middle' as const,
+				nameGap: 32,
+				nameTextStyle: { color: '#8690a2', fontSize: 10 },
+				axisLabel: { show: false },
+				axisTick: { show: false },
+				axisLine: { lineStyle: { color: '#363e4a' } },
+				splitLine: { show: false },
+				inverse: true,
+			},
+			visualMap: {
+				min: vmin,
+				max: vmax,
+				calculable: false,
+				orient: 'vertical' as const,
+				right: 0,
+				top: 'center' as const,
+				itemHeight: 200,
+				inRange: {
+					color: ['#0d1117', '#1a5276', '#2dd4bf', '#fbbf24'],
+				},
+				textStyle: { color: '#8690a2', fontSize: 10 },
+			},
+			series: [{
+				type: 'heatmap' as const,
+				data: flat,
+				emphasis: {
+					itemStyle: { borderColor: '#eceff4', borderWidth: 1 },
+				},
+			}],
+			...(title ? { title: { text: title, textStyle: { color: '#b0b8c8', fontSize: 12, fontWeight: 600 }, left: 0, top: 0 } } : {}),
+			backgroundColor: 'transparent',
+		};
 	});
-
-	function color(val: number): string {
-		const t = range.vmax > range.vmin ? (val - range.vmin) / (range.vmax - range.vmin) : 0.5;
-		if (t < 0.33) {
-			const s = t / 0.33;
-			return `rgb(${lerp(13, 26, s)}, ${lerp(17, 82, s)}, ${lerp(23, 118, s)})`;
-		} else if (t < 0.66) {
-			const s = (t - 0.33) / 0.33;
-			return `rgb(${lerp(26, 45, s)}, ${lerp(82, 212, s)}, ${lerp(118, 191, s)})`;
-		} else {
-			const s = (t - 0.66) / 0.34;
-			return `rgb(${lerp(45, 251, s)}, ${lerp(212, 191, s)}, ${lerp(191, 36, s)})`;
-		}
-	}
-
-	function lerp(a: number, b: number, t: number): number {
-		return Math.round(a + (b - a) * t);
-	}
 </script>
 
-<div class="inline-block">
-	{#if title}<h4 class="mb-1 text-xs font-semibold text-text-secondary">{title}</h4>{/if}
-	<svg {width} {height}>
-		{#each data as row, i}
-			{#each row as val, j}
-				<rect
-					x={pad.left + j * cellW}
-					y={pad.top + i * cellH}
-					width={cellW}
-					height={cellH}
-					fill={color(val)}
-					stroke="none"
-				>
-					<title>({i},{j}): {val.toFixed(3)}</title>
-				</rect>
-			{/each}
-		{/each}
-		{#if xlabel}
-			<text x={pad.left + pw / 2} y={height - 4} text-anchor="middle" fill="var(--color-text-tertiary)" font-size="10">{xlabel}</text>
-		{/if}
-		{#if ylabel}
-			<text x={10} y={pad.top + ph / 2} text-anchor="middle" fill="var(--color-text-tertiary)" font-size="10" transform="rotate(-90,10,{pad.top + ph / 2})">{ylabel}</text>
-		{/if}
-	</svg>
+<div style="width: {width}px; height: {height}px;">
+	<Chart {init} {options} theme="dark" />
 </div>
