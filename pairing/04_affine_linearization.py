@@ -6,8 +6,10 @@ Features from both the operator matrix A and offset c are used. The full affine 
 is required -- c-only features fail completely (0/48).
 """
 import itertools
+import json
 import os
 import sys
+from collections import Counter
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
 
 import numpy as np
@@ -90,4 +92,53 @@ with Timer("Total") as t:
     print(f"  Raw delta-greedy MSE: {e2e['mse_delta']:.6e}")
     print(f"  After polish MSE:     {e2e['polished_mse']:.6e}")
 
-print(f"\nDone in {t.elapsed:.2f}s")
+elapsed = t.elapsed
+print(f"\nDone in {elapsed:.2f}s")
+
+# ── Emit dashboard JSON ──────────────────────────────────────────────
+DASHBOARD_DATA = os.path.join(
+    os.path.dirname(__file__), "..", "dashboard", "static", "data"
+)
+os.makedirs(DASHBOARD_DATA, exist_ok=True)
+
+accuracy_dist = Counter(item["correct_pairs"] for item in results)
+
+single_perf = []
+for name in FEATURE_NAMES:
+    for item in results:
+        if item["names"] == (name,) and item["weights"] == (1.0,):
+            single_perf.append({"name": name, "accuracy": item["correct_pairs"]})
+            break
+
+c_only_perf = []
+for name in C_ONLY:
+    for item in c_results:
+        if item["names"] == (name,) and item["weights"] == (1.0,):
+            c_only_perf.append({"name": name, "accuracy": item["correct_pairs"]})
+            break
+
+artifact = {
+    "method": "Affine Linearization",
+    "script": "pairing/04_affine_linearization.py",
+    "total_recipes": len(results),
+    "exact_count": exact_count,
+    "accuracy_distribution": {int(k): v for k, v in sorted(accuracy_dist.items())},
+    "single_features": sorted(single_perf, key=lambda x: -x["accuracy"]),
+    "c_only": {
+        "best_recipe": best_c_only["recipe"],
+        "best_accuracy": best_c_only["correct_pairs"],
+        "single_features": c_only_perf,
+    },
+    "best": {"recipe": best["recipe"], "accuracy": best["correct_pairs"]},
+    "e2e": {
+        "mse_delta": e2e["mse_delta"],
+        "polished_mse": e2e["polished_mse"],
+    },
+    "elapsed_s": round(elapsed, 2),
+}
+
+out_path = os.path.join(DASHBOARD_DATA, "pairing_04_affine_linearization.json")
+with open(out_path, "w") as f:
+    json.dump(artifact, f, separators=(",", ":"))
+
+print(f"Dashboard artifact: {out_path} ({os.path.getsize(out_path) // 1024}KB)")

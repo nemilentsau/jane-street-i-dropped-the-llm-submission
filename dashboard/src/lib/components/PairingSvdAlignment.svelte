@@ -23,7 +23,7 @@
 		hidden_diag:  { label: 'Diagonal match',   desc: 'Mode-by-mode alignment: how well the k-th write direction aligns with the k-th read direction' },
 		hidden_top8:  { label: 'Top-8 diagonal',   desc: 'Same as diagonal but only the 8 strongest modes \u2014 focuses on dominant directions' },
 		hidden_match: { label: 'Optimal matching',  desc: 'Hungarian assignment within the alignment matrix \u2014 best 1:1 mode correspondence' },
-		hidden_frob:  { label: 'Frobenius norm',    desc: 'Total energy in the SV-weighted alignment matrix \u2014 measures overall coordination' },
+		hidden_frob:  { label: 'Frobenius norm',    desc: 'Total energy in the absolute alignment matrix. Related to Method 1\u2019s Frobenius inner product, but uses only hidden-space modes and discards sign' },
 	};
 
 	let data: SVDData | null = $state(null);
@@ -191,7 +191,7 @@
 
 			<div class="grid grid-cols-[1fr_auto] gap-5">
 				{#if barOptions}
-					<div style="width: 460px; height: 200px;">
+					<div style="width: 580px; height: 200px;">
 						<Chart {init} options={barOptions} theme="dark" />
 					</div>
 				{/if}
@@ -218,11 +218,11 @@
 					<div class="mt-1 text-xs text-text-tertiary">recipes tested</div>
 				</div>
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-accent-green">{data.exact_count}</div>
+					<div class="font-mono text-2xl font-bold text-accent-green glow-green">{data.exact_count}</div>
 					<div class="mt-1 text-xs text-text-tertiary">exact (48/48)</div>
 				</div>
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-accent-green">{data.e2e.polished_mse.toExponential(2)}</div>
+					<div class="font-mono text-2xl font-bold text-accent-green glow-green">{data.e2e.polished_mse.toExponential(2)}</div>
 					<div class="mt-1 text-xs text-text-tertiary">polished MSE</div>
 				</div>
 			</div>

@@ -17,6 +17,8 @@
 		colorB = '#ee7a7a',
 		title = '',
 		xlabel = '',
+		ylabel = '',
+		logScale = false,
 		bins = 40,
 		width = 480,
 		height = 240,
@@ -29,6 +31,8 @@
 		colorB?: string;
 		title?: string;
 		xlabel?: string;
+		ylabel?: string;
+		logScale?: boolean;
 		bins?: number;
 		width?: number;
 		height?: number;
@@ -73,22 +77,33 @@
 			grid: {
 				top: title ? 44 : 28,
 				right: 12,
-				bottom: xlabel ? 40 : 16,
-				left: 44,
+				bottom: xlabel ? 52 : 24,
+				left: ylabel ? 60 : 44,
 			},
 			xAxis: {
 				type: 'category' as const,
 				data: labels,
 				name: xlabel,
 				nameLocation: 'middle' as const,
-				nameGap: 28,
-				nameTextStyle: { color: '#b0b8c8', fontSize: 12, fontFamily: 'Instrument Sans' },
-				axisLabel: { show: false },
+				nameGap: 36,
+				nameTextStyle: { color: '#b0b8c8', fontSize: 13, fontFamily: 'Instrument Sans' },
+				axisLabel: {
+					show: true,
+					color: '#8690a2',
+					fontSize: 10,
+					interval: Math.max(1, Math.floor(bins / 6) - 1),
+					rotate: 0,
+				},
 				axisTick: { show: false },
 				axisLine: { lineStyle: { color: '#363e4a' } },
 			},
 			yAxis: {
-				type: 'value' as const,
+				type: logScale ? ('log' as const) : ('value' as const),
+				min: logScale ? 1 : undefined,
+				name: ylabel,
+				nameLocation: 'middle' as const,
+				nameGap: ylabel ? 42 : 0,
+				nameTextStyle: { color: '#b0b8c8', fontSize: 13, fontFamily: 'Instrument Sans' },
 				axisLabel: { color: '#b0b8c8', fontSize: 11 },
 				axisLine: { show: false },
 				splitLine: { lineStyle: { color: '#262d38' } },

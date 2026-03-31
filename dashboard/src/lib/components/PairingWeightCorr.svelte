@@ -158,7 +158,9 @@
 					labelA="Correct pairs"
 					labelB="Incorrect pairs"
 					title="Score Distribution"
-					xlabel="|tr(W_out · W_inp)|"
+					xlabel="Pairing score"
+					ylabel="Count"
+					logScale={true}
 					width={560}
 					height={260}
 				/>
