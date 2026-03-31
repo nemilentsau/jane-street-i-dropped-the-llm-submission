@@ -107,7 +107,7 @@
 						ylabel="inp piece index"
 					/>
 				</div>
-				<div class="flex flex-col gap-4 py-2">
+				<div class="flex flex-col gap-4 pt-9">
 					<p class="text-[15px] leading-relaxed text-text-secondary">
 						Of the <span class="font-mono text-text-primary">2,304</span> entries, 48 are correct pairs and 2,256 are incorrect.
 						The bright spots are correct pairs — they score dramatically higher than the dark background of incorrect pairings.
@@ -157,12 +157,11 @@
 					seriesB={data.incorrect_scores}
 					labelA="Correct pairs"
 					labelB="Incorrect pairs"
-					title="Score Distribution"
 					xlabel="Pairing score"
 					ylabel="Count"
 					logScale={true}
-					width={560}
-					height={260}
+					width={680}
+					height={280}
 				/>
 				<div class="rounded-lg border border-border-subtle px-5 py-4 self-start">
 					<h4 class="mb-3 text-xs font-semibold uppercase tracking-wider text-text-tertiary">Separation</h4>
@@ -215,8 +214,8 @@
 						data={evoData.training_curve}
 						baselineCorrect={evoData.trained_baseline.pairs_correct}
 						randomCorrect={evoData.random_control.mean_correct}
-						width={520}
-						height={280}
+						width={680}
+						height={320}
 					/>
 					<div class="flex flex-col gap-3 self-start">
 						<!-- Epoch table -->

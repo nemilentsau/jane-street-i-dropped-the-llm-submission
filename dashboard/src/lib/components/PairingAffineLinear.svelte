@@ -185,7 +185,7 @@
 								<span class="mt-0.5 shrink-0 text-sm text-accent-green">&#10003;</span>
 								<div>
 									<span class="text-sm font-medium text-text-primary">{info(f.name).label}</span>
-									<p class="text-xs text-text-tertiary">{info(f.name).desc}</p>
+									<p class="text-sm text-text-secondary">{info(f.name).desc}</p>
 								</div>
 							</div>
 						{/each}
@@ -197,7 +197,7 @@
 						{#each operatorPartial as f}
 							<div class="flex items-baseline justify-between gap-3 py-0.5">
 								<span class="text-sm text-text-secondary">{info(f.name).label}</span>
-								<span class="font-mono text-xs text-text-tertiary">{f.accuracy}/48</span>
+								<span class="font-mono text-sm text-text-tertiary">{f.accuracy}/48</span>
 							</div>
 						{/each}
 					</div>
@@ -211,7 +211,7 @@
 								<span class="text-sm text-text-tertiary">{info(f.name).label}</span>
 							</div>
 						{/each}
-						<p class="mt-2 text-xs text-text-tertiary">
+						<p class="mt-2 text-sm text-text-secondary">
 							Best c-only combination: <span class="font-mono">{data.c_only.best_accuracy}/48</span>
 						</p>
 					</div>
@@ -224,21 +224,21 @@
 			<h3 class="mb-3 text-lg font-semibold text-text-primary">Gating preserves the operator signal</h3>
 			<div class="grid grid-cols-2 gap-4">
 				<div class="rounded-lg border border-border-subtle px-5 py-4">
-					<h4 class="mb-2 text-sm font-semibold text-text-primary">Method 2: Raw operator</h4>
-					<p class="mb-2 text-xs text-text-tertiary">
+					<h4 class="mb-2 text-base font-semibold text-text-primary">Method 2: Raw operator</h4>
+					<p class="mb-2 text-sm text-text-secondary">
 						<code class="rounded bg-bg-inset px-1 py-0.5 font-mono text-accent-cyan">M = W_out W_inp</code>
 					</p>
-					<p class="text-xs leading-relaxed text-text-tertiary">
+					<p class="text-sm leading-relaxed text-text-secondary">
 						4 features exact alone: |trace|, |trace&sup2;|, |trace&sup3;|, symmetry ratio.
 						No data required.
 					</p>
 				</div>
 				<div class="rounded-lg border border-border-subtle px-5 py-4">
-					<h4 class="mb-2 text-sm font-semibold text-text-primary">Method 4: Gated operator</h4>
-					<p class="mb-2 text-xs text-text-tertiary">
+					<h4 class="mb-2 text-base font-semibold text-text-primary">Method 4: Gated operator</h4>
+					<p class="mb-2 text-sm text-text-secondary">
 						<code class="rounded bg-bg-inset px-1 py-0.5 font-mono text-accent-cyan">A = W_out diag(g) W_inp</code>
 					</p>
-					<p class="text-xs leading-relaxed text-text-tertiary">
+					<p class="text-sm leading-relaxed text-text-secondary">
 						Same 4 features exact. Data-derived gates do not add or destroy the signal.
 						Offset adds combinatorial value only.
 					</p>
@@ -258,15 +258,15 @@
 		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
 			<div class="grid grid-cols-3 gap-4">
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-text-primary">{data.total_recipes.toLocaleString()}</div>
+					<div class="font-mono text-3xl font-bold text-text-primary">{data.total_recipes.toLocaleString()}</div>
 					<div class="mt-1 text-xs text-text-tertiary">recipes tested</div>
 				</div>
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-accent-green glow-green">{data.exact_count.toLocaleString()}</div>
+					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.exact_count.toLocaleString()}</div>
 					<div class="mt-1 text-xs text-text-tertiary">exact (48/48)</div>
 				</div>
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-accent-green glow-green">{data.e2e.polished_mse.toExponential(2)}</div>
+					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.e2e.polished_mse.toExponential(2)}</div>
 					<div class="mt-1 text-xs text-text-tertiary">polished MSE</div>
 				</div>
 			</div>

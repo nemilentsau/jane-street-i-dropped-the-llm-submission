@@ -171,7 +171,7 @@
 								<span class="mt-0.5 shrink-0 text-sm text-accent-green">&#10003;</span>
 								<div>
 									<span class="text-sm font-medium text-text-primary">{info(f.name).label}</span>
-									<p class="text-xs text-text-tertiary">{info(f.name).desc}</p>
+									<p class="text-sm text-text-secondary">{info(f.name).desc}</p>
 								</div>
 							</div>
 						{/each}
@@ -183,7 +183,7 @@
 						{#each partialFeatures as f}
 							<div class="flex items-baseline justify-between gap-3 py-0.5">
 								<span class="text-sm text-text-secondary">{info(f.name).label}</span>
-								<span class="font-mono text-xs text-text-tertiary">{f.accuracy}/48</span>
+								<span class="font-mono text-sm text-text-tertiary">{f.accuracy}/48</span>
 							</div>
 						{/each}
 					</div>
@@ -204,15 +204,15 @@
 			</p>
 			<div class="grid grid-cols-3 gap-4">
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-text-primary">{data.total_recipes.toLocaleString()}</div>
+					<div class="font-mono text-3xl font-bold text-text-primary">{data.total_recipes.toLocaleString()}</div>
 					<div class="mt-1 text-xs text-text-tertiary">recipes tested</div>
 				</div>
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-accent-green glow-green">{data.exact_count.toLocaleString()}</div>
+					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.exact_count.toLocaleString()}</div>
 					<div class="mt-1 text-xs text-text-tertiary">exact (48/48)</div>
 				</div>
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-accent-green glow-green">{data.e2e.polished_mse.toExponential(2)}</div>
+					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.e2e.polished_mse.toExponential(2)}</div>
 					<div class="mt-1 text-xs text-text-tertiary">polished MSE</div>
 				</div>
 			</div>

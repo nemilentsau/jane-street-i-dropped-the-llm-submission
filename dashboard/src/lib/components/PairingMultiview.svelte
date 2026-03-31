@@ -150,7 +150,7 @@
 
 			<div class="grid grid-cols-[1fr_auto] gap-5">
 				{#if barOptions}
-					<div style="width: 560px; height: 200px;">
+					<div style="width: 640px; height: 200px;">
 						<Chart {init} options={barOptions} theme="dark" />
 					</div>
 				{/if}
@@ -162,7 +162,7 @@
 								<span class="text-sm font-medium text-text-primary">{c.label}</span>
 								<span class="font-mono text-sm text-accent-blue">{c.accuracy}/48</span>
 							</div>
-							<p class="mt-0.5 text-xs text-text-tertiary">{COMPONENT_DESC[c.name] ?? ''}</p>
+							<p class="mt-0.5 text-sm text-text-secondary">{COMPONENT_DESC[c.name] ?? ''}</p>
 						</div>
 					{/each}
 				</div>
@@ -181,10 +181,10 @@
 					{@const allExact = s.trials.every(t => t === 48)}
 					{@const minVal = Math.min(...s.trials)}
 					<div class="rounded-lg {allExact ? 'bg-accent-green/8 border border-accent-green/20' : 'border border-border-subtle'} px-4 py-3 text-center">
-						<div class="font-mono text-2xl font-bold {allExact ? 'text-accent-green' : 'text-text-primary'}">
+						<div class="font-mono text-3xl font-bold {allExact ? 'text-accent-green' : 'text-text-primary'}">
 							{minVal === 48 ? '48/48' : `${minVal}\u2013${Math.max(...s.trials)}/48`}
 						</div>
-						<div class="mt-1 text-xs text-text-tertiary">{s.subset_size.toLocaleString()} rows &times; 5 trials</div>
+						<div class="mt-1 text-sm text-text-tertiary">{s.subset_size.toLocaleString()} rows &times; 5 trials</div>
 						<div class="mt-2 flex justify-center gap-1">
 							{#each s.trials as trial}
 								<span class="inline-block rounded px-1.5 py-0.5 font-mono text-xs {trial === 48 ? 'bg-accent-green/15 text-accent-green' : 'bg-accent-amber/15 text-accent-amber'}">{trial}</span>
@@ -216,11 +216,11 @@
 		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
 			<div class="grid grid-cols-2 gap-4">
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-accent-green glow-green">{data.fused_accuracy}/48</div>
+					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.fused_accuracy}/48</div>
 					<div class="mt-1 text-xs text-text-tertiary">fused pairing accuracy</div>
 				</div>
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-accent-green glow-green">{data.verification_mse.toExponential(2)}</div>
+					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.verification_mse.toExponential(2)}</div>
 					<div class="mt-1 text-xs text-text-tertiary">verification MSE (GT ordering)</div>
 				</div>
 			</div>

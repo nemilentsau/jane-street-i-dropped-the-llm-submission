@@ -2,7 +2,7 @@
 	import Pipeline from './Pipeline.svelte';
 </script>
 
-<div class="mx-auto w-full max-w-[980px] px-8 pt-8 pb-16">
+<div class="mx-auto w-full max-w-[1100px] px-8 pt-8 pb-16">
 	<!-- Hero -->
 	<div class="mb-8 fade-in-up">
 		<h2 class="font-display text-[28px] font-bold tracking-tight text-text-primary">Reassembling a Dropped Trading Model</h2>

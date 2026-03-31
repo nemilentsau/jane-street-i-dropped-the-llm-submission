@@ -57,6 +57,7 @@
 		const binsA = binify(seriesA);
 		const binsB = binify(seriesB);
 		const labels = Array.from({ length: bins }, (_, i) => (lo + (i + 0.5) * binW).toFixed(1));
+		const maxCount = Math.max(...binsA, ...binsB);
 
 		return {
 			tooltip: {
@@ -68,24 +69,24 @@
 			},
 			legend: {
 				data: [labelA, labelB],
-				top: 0,
-				right: 0,
-				textStyle: { color: '#b0b8c8', fontSize: 11 },
-				itemWidth: 12,
-				itemHeight: 8,
+				right: 20,
+				top: 10,
+				textStyle: { color: '#eceff4', fontSize: 13 },
+				itemWidth: 14,
+				itemHeight: 10,
 			},
 			grid: {
-				top: title ? 44 : 28,
-				right: 12,
-				bottom: xlabel ? 52 : 24,
-				left: ylabel ? 60 : 44,
+				top: 6,
+				right: 8,
+				bottom: xlabel ? 44 : 16,
+				left: ylabel ? 52 : 36,
 			},
 			xAxis: {
 				type: 'category' as const,
 				data: labels,
 				name: xlabel,
 				nameLocation: 'middle' as const,
-				nameGap: 36,
+				nameGap: 30,
 				nameTextStyle: { color: '#b0b8c8', fontSize: 13, fontFamily: 'Instrument Sans' },
 				axisLabel: {
 					show: true,
@@ -100,14 +101,29 @@
 			yAxis: {
 				type: logScale ? ('log' as const) : ('value' as const),
 				min: logScale ? 1 : undefined,
+				max: logScale ? maxCount * 1.5 : undefined,
 				name: ylabel,
 				nameLocation: 'middle' as const,
-				nameGap: ylabel ? 42 : 0,
+				nameGap: ylabel ? 38 : 0,
 				nameTextStyle: { color: '#b0b8c8', fontSize: 13, fontFamily: 'Instrument Sans' },
-				axisLabel: { color: '#b0b8c8', fontSize: 11 },
+				axisLabel: {
+					color: '#b0b8c8',
+					fontSize: 11,
+					formatter: (v: number) => {
+						if (logScale && v > maxCount * 1.2) return '';
+						return v >= 1000 ? `${(v/1000).toFixed(0)}k` : String(v);
+					},
+				},
 				axisLine: { show: false },
-				splitLine: { lineStyle: { color: '#262d38' } },
+				splitLine: {
+					lineStyle: { color: '#262d38' },
+					show: true,
+					interval: logScale
+						? ((_: number, val: string) => { const v = Number(val); return v <= maxCount * 1.1; })
+						: undefined,
+				},
 			},
+			...(title ? { title: { text: title, textStyle: { color: '#b0b8c8', fontSize: 12, fontWeight: 600 }, left: 0, top: 0 } } : {}),
 			series: [
 				{
 					name: labelB,
@@ -123,7 +139,6 @@
 					itemStyle: { color: colorA, opacity: 0.7 },
 				},
 			],
-			...(title ? { title: { text: title, textStyle: { color: '#b0b8c8', fontSize: 12, fontWeight: 600 }, left: 0, top: 0 } } : {}),
 			backgroundColor: 'transparent',
 		};
 	});

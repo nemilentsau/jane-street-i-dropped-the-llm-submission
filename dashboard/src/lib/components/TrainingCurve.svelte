@@ -38,10 +38,10 @@
 				},
 			},
 			grid: {
-				top: 36,
-				right: 20,
+				top: 28,
+				right: 12,
 				bottom: 40,
-				left: 52,
+				left: 48,
 			},
 			xAxis: {
 				type: 'category' as const,
@@ -57,7 +57,7 @@
 			yAxis: {
 				type: 'value' as const,
 				min: 0,
-				max: 52,
+				max: 48,
 				interval: 12,
 				name: 'Pairs correct (/48)',
 				nameTextStyle: { color: '#b0b8c8', fontSize: 11, fontFamily: 'Instrument Sans', padding: [0, 0, 0, 40] },

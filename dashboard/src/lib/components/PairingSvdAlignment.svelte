@@ -151,8 +151,8 @@
 						<span class="font-mono text-2xl font-bold text-accent-red">16/48</span>
 						<span class="text-xs font-semibold uppercase tracking-wider text-accent-red/70">Outer space</span>
 					</div>
-					<h4 class="mb-1 text-sm font-semibold text-text-primary">Outer 48-D alignment</h4>
-					<p class="text-xs leading-relaxed text-text-tertiary">
+					<h4 class="mb-1 text-base font-semibold text-text-primary">Outer 48-D alignment</h4>
+					<p class="text-sm leading-relaxed text-text-secondary">
 						Aligning right-singular vectors of W_inp with left-singular vectors of W_out
 						in their respective 48-D input/output spaces.
 						These spaces are disconnected from where the block computes &mdash;
@@ -164,8 +164,8 @@
 						<span class="font-mono text-2xl font-bold text-accent-green">{data.best.accuracy}/48</span>
 						<span class="text-xs font-semibold uppercase tracking-wider text-accent-green/70">Hidden space</span>
 					</div>
-					<h4 class="mb-1 text-sm font-semibold text-text-primary">Hidden 96-D alignment</h4>
-					<p class="text-xs leading-relaxed text-text-tertiary">
+					<h4 class="mb-1 text-base font-semibold text-text-primary">Hidden 96-D alignment</h4>
+					<p class="text-sm leading-relaxed text-text-secondary">
 						Aligning left-singular vectors of W_inp with right-singular vectors of W_out
 						in the shared 96-D hidden space. Co-trained layers develop
 						coordinated write/read directions at this interface.
@@ -203,7 +203,7 @@
 								<span class="text-sm font-medium text-text-primary">{info(f.name).label}</span>
 								<span class="font-mono text-sm font-semibold {f.accuracy === 48 ? 'text-accent-green' : 'text-text-primary'}">{f.accuracy}/48</span>
 							</div>
-							<p class="mt-0.5 text-xs text-text-tertiary">{info(f.name).desc}</p>
+							<p class="mt-0.5 text-sm text-text-secondary">{info(f.name).desc}</p>
 						</div>
 					{/each}
 				</div>
@@ -214,15 +214,15 @@
 		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
 			<div class="grid grid-cols-3 gap-4">
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-text-primary">{data.total_recipes}</div>
+					<div class="font-mono text-3xl font-bold text-text-primary">{data.total_recipes}</div>
 					<div class="mt-1 text-xs text-text-tertiary">recipes tested</div>
 				</div>
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-accent-green glow-green">{data.exact_count}</div>
+					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.exact_count}</div>
 					<div class="mt-1 text-xs text-text-tertiary">exact (48/48)</div>
 				</div>
 				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-2xl font-bold text-accent-green glow-green">{data.e2e.polished_mse.toExponential(2)}</div>
+					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.e2e.polished_mse.toExponential(2)}</div>
 					<div class="mt-1 text-xs text-text-tertiary">polished MSE</div>
 				</div>
 			</div>

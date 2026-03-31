@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Placeholder from './Placeholder.svelte';
+	import PairingOverview from './PairingOverview.svelte';
 	import PairingWeightCorr from './PairingWeightCorr.svelte';
 	import PairingOperatorMoments from './PairingOperatorMoments.svelte';
 	import PairingSvdAlignment from './PairingSvdAlignment.svelte';
@@ -10,10 +11,8 @@
 </script>
 
 {#if subtab === 'overview'}
-	<div class="grid grid-cols-2 gap-4">
-		<Placeholder phase="pairing" icon="▦" title="Pairing Accuracy Comparison" subtitle="Bar chart: all 5 methods at 48/48" />
-		<Placeholder phase="pairing" icon="▦" title="Method Comparison Table" subtitle="Method | Accuracy | Data needed | Time" delay={0.05} />
-		<Placeholder phase="pairing" icon="■" title="Weight Correlation Heatmap (48×48)" subtitle="Strongest signal — correct pairs on diagonal" colspan={2} delay={0.1} />
+	<div class="fade-in-up">
+		<PairingOverview />
 	</div>
 {:else if subtab === '01-weight-corr'}
 	<div class="fade-in-up">
