@@ -1,4 +1,6 @@
 <script lang="ts">
+	import PairingWeightCorr from '$lib/components/PairingWeightCorr.svelte';
+
 	// ── Tab / subtab definitions ─────────────────────────────────
 	const tabs = [
 		{
@@ -66,11 +68,12 @@
 	let currentSubtab = $derived(activeSubtabs[activeTab]);
 
 	// ── Hero KPIs ────────────────────────────────────────────────
-	const kpis = [
-		{ label: 'Final MSE', value: '3.16e-14', status: 'green' as const },
-		{ label: 'Search Space', value: '(48!)²', detail: '≈ 10¹²¹', status: 'neutral' as const },
-		{ label: 'Best Raw Ordering', value: '77/97', detail: 'before polish', status: 'green' as const },
-		{ label: 'Pairing Signal', value: '—', detail: 'pending script run', status: 'pending' as const },
+	type KpiStatus = 'green' | 'neutral' | 'pending';
+	const kpis: { label: string; value: string; detail?: string; status: KpiStatus }[] = [
+		{ label: 'Final MSE', value: '3.16e-14', status: 'green' },
+		{ label: 'Search Space', value: '(48!)²', detail: '≈ 10¹²¹', status: 'neutral' },
+		{ label: 'Best Raw Ordering', value: '77/97', detail: 'before polish', status: 'green' },
+		{ label: 'Pairing Signal', value: '23x', detail: 'correct / incorrect', status: 'green' },
 	];
 </script>
 
@@ -153,6 +156,8 @@
 							<span class="placeholder-desc">Strongest signal — correct pairs on diagonal</span>
 						</div>
 					</div>
+				{:else if currentSubtab === '01-weight-corr'}
+					<PairingWeightCorr />
 				{:else}
 					<div class="placeholder-grid">
 						<div class="placeholder-card wide">
