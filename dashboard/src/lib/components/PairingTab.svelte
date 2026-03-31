@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Placeholder from './Placeholder.svelte';
 	import PairingWeightCorr from './PairingWeightCorr.svelte';
+	import PairingOperatorMoments from './PairingOperatorMoments.svelte';
 
 	let { subtab }: { subtab: string } = $props();
 </script>
@@ -14,6 +15,10 @@
 {:else if subtab === '01-weight-corr'}
 	<div class="fade-in-up">
 		<PairingWeightCorr />
+	</div>
+{:else if subtab === '02-operator-moments'}
+	<div class="fade-in-up">
+		<PairingOperatorMoments />
 	</div>
 {:else}
 	<div class="grid grid-cols-2 gap-4">

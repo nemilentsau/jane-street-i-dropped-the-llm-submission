@@ -42,8 +42,9 @@ python e2e/01_fastest_solve.py
 An interactive evidence dashboard visualizes all key results: pairing cost matrices, Jacobian analysis, phase structure, shock response curves, and trajectory PCA.
 
 ```bash
-# Generate data artifacts (~2s)
-python generate_artifacts.py
+# Generate data artifacts (run each script individually)
+python pairing/01_weight_correlation.py
+python pairing/01b_training_evolution.py
 
 # Run dashboard
 cd dashboard && npm install && npm run dev
@@ -58,6 +59,7 @@ Or build a static site: `npm run build` (output in `dashboard/build/`).
 | Script | Method | Data needed? |
 |--------|--------|-------------|
 | `pairing/01_weight_correlation.py` | Frobenius inner product `\|tr(W_out W_inp)\|` | No |
+| `pairing/01b_training_evolution.py` | Training emergence + random control | Yes |
 | `pairing/02_operator_moments.py` | Spectral invariants of `W_out @ W_inp` | No |
 | `pairing/03_svd_cross_alignment.py` | SVD alignment in shared 96-D hidden space | No |
 | `pairing/04_affine_linearization.py` | Gated product with ReLU activation stats | Yes |
@@ -96,7 +98,6 @@ Or build a static site: `npm run build` (output in `dashboard/build/`).
 .
 ├── answer.py                  # The final permutation
 ├── submission.md              # Full writeup
-├── generate_artifacts.py      # Generates JSON data for dashboard (~2s)
 ├── requirements.txt
 ├── model/                     # Puzzle data (not included)
 ├── lib/                       # Shared utilities
