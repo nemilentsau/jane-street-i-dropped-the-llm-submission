@@ -155,6 +155,13 @@
 			</p>
 			<p class="mt-3 text-[15px] leading-relaxed text-text-secondary">
 				This is the first data-dependent pairing method &mdash; it requires actual inputs to compute gate statistics.
+				From (A, c), extract 9 features in three groups:
+			</p>
+			<ul class="mt-3 space-y-1.5 text-[15px] leading-relaxed text-text-secondary">
+				<li><strong class="text-text-primary">Operator features (from A)</strong> &mdash; <span class="font-mono text-text-primary">|tr(A)|</span>, <span class="font-mono text-text-primary">|tr(A&sup2;)|</span>, <span class="font-mono text-text-primary">|tr(A&sup3;)|</span>, <span class="font-mono text-text-primary">||sym||/||skew||</span>, <span class="font-mono text-text-primary">effective rank</span>, <span class="font-mono text-text-primary">top-4 SV share</span> &mdash; same invariants as Method 2 but on the gated operator</li>
+				<li><strong class="text-text-primary">Offset features (from c)</strong> &mdash; <span class="font-mono text-text-primary">||c||</span>, <span class="font-mono text-text-primary">c &middot; w_last</span>, <span class="font-mono text-text-primary">|c<sup>T</sup>Ac|</span> &mdash; bias-derived signals</li>
+			</ul>
+			<p class="mt-3 text-[15px] leading-relaxed text-text-secondary">
 				The question: does data-dependent gating add information beyond raw weights?
 			</p>
 		</div>
@@ -169,107 +176,26 @@
 				All 3 offset-only features score 0/48.
 			</p>
 
-			<div class="grid grid-cols-[1fr_auto] gap-5">
-				{#if barOptions}
-					<div style="width: 640px; height: 340px;">
-						<Chart {init} options={barOptions} theme="dark" />
-					</div>
-				{/if}
-
-				<div class="flex flex-col gap-3 self-start">
-					<!-- Exact operator features -->
-					<div class="rounded-lg bg-accent-green/8 border border-accent-green/20 px-4 py-3">
-						<h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-accent-green">48/48</h4>
-						{#each operatorExact as f}
-							<div class="flex items-start gap-2 py-1">
-								<span class="mt-0.5 shrink-0 text-sm text-accent-green">&#10003;</span>
-								<div>
-									<span class="text-sm font-medium text-text-primary">{info(f.name).label}</span>
-									<p class="text-sm text-text-secondary">{info(f.name).desc}</p>
-								</div>
-							</div>
-						{/each}
-					</div>
-
-					<!-- Partial operator features -->
-					<div class="rounded-lg border border-border-subtle px-4 py-3">
-						<h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-text-tertiary">24/48</h4>
-						{#each operatorPartial as f}
-							<div class="flex items-baseline justify-between gap-3 py-0.5">
-								<span class="text-sm text-text-secondary">{info(f.name).label}</span>
-								<span class="font-mono text-sm text-text-tertiary">{f.accuracy}/48</span>
-							</div>
-						{/each}
-					</div>
-
-					<!-- Zero offset features -->
-					<div class="rounded-lg border border-accent-red/20 bg-accent-red/5 px-4 py-3">
-						<h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-accent-red/70">Offset only (0/48)</h4>
-						{#each data.c_only.single_features as f}
-							<div class="flex items-start gap-2 py-0.5">
-								<span class="mt-0.5 shrink-0 text-sm text-accent-red/70">&times;</span>
-								<span class="text-sm text-text-tertiary">{info(f.name).label}</span>
-							</div>
-						{/each}
-						<p class="mt-2 text-sm text-text-secondary">
-							Best c-only combination: <span class="font-mono">{data.c_only.best_accuracy}/48</span>
-						</p>
-					</div>
+			{#if barOptions}
+				<div style="width: 100%; height: 340px;">
+					<Chart {init} options={barOptions} theme="dark" />
 				</div>
-			</div>
+			{/if}
 		</div>
 
-		<!-- ── 3. CONNECTION TO METHOD 2 ──────────────────────── -->
+		<!-- ── 3. KEY FINDING ─────────────────────────────────── -->
 		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<h3 class="mb-3 text-lg font-semibold text-text-primary">Gating preserves the operator signal</h3>
-			<div class="grid grid-cols-2 gap-4">
-				<div class="rounded-lg border border-border-subtle px-5 py-4">
-					<h4 class="mb-2 text-base font-semibold text-text-primary">Method 2: Raw operator</h4>
-					<p class="mb-2 text-sm text-text-secondary">
-						<code class="rounded bg-bg-inset px-1 py-0.5 font-mono text-accent-cyan">M = W_out W_inp</code>
-					</p>
-					<p class="text-sm leading-relaxed text-text-secondary">
-						4 features exact alone: |trace|, |trace&sup2;|, |trace&sup3;|, symmetry ratio.
-						No data required.
-					</p>
-				</div>
-				<div class="rounded-lg border border-border-subtle px-5 py-4">
-					<h4 class="mb-2 text-base font-semibold text-text-primary">Method 4: Gated operator</h4>
-					<p class="mb-2 text-sm text-text-secondary">
-						<code class="rounded bg-bg-inset px-1 py-0.5 font-mono text-accent-cyan">A = W_out diag(g) W_inp</code>
-					</p>
-					<p class="text-sm leading-relaxed text-text-secondary">
-						Same 4 features exact. Data-derived gates do not add or destroy the signal.
-						Offset adds combinatorial value only.
-					</p>
-				</div>
-			</div>
-			<p class="mt-4 text-[15px] leading-relaxed text-text-secondary">
-				The co-training fingerprint is robust to ReLU gating: zeroing out inactive hidden neurons
-				does not alter which invariants recover the pairing. The offset vector
-				<code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">c</code>
-				alone carries no pairing signal, but appears in successful combined recipes
-				(e.g. the best recipe includes <code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">c_quad_abs</code>),
-				suggesting it provides a complementary tiebreaker.
+			<h3 class="mb-2 text-lg font-semibold text-text-primary">Gating preserves the operator signal</h3>
+			<p class="text-[15px] leading-relaxed text-text-secondary">
+				The same 4 trace/symmetry features that were exact on the raw operator
+				<code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">M = W_out W_inp</code>
+				(Method 2) remain exact on the gated operator
+				<code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">A = W_out diag(g) W_inp</code>.
+				Zeroing out inactive hidden neurons does not alter which invariants recover the pairing.
+				The offset vector <code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">c</code>
+				alone carries no pairing signal (all 3 offset features score 0/48),
+				but appears in successful combined recipes as a complementary tiebreaker.
 			</p>
-		</div>
-
-		<!-- ── 4. STATS ───────────────────────────────────────── -->
-		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<div class="grid grid-cols-3 gap-4">
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-text-primary">{data.total_recipes.toLocaleString()}</div>
-					<div class="mt-1 text-xs text-text-tertiary">recipes tested</div>
-				</div>
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.exact_count.toLocaleString()}</div>
-					<div class="mt-1 text-xs text-text-tertiary">exact (48/48)</div>
-				</div>
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.e2e.polished_mse.toExponential(2)}</div>
-					<div class="mt-1 text-xs text-text-tertiary">polished MSE</div>
-				</div>
-			</div>
 		</div>
 	</div>
 {/if}

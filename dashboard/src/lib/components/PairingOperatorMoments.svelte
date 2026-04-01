@@ -138,10 +138,13 @@
 				This 48&times;48 matrix is the linear map from input space back to input space through
 				the block's hidden layer, ignoring the ReLU and residual connection.
 				From each M, extract 9 scalar invariants in three families:
-				<strong class="text-text-primary">trace moments</strong> (|tr(M)|, |tr(M&sup2;)|, |tr(M&sup3;)|),
-				<strong class="text-text-primary">symmetry structure</strong> (||sym||/||skew||),
-				and <strong class="text-text-primary">singular value concentration</strong>
-				(effective rank, stable rank, top-1 share, top-4 share, KL to exponential).
+			</p>
+			<ul class="mt-3 space-y-1.5 text-[15px] leading-relaxed text-text-secondary">
+				<li><strong class="text-text-primary">Trace moments</strong> &mdash; <span class="font-mono text-text-primary">|tr(M)|</span>, <span class="font-mono text-text-primary">|tr(M&sup2;)|</span>, <span class="font-mono text-text-primary">|tr(M&sup3;)|</span> &mdash; sum of eigenvalues at increasing powers</li>
+				<li><strong class="text-text-primary">Symmetry structure</strong> &mdash; <span class="font-mono text-text-primary">||sym||/||skew||</span> &mdash; how symmetric vs antisymmetric the operator is</li>
+				<li><strong class="text-text-primary">Singular value concentration</strong> &mdash; <span class="font-mono text-text-primary">effective rank</span>, <span class="font-mono text-text-primary">stable rank</span>, <span class="font-mono text-text-primary">top-1/4 share</span>, <span class="font-mono text-text-primary">KL to exponential</span> &mdash; spectral spread measures</li>
+			</ul>
+			<p class="mt-3 text-[15px] leading-relaxed text-text-secondary">
 				Each produces a 48&times;48 cost matrix; Hungarian assignment on each independently recovers the optimal pairing.
 			</p>
 		</div>

@@ -88,7 +88,7 @@
 			</p>
 			<div class="space-y-1.5 text-sm text-text-secondary">
 				<div class="flex justify-between"><span>Delta Greedy</span><span class="text-right font-mono text-text-primary">77/97 raw</span></div>
-				<div class="flex justify-between"><span>Pairwise Tournament</span><span class="text-right font-mono text-text-primary">exact after polish</span></div>
+				<div class="flex justify-between"><span>Pairwise Tournament</span><span class="text-right font-mono text-text-primary">~15/97 raw</span></div>
 				<div class="flex justify-between"><span>Sinkhorn Ranking</span><span class="text-right font-mono text-text-primary">9/97 raw</span></div>
 				<div class="flex justify-between"><span>Beam Search</span><span class="text-right font-mono text-text-primary">11/97 raw</span></div>
 				<div class="flex justify-between"><span>Spectral Flow</span><span class="text-right font-mono text-text-primary">9/97 raw</span></div>

@@ -133,8 +133,14 @@
 			<p class="mt-3 text-[15px] leading-relaxed text-text-secondary">
 				For each candidate pair, build the SV-weighted alignment matrix
 				<code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">|U_inp<sup>T</sup> V_out| &odot; (s_inp &otimes; s_out)</code>
-				and extract 4 alignment scores.
+				and extract 4 alignment scores:
 			</p>
+			<ul class="mt-3 space-y-1.5 text-[15px] leading-relaxed text-text-secondary">
+				<li><span class="font-mono text-text-primary">Frobenius norm</span> &mdash; total energy in the alignment matrix</li>
+				<li><span class="font-mono text-text-primary">Optimal matching</span> &mdash; Hungarian assignment within the alignment matrix, best 1:1 mode correspondence</li>
+				<li><span class="font-mono text-text-primary">Diagonal match</span> &mdash; how well the k-th write direction aligns with the k-th read direction</li>
+				<li><span class="font-mono text-text-primary">Top-8 diagonal</span> &mdash; same but restricted to the 8 strongest modes</li>
+			</ul>
 		</div>
 
 		<!-- ── 2. OUTER VS HIDDEN ──────────────────────────────── -->
@@ -189,43 +195,11 @@
 				recover all 48 pairs exactly.
 			</p>
 
-			<div class="grid grid-cols-[1fr_auto] gap-5">
-				{#if barOptions}
-					<div style="width: 580px; height: 200px;">
-						<Chart {init} options={barOptions} theme="dark" />
-					</div>
-				{/if}
-
-				<div class="flex flex-col gap-3 self-start">
-					{#each data.single_features as f}
-						<div class="rounded-lg {f.accuracy === 48 ? 'bg-accent-green/8 border border-accent-green/20' : 'border border-border-subtle'} px-4 py-2">
-							<div class="flex items-baseline justify-between gap-4">
-								<span class="text-sm font-medium text-text-primary">{info(f.name).label}</span>
-								<span class="font-mono text-sm font-semibold {f.accuracy === 48 ? 'text-accent-green' : 'text-text-primary'}">{f.accuracy}/48</span>
-							</div>
-							<p class="mt-0.5 text-sm text-text-secondary">{info(f.name).desc}</p>
-						</div>
-					{/each}
+			{#if barOptions}
+				<div style="width: 100%; height: 200px;">
+					<Chart {init} options={barOptions} theme="dark" />
 				</div>
-			</div>
-		</div>
-
-		<!-- ── 4. VERIFICATION ─────────────────────────────────── -->
-		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<div class="grid grid-cols-3 gap-4">
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-text-primary">{data.total_recipes}</div>
-					<div class="mt-1 text-xs text-text-tertiary">recipes tested</div>
-				</div>
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.exact_count}</div>
-					<div class="mt-1 text-xs text-text-tertiary">exact (48/48)</div>
-				</div>
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.e2e.polished_mse.toExponential(2)}</div>
-					<div class="mt-1 text-xs text-text-tertiary">polished MSE</div>
-				</div>
-			</div>
+			{/if}
 		</div>
 	</div>
 {/if}
