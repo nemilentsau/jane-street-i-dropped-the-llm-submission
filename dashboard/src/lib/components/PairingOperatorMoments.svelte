@@ -25,7 +25,7 @@
 		trace_abs:       { label: '|trace(M)|',       group: 'Trace moments',  desc: 'Sum of eigenvalues of W_out W_inp' },
 		tr2_abs:         { label: '|trace(M\u00B2)|', group: 'Trace moments',  desc: 'Sum of squared eigenvalues \u2014 concentrates on dominant modes' },
 		tr3_abs:         { label: '|trace(M\u00B3)|', group: 'Trace moments',  desc: 'Sum of cubed eigenvalues \u2014 concentrates further' },
-		sym_ratio:       { label: '||sym||/||skew||',  group: 'Matrix shape',   desc: 'How symmetric vs antisymmetric the composed operator is' },
+		sym_ratio:       { label: '||sym||/||skew||',  group: 'Symmetry',       desc: 'How symmetric vs antisymmetric the composed operator is' },
 		effective_rank:  { label: 'Effective rank',    group: 'SV concentration', desc: 'Shannon entropy of singular value distribution' },
 		stable_rank:     { label: 'Stable rank',       group: 'SV concentration', desc: '\u03A3s\u00B2 / s\u2081\u00B2 \u2014 measures spectral spread' },
 		neg_top1_share:  { label: 'Top-1 SV share',   group: 'SV concentration', desc: 'Fraction of total energy in the dominant singular value' },
@@ -117,9 +117,6 @@
 			backgroundColor: 'transparent',
 		};
 	});
-
-	let exactFeatures: Feature[] = $derived.by(() => data ? data.single_features.filter(f => f.accuracy === 48) : []);
-	let partialFeatures: Feature[] = $derived.by(() => data ? data.single_features.filter(f => f.accuracy < 48) : []);
 </script>
 
 {#if error}
@@ -132,108 +129,57 @@
 {:else}
 	<div class="space-y-6 fade-in-up">
 
-		<!-- ── 1. INSIGHT ──────────────────────────────────────── -->
+		<!-- ── 1. INSIGHT + FEATURE DEFINITIONS ─────────────────── -->
 		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<h3 class="mb-3 text-xl font-semibold text-text-primary">The composed operator encodes pairing in multiple ways</h3>
+			<h3 class="mb-3 text-xl font-semibold text-text-primary">Spectral invariants of the composed operator</h3>
 			<p class="text-[15px] leading-relaxed text-text-secondary">
-				For each candidate pair, multiply the weight matrices to form the composed operator
+				For each candidate pair (inp, out), form the composed operator
 				<code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">M = W_out @ W_inp</code>.
-				This 48x48 matrix is the linear map from input space back to input space through the block's hidden layer,
-				ignoring the ReLU and residual connection. Extract 9 algebraic invariants from it &mdash;
-				trace moments, symmetry structure, and singular value concentration &mdash;
-				then search over weighted combinations via Hungarian assignment.
+				This 48&times;48 matrix is the linear map from input space back to input space through
+				the block's hidden layer, ignoring the ReLU and residual connection.
+				From each M, extract 9 scalar invariants in three families:
+				<strong class="text-text-primary">trace moments</strong> (|tr(M)|, |tr(M&sup2;)|, |tr(M&sup3;)|),
+				<strong class="text-text-primary">symmetry structure</strong> (||sym||/||skew||),
+				and <strong class="text-text-primary">singular value concentration</strong>
+				(effective rank, stable rank, top-1 share, top-4 share, KL to exponential).
+				Each produces a 48&times;48 cost matrix; Hungarian assignment on each independently recovers the optimal pairing.
 			</p>
 		</div>
 
-		<!-- ── 2. FEATURE RANKING ──────────────────────────────── -->
+		<!-- ── 2. FEATURE RANKING (chart only, full width) ────── -->
 		<div class="rounded-xl border border-border-subtle bg-bg-card p-5 card-elevated">
-			<h3 class="mb-2 text-lg font-semibold text-text-primary">Four features are individually exact, five are partial</h3>
+			<h3 class="mb-2 text-lg font-semibold text-text-primary">Individual feature accuracy</h3>
 			<p class="mb-4 text-[15px] leading-relaxed text-text-secondary">
-				Each feature used alone with Hungarian assignment. The split is sharp:
-				trace moments and symmetry ratio each recover all 48 pairs;
-				singular value concentration measures capture partial signal (7&ndash;32 pairs)
-				but reach exact when combined.
+				Each feature's 48&times;48 cost matrix fed to Hungarian assignment independently.
+				The four trace/symmetry features each recover all 48 pairs;
+				the five SV concentration features score 7&ndash;32/48.
+				No combination of SV features alone reaches 48/48 &mdash;
+				they all discard the same sign and phase information.
 			</p>
 
-			<div class="grid grid-cols-[1fr_auto] gap-5">
-				{#if barOptions}
-					<div style="width: 640px; height: 320px;">
-						<Chart {init} options={barOptions} theme="dark" />
-					</div>
-				{/if}
-
-				<div class="flex flex-col gap-4 self-start">
-					<!-- Exact tier -->
-					<div class="rounded-lg bg-accent-green/8 border border-accent-green/20 px-4 py-3">
-						<h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-accent-green">Exact alone (48/48)</h4>
-						{#each exactFeatures as f}
-							<div class="flex items-start gap-2 py-1">
-								<span class="mt-0.5 shrink-0 text-sm text-accent-green">&#10003;</span>
-								<div>
-									<span class="text-sm font-medium text-text-primary">{info(f.name).label}</span>
-									<p class="text-sm text-text-secondary">{info(f.name).desc}</p>
-								</div>
-							</div>
-						{/each}
-					</div>
-
-					<!-- Partial tier -->
-					<div class="rounded-lg border border-border-subtle px-4 py-3">
-						<h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-text-tertiary">Partial alone</h4>
-						{#each partialFeatures as f}
-							<div class="flex items-baseline justify-between gap-3 py-0.5">
-								<span class="text-sm text-text-secondary">{info(f.name).label}</span>
-								<span class="font-mono text-sm text-text-tertiary">{f.accuracy}/48</span>
-							</div>
-						{/each}
-					</div>
+			{#if barOptions}
+				<div style="width: 100%; height: 320px;">
+					<Chart {init} options={barOptions} theme="dark" />
 				</div>
-			</div>
+			{/if}
 		</div>
 
-		<!-- ── 3. ROBUSTNESS ───────────────────────────────────── -->
+		<!-- ── 3. WHY TRACES DOMINATE ──────────────────────────── -->
 		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<h3 class="mb-3 text-lg font-semibold text-text-primary">Robustness: the signal survives any reasonable combination</h3>
-			<p class="mb-4 text-[15px] leading-relaxed text-text-secondary">
-				All 1-, 2-, and 3-feature subsets were tested at 5 weight levels each
-				(<span class="font-mono text-text-primary">{data.total_recipes.toLocaleString()}</span> total recipes).
-				<span class="font-mono font-semibold text-accent-green">{data.exact_count.toLocaleString()}</span> recover the exact pairing
-				&mdash; <span class="font-mono font-semibold text-accent-green">{(100 * data.exact_count / data.total_recipes).toFixed(1)}%</span>
-				of all combinations tested.
-				Even partial features combine to exact: adding any trace moment to a weak spectral feature lifts it to 48/48.
-			</p>
-			<div class="grid grid-cols-3 gap-4">
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-text-primary">{data.total_recipes.toLocaleString()}</div>
-					<div class="mt-1 text-xs text-text-tertiary">recipes tested</div>
-				</div>
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.exact_count.toLocaleString()}</div>
-					<div class="mt-1 text-xs text-text-tertiary">exact (48/48)</div>
-				</div>
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.e2e.polished_mse.toExponential(2)}</div>
-					<div class="mt-1 text-xs text-text-tertiary">polished MSE</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- ── 4. WHY TRACES DOMINATE ──────────────────────────── -->
-		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<h3 class="mb-2 text-lg font-semibold text-text-primary">Why traces are strongest</h3>
+			<h3 class="mb-2 text-lg font-semibold text-text-primary">Why traces dominate over singular value features</h3>
 			<p class="text-[15px] leading-relaxed text-text-secondary">
 				The first trace moment <code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">|tr(W_out W_inp)|</code>
 				is algebraically equivalent to the Frobenius inner product from Method 1 &mdash; it measures
 				the total coordination between the two weight matrices through the shared 96-D space.
-				Higher trace powers (trace<sup>2</sup>, trace<sup>3</sup>) increasingly emphasize the dominant eigenvalues,
+				Higher trace powers (tr&sup2;, tr&sup3;) increasingly emphasize the dominant eigenvalues,
 				yet all three are independently exact. The symmetry ratio captures a different aspect:
 				correctly paired blocks have more symmetric composed operators than incorrect pairings.
 			</p>
 			<p class="mt-3 text-[15px] leading-relaxed text-text-secondary">
-				Singular value features alone failed in earlier experiments (35/48 with 5 SV features).
-				They discard sign and phase information that the trace retains.
-				The composed operator <code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">W_out W_inp</code>
-				is the right object; its full algebraic structure, not just its spectrum, encodes the co-training fingerprint.
+				Singular value features (effective rank, stable rank, top-k share) score 7&ndash;32/48 alone.
+				They discard sign and phase information that traces retain &mdash;
+				the eigenvalue spectrum of M is complex-valued, and traces preserve the full algebraic structure
+				while singular values collapse it to magnitudes.
 			</p>
 		</div>
 	</div>

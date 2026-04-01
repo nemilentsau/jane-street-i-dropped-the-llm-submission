@@ -179,7 +179,7 @@
 				<div class="flex flex-col gap-3 self-start">
 					<!-- Exact operator features -->
 					<div class="rounded-lg bg-accent-green/8 border border-accent-green/20 px-4 py-3">
-						<h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-accent-green">Exact alone (48/48)</h4>
+						<h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-accent-green">48/48</h4>
 						{#each operatorExact as f}
 							<div class="flex items-start gap-2 py-1">
 								<span class="mt-0.5 shrink-0 text-sm text-accent-green">&#10003;</span>
@@ -193,7 +193,7 @@
 
 					<!-- Partial operator features -->
 					<div class="rounded-lg border border-border-subtle px-4 py-3">
-						<h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-text-tertiary">Partial</h4>
+						<h4 class="mb-2 text-xs font-semibold uppercase tracking-wider text-text-tertiary">24/48</h4>
 						{#each operatorPartial as f}
 							<div class="flex items-baseline justify-between gap-3 py-0.5">
 								<span class="text-sm text-text-secondary">{info(f.name).label}</span>

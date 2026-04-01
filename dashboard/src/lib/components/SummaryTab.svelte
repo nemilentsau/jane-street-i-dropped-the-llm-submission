@@ -6,7 +6,7 @@
 	<!-- Hero -->
 	<div class="mb-8 fade-in-up">
 		<h2 class="font-display text-[28px] font-bold tracking-tight text-text-primary">Reassembling a Dropped Trading Model</h2>
-		<p class="mt-2 max-w-[720px] text-[15px] leading-relaxed text-text-secondary">
+		<p class="mt-2 text-[15px] leading-relaxed text-text-secondary">
 			A residual neural network used for trading fell apart into 97 shuffled linear layers.
 			The search space is <span class="font-mono text-text-primary">(48!)&#178; &#8776; 10&#185;&#178;&#185;</span>.
 			The recovered answer is verified at <span class="font-mono text-accent-green glow-green">MSE = 3.16e-14</span>.
