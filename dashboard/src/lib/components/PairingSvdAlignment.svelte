@@ -189,10 +189,9 @@
 		<div class="rounded-xl border border-border-subtle bg-bg-card p-5 card-elevated">
 			<h3 class="mb-2 text-lg font-semibold text-text-primary">Four alignment measures, all in hidden space</h3>
 			<p class="mb-4 text-[15px] leading-relaxed text-text-secondary">
-				Each feature captures a different aspect of mode alignment.
-				<span class="font-mono text-text-primary">{data.exact_count}</span> of
-				<span class="font-mono text-text-primary">{data.total_recipes}</span> weighted recipes
-				recover all 48 pairs exactly.
+				Each feature extracts a different summary from the SV-weighted alignment matrix.
+				Frobenius norm (total energy) is the only one exact alone.
+				The other three score 9&ndash;32/48 and cannot combine to exact without it (best: 37/48).
 			</p>
 
 			{#if barOptions}

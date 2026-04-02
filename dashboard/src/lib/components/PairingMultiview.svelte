@@ -19,13 +19,7 @@
 		elapsed_s: number;
 	};
 
-	const COMPONENT_DESC: Record<string, string> = {
-		effective_rank: 'Shannon entropy of singular values of W_out W_inp \u2014 how concentrated vs spread the spectrum is',
-		geodesic: 'Principal angle distance between inp column space and out row space on the Grassmannian',
-		single_block_mse: 'Prediction loss when evaluating inp\u2192hidden\u2192out\u2192readout on actual data',
-	};
-
-	let data: FusionData | null = $state(null);
+let data: FusionData | null = $state(null);
 	let error: string | null = $state(null);
 
 	async function load() {
@@ -119,16 +113,15 @@
 			<h3 class="mb-3 text-xl font-semibold text-text-primary">Three weak signals, one exact answer</h3>
 			<p class="text-[15px] leading-relaxed text-text-secondary">
 				Weighted combination of three individually weaker signals:
-				<strong class="text-text-primary">effective rank</strong> of
-				<code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">W_out W_inp</code>
-				(Shannon entropy of the singular value distribution),
-				<strong class="text-text-primary">geodesic distance</strong> between
-				<code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">inp</code> column space and
-				<code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">out</code> row space
-				(principal angles on the Grassmannian),
-				and <strong class="text-text-primary">single-block MSE</strong> evaluated on the data
-				(prediction loss through one inp&rarr;hidden&rarr;out&rarr;readout path).
 			</p>
+			<ul class="mt-3 space-y-1.5 text-[15px] leading-relaxed text-text-secondary">
+				<li><span class="font-mono text-text-primary">Effective rank</span> &mdash; Shannon entropy of the singular value distribution of
+					<code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">W_out W_inp</code></li>
+				<li><span class="font-mono text-text-primary">Geodesic distance</span> &mdash; principal angles on the Grassmannian between
+					<code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">inp</code> column space and
+					<code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">out</code> row space</li>
+				<li><span class="font-mono text-text-primary">Single-block MSE</span> &mdash; prediction loss through one inp&rarr;hidden&rarr;out&rarr;readout path, evaluated on the data</li>
+			</ul>
 			<p class="mt-3 text-[15px] leading-relaxed text-text-secondary">
 				None of the three is exact on its own ({data.components.map(c => c.accuracy).join(', ')} out of 48),
 				but their errors are complementary. Under equal-weight fusion with robust (median/MAD) normalization,
@@ -148,25 +141,11 @@
 				finds the optimal 1:1 pairing. No tuning &mdash; equal weights, one addition, one assignment.
 			</p>
 
-			<div class="grid grid-cols-[1fr_auto] gap-5">
-				{#if barOptions}
-					<div style="width: 640px; height: 200px;">
-						<Chart {init} options={barOptions} theme="dark" />
-					</div>
-				{/if}
-
-				<div class="flex flex-col gap-3 self-start">
-					{#each data.components as c}
-						<div class="rounded-lg border border-border-subtle px-4 py-2">
-							<div class="flex items-baseline justify-between gap-4">
-								<span class="text-sm font-medium text-text-primary">{c.label}</span>
-								<span class="font-mono text-sm text-accent-blue">{c.accuracy}/48</span>
-							</div>
-							<p class="mt-0.5 text-sm text-text-secondary">{COMPONENT_DESC[c.name] ?? ''}</p>
-						</div>
-					{/each}
+			{#if barOptions}
+				<div style="width: 100%; height: 200px;">
+					<Chart {init} options={barOptions} theme="dark" />
 				</div>
-			</div>
+			{/if}
 		</div>
 
 		<!-- ── 3. STABILITY ────────────────────────────────────── -->
@@ -212,18 +191,5 @@
 			</p>
 		</div>
 
-		<!-- ── 5. VERIFICATION ─────────────────────────────────── -->
-		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<div class="grid grid-cols-2 gap-4">
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.fused_accuracy}/48</div>
-					<div class="mt-1 text-xs text-text-tertiary">fused pairing accuracy</div>
-				</div>
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-accent-green glow-green">{data.verification_mse.toExponential(2)}</div>
-					<div class="mt-1 text-xs text-text-tertiary">verification MSE (GT ordering)</div>
-				</div>
-			</div>
-		</div>
 	</div>
 {/if}

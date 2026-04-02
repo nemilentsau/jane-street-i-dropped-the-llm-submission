@@ -143,10 +143,10 @@
 				<div class="rounded-lg border border-border-subtle px-5 py-4">
 					<h4 class="mb-2 text-base font-semibold text-text-primary">Trace moments are the dominant signal</h4>
 					<p class="text-[15px] leading-relaxed text-text-secondary">
-						The same 4 features &mdash; |trace|, |trace&sup2;|, |trace&sup3;|, symmetry ratio &mdash;
-						are individually exact across Methods 1, 2, and 4. The simplest,
+						4 features &mdash; |trace|, |trace&sup2;|, |trace&sup3;|, symmetry ratio &mdash;
+						each reach 48/48 on their own in Methods 1, 2, and 4. The simplest,
 						|tr(W_out W_inp)|, is algebraically the Frobenius inner product.
-						Gating the operator (Method 4) does not alter which features dominate.
+						Gating the operator (Method 4) does not change which features dominate.
 					</p>
 				</div>
 
@@ -167,24 +167,6 @@
 						Their errors are complementary: different mathematical domains produce false positives
 						in different cells of the cost matrix. Simple addition cancels the noise.
 					</p>
-				</div>
-			</div>
-		</div>
-
-		<!-- ── 4. VERIFICATION ─────────────────────────────────── -->
-		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<div class="grid grid-cols-3 gap-4">
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-accent-green glow-green">5/5</div>
-					<div class="mt-1 text-xs text-text-tertiary">methods exact</div>
-				</div>
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-accent-green glow-green">48/48</div>
-					<div class="mt-1 text-xs text-text-tertiary">pairs recovered (each method)</div>
-				</div>
-				<div class="rounded-lg bg-bg-inset px-4 py-3 text-center">
-					<div class="font-mono text-3xl font-bold text-accent-green glow-green">3.16e-14</div>
-					<div class="mt-1 text-xs text-text-tertiary">polished MSE</div>
 				</div>
 			</div>
 		</div>

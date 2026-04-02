@@ -281,10 +281,6 @@
 				</div>
 			{/if}
 
-			<div class="mt-3 text-[15px] leading-relaxed text-text-secondary">
-				<span class="text-xs font-semibold uppercase tracking-wider text-text-tertiary">Verification:</span>
-				MSE with ground-truth ordering = <span class="font-mono text-accent-green">{data.mse.toExponential(2)}</span>
-			</div>
 		</div>
 	</div>
 {/if}
