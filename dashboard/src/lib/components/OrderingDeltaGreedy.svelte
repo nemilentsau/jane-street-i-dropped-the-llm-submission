@@ -101,9 +101,15 @@
 				The selected block is applied, updating the running state, and the process repeats.
 			</p>
 			<p class="mt-3 text-[15px] leading-relaxed text-text-secondary">
-				The assumption: in a well-trained residual network, early blocks make small corrections
-				and late blocks make larger ones. Delta-greedy recovers this ordering directly from the data,
-				placing blocks along an increasing-perturbation trajectory.
+				The assumption: in a well-trained residual network
+				(<code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">x &larr; x + f(x)</code>),
+				early blocks make small corrections and late blocks make larger ones.
+				Delta-greedy recovers this ordering directly from the data,
+				constructing the smoothest possible trajectory through the 48-step sequence.
+				It reaches {data.raw.correct_positions}/{data.raw.total_positions} raw positions &mdash;
+				the strongest raw ordering of any method tested. The remaining errors
+				are local transpositions between adjacent blocks with similar perturbation sizes,
+				which MSE polish resolves in one pass.
 			</p>
 		</div>
 
@@ -140,9 +146,12 @@
 			<h3 class="mb-2 text-lg font-semibold text-text-primary">Perturbation trajectory along greedy order</h3>
 			<p class="mb-4 text-[15px] leading-relaxed text-text-secondary">
 				Each bar shows <code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">||block(x) &minus; x||</code>
-				at the moment the block is selected. The overall trend is increasing:
-				early blocks perturb the state gently, late blocks make larger corrections,
-				and the final block produces the largest single perturbation ({data.deltas[data.deltas.length - 1].toFixed(2)}).
+				at the moment the block is selected. The trajectory is U-shaped:
+				the first block selected has a large perturbation ({data.deltas[0].toFixed(2)}),
+				the middle blocks settle into a flat plateau (~0.4),
+				then late blocks rise sharply to the final block&rsquo;s {data.deltas[data.deltas.length - 1].toFixed(2)}.
+				The greedy algorithm picks the globally smallest perturbation first, not the earliest &mdash;
+				block 1 is simply the least disruptive starting point for the initial state.
 			</p>
 
 			{#if deltaChartOptions}
@@ -158,23 +167,5 @@
 			</div>
 		</div>
 
-		<!-- ── 4. WHY THIS WORKS ───────────────────────────────── -->
-		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<h3 class="mb-2 text-lg font-semibold text-text-primary">The dynamical assumption behind delta-greedy</h3>
-			<p class="text-[15px] leading-relaxed text-text-secondary">
-				A residual network computes <code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">x &larr; x + f(x)</code>
-				at each block. In the continuous limit, this is an ODE
-				<code class="rounded bg-bg-inset px-1.5 py-0.5 font-mono text-sm text-accent-cyan">dx/dt = f(x)</code>.
-				Well-trained networks evolve the state smoothly: each step is a small perturbation relative to the current state.
-				Delta-greedy exploits this by always choosing the block that perturbs the least, constructing
-				the smoothest possible trajectory through the 48-step sequence.
-			</p>
-			<p class="mt-3 text-[15px] leading-relaxed text-text-secondary">
-				It reaches {data.raw.correct_positions}/{data.raw.total_positions} raw positions &mdash;
-				the strongest raw ordering of any method tested. The remaining errors
-				are local transpositions between adjacent blocks with similar perturbation sizes,
-				which MSE polish resolves in one pass.
-			</p>
-		</div>
 	</div>
 {/if}
