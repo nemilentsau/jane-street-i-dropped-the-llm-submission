@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Placeholder from './Placeholder.svelte';
 	import OrderingDeltaGreedy from './OrderingDeltaGreedy.svelte';
+	import OrderingPairwise from './OrderingPairwise.svelte';
 
 	let { subtab }: { subtab: string } = $props();
 </script>
@@ -14,6 +15,10 @@
 {:else if subtab === '01-delta-greedy'}
 	<div class="fade-in-up">
 		<OrderingDeltaGreedy />
+	</div>
+{:else if subtab === '02-pairwise'}
+	<div class="fade-in-up">
+		<OrderingPairwise />
 	</div>
 {:else}
 	<div class="grid grid-cols-2 gap-4">
