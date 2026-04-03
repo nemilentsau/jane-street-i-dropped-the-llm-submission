@@ -2,11 +2,11 @@
 	import { Chart } from 'svelte-echarts';
 	import { BarChart, LineChart, HeatmapChart } from 'echarts/charts';
 	import { init } from 'echarts/core';
-	import { TooltipComponent, GridComponent, MarkLineComponent, VisualMapComponent } from 'echarts/components';
+	import { TooltipComponent, GridComponent, MarkLineComponent, VisualMapComponent, LegendComponent } from 'echarts/components';
 	import { CanvasRenderer } from 'echarts/renderers';
 	import { use } from 'echarts/core';
 
-	use([BarChart, LineChart, HeatmapChart, TooltipComponent, GridComponent, MarkLineComponent, VisualMapComponent, CanvasRenderer]);
+	use([BarChart, LineChart, HeatmapChart, TooltipComponent, GridComponent, MarkLineComponent, VisualMapComponent, LegendComponent, CanvasRenderer]);
 
 	type MethodResult = {
 		correct_positions: number;
@@ -39,6 +39,7 @@
 			polished: MethodResult;
 		};
 		polish_trace: { iteration: number; mse: number }[];
+		random_polish_trace: { iteration: number; mse: number }[];
 		elapsed_s: number;
 	};
 
@@ -268,10 +269,11 @@
 		{ key: 'polished', label: 'Polished', desc: 'MSE polish', fail: false },
 	];
 
-	/* ── Line: polish convergence ───────────────────────────── */
+	/* ── Line: polish convergence with random baseline ─────── */
 	let polishOptions = $derived.by(() => {
 		if (!data) return null;
 		const trace = data.polish_trace;
+		const rand = data.random_polish_trace;
 		return {
 			tooltip: {
 				trigger: 'axis' as const,
@@ -279,13 +281,23 @@
 				borderColor: '#363e4a',
 				textStyle: { color: '#eceff4', fontSize: 12 },
 				formatter: (params: unknown) => {
-					const p = (params as { dataIndex: number; value: number }[])[0];
-					const t = trace[p.dataIndex];
-					return `<strong style="color:#eceff4">Iteration ${t.iteration}</strong>`
-						+ `<br/>MSE: <span style="color:#6cb6ff">${t.mse.toExponential(3)}</span>`;
+					const ps = params as { seriesName: string; dataIndex: number; value: number }[];
+					let html = `<strong style="color:#eceff4">Iteration ${trace[ps[0].dataIndex]?.iteration ?? ps[0].dataIndex}</strong>`;
+					for (const p of ps) {
+						const color = p.seriesName === 'Random start' ? '#8690a2' : '#6cb6ff';
+						html += `<br/>${p.seriesName}: <span style="color:${color}">${p.value.toExponential(2)}</span>`;
+					}
+					return html;
 				},
 			},
-			grid: { top: 16, right: 24, bottom: 36, left: 64 },
+			legend: {
+				data: ['Pairwise tournament', 'Random start'],
+				textStyle: { color: '#8690a2', fontSize: 10 },
+				top: 0,
+				itemWidth: 14,
+				itemHeight: 8,
+			},
+			grid: { top: 32, right: 24, bottom: 36, left: 64 },
 			xAxis: {
 				type: 'category' as const,
 				data: trace.map(t => t.iteration),
@@ -308,7 +320,9 @@
 				name: 'MSE (log)',
 				nameTextStyle: { color: '#8690a2', fontSize: 11 },
 			},
-			series: [{
+			series: [
+			{
+				name: 'Pairwise tournament',
 				type: 'line' as const,
 				data: trace.map(t => Math.max(t.mse, 1e-15)),
 				lineStyle: { color: '#6cb6ff', width: 2 },
@@ -320,7 +334,17 @@
 					lineStyle: { color: '#3dd68c33', type: 'dashed' as const, width: 1 },
 					data: [{ yAxis: 3.16e-14, label: { formatter: 'exact', color: '#3dd68c', fontSize: 10 } }],
 				},
-			}],
+			},
+			{
+				name: 'Random start',
+				type: 'line' as const,
+				data: rand.map(t => t.mse),
+				lineStyle: { color: '#8690a2', width: 2, type: 'dashed' as const },
+				symbol: 'circle',
+				symbolSize: 6,
+				itemStyle: { color: '#8690a2' },
+			},
+			],
 			backgroundColor: 'transparent',
 		};
 	});
@@ -463,14 +487,17 @@
 
 		<!-- ── 6. POLISH CONVERGENCE ───────────────────────────── -->
 		<div class="rounded-xl border border-border-subtle bg-bg-card p-5 card-elevated">
-			<h3 class="mb-2 text-lg font-semibold text-text-primary">Polish convergence</h3>
+			<h3 class="mb-2 text-lg font-semibold text-text-primary">Polish convergence: starting point determines outcome</h3>
 			<p class="mb-4 text-[15px] leading-relaxed text-text-secondary">
-				Starting from refined MSE {data.methods.refined.mse.toExponential(2)},
-				greedy pairwise swap polish converges to the exact solution
-				({data.methods.polished.mse.toExponential(2)})
-				in {data.polish_trace.length - 2} improving iterations.
-				Each iteration tries all O(n&sup2;) position swaps and keeps those that reduce end-to-end MSE.
-				The final iteration confirms no improving swap remains.
+				The dashed line shows what happens when polish starts from a random ordering:
+				given the same budget of {data.polish_trace.length - 2} iterations, it drops from
+				MSE ~{data.random_polish_trace[0].mse.toFixed(1)} to
+				~{data.random_polish_trace[data.random_polish_trace.length - 1].mse.toFixed(2)}
+				&mdash; stuck in a local minimum, orders of magnitude above exact.
+				From the tournament extraction (MSE {data.methods.refined.mse.toExponential(1)}),
+				the same polish reaches {data.methods.polished.mse.toExponential(2)}.
+				The ordering method does not just speed up polish &mdash;
+				it makes exactness possible by landing in the right basin.
 			</p>
 
 			{#if polishOptions}

@@ -158,6 +158,37 @@ with Timer("Total") as t:
     print(f"    Correct positions: {polished_pos}/97")
     print(f"    MSE: {best_polish_mse:.6e}")
 
+    # ── Random ordering baseline (same polish budget) ─────────
+    import random as _rng
+    n = len(pairing)
+    _rng.seed(0)
+    rand_order = list(range(n))
+    _rng.shuffle(rand_order)
+    rand_mse = eval_solution(pairing, rand_order, X, y_pred, pieces)
+    random_polish = [{"iteration": 0, "mse": rand_mse}]
+    print(f"\nRandom baseline (seed=0, {len(polish_trace)-1} iters)...")
+    print(f"    start: {rand_mse:.6e}")
+
+    rand_best = list(rand_order)
+    n_rand_iters = len(polish_trace) - 1
+    for rit in range(1, n_rand_iters + 1):
+        improved_r = False
+        for i in range(n):
+            for j in range(i + 1, n):
+                candidate = list(rand_best)
+                candidate[i], candidate[j] = candidate[j], candidate[i]
+                mse = eval_solution(pairing, candidate, X, y_pred, pieces)
+                if mse < rand_mse - 1e-10:
+                    rand_best = candidate
+                    rand_mse = mse
+                    improved_r = True
+        random_polish.append({"iteration": rit, "mse": rand_mse})
+        print(f"    iter {rit}: {rand_mse:.6e}")
+        if not improved_r:
+            for pad in range(rit + 1, n_rand_iters + 1):
+                random_polish.append({"iteration": pad, "mse": rand_mse})
+            break
+
 # ── Write dashboard JSON ──────────────────────────────────────
 result = {
     "restarts": restarts,
@@ -177,6 +208,7 @@ result = {
         },
     },
     "polish_trace": polish_trace,
+    "random_polish_trace": random_polish,
     "elapsed_s": t.elapsed,
 }
 

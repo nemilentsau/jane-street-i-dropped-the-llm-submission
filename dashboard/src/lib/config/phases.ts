@@ -42,7 +42,7 @@ export const tabs = [
 			{ id: '04-beam-search', label: '04 Beam Search' },
 			{ id: '05-spectral-flow', label: '05 Spectral Flow' },
 		],
-		hasData: false,
+		hasData: true,
 	},
 	{
 		id: 'e2e' as const,

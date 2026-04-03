@@ -27,6 +27,7 @@
 			polished: { correct_positions: number; total_positions: number; mse: number };
 		};
 		polish_trace: { iteration: number; mse: number }[];
+		random_polish_trace: { iteration: number; mse: number }[];
 		elapsed_s: number;
 	};
 
@@ -178,10 +179,11 @@
 		};
 	});
 
-	/* ── Polish convergence ─────────────────────────────────── */
+	/* ── Polish convergence with random baseline ──────────── */
 	let polishOptions = $derived.by(() => {
 		if (!data) return null;
 		const trace = data.polish_trace;
+		const rand = data.random_polish_trace;
 		return {
 			tooltip: {
 				trigger: 'axis' as const,
@@ -189,13 +191,23 @@
 				borderColor: '#363e4a',
 				textStyle: { color: '#eceff4', fontSize: 12 },
 				formatter: (params: unknown) => {
-					const p = (params as { dataIndex: number; value: number }[])[0];
-					const t = trace[p.dataIndex];
-					return `<strong style="color:#eceff4">Iteration ${t.iteration}</strong>`
-						+ `<br/>MSE: <span style="color:#6cb6ff">${t.mse.toExponential(3)}</span>`;
+					const ps = params as { seriesName: string; dataIndex: number; value: number }[];
+					let html = `<strong style="color:#eceff4">Iteration ${trace[ps[0].dataIndex]?.iteration ?? ps[0].dataIndex}</strong>`;
+					for (const p of ps) {
+						const color = p.seriesName === 'Random start' ? '#8690a2' : '#6cb6ff';
+						html += `<br/>${p.seriesName}: <span style="color:${color}">${p.value.toExponential(2)}</span>`;
+					}
+					return html;
 				},
 			},
-			grid: { top: 16, right: 24, bottom: 36, left: 64 },
+			legend: {
+				data: ['Sinkhorn', 'Random start'],
+				textStyle: { color: '#8690a2', fontSize: 10 },
+				top: 0,
+				itemWidth: 14,
+				itemHeight: 8,
+			},
+			grid: { top: 32, right: 24, bottom: 36, left: 64 },
 			xAxis: {
 				type: 'category' as const,
 				data: trace.map(t => t.iteration),
@@ -218,7 +230,9 @@
 				name: 'MSE (log)',
 				nameTextStyle: { color: '#8690a2', fontSize: 11 },
 			},
-			series: [{
+			series: [
+			{
+				name: 'Sinkhorn',
 				type: 'line' as const,
 				data: trace.map(t => Math.max(t.mse, 1e-15)),
 				lineStyle: { color: '#6cb6ff', width: 2 },
@@ -230,7 +244,17 @@
 					lineStyle: { color: '#3dd68c33', type: 'dashed' as const, width: 1 },
 					data: [{ yAxis: 3.16e-14, label: { formatter: 'exact', color: '#3dd68c', fontSize: 10 } }],
 				},
-			}],
+			},
+			{
+				name: 'Random start',
+				type: 'line' as const,
+				data: rand.map(t => t.mse),
+				lineStyle: { color: '#8690a2', width: 2, type: 'dashed' as const },
+				symbol: 'circle',
+				symbolSize: 6,
+				itemStyle: { color: '#8690a2' },
+			},
+			],
 			backgroundColor: 'transparent',
 		};
 	});
@@ -375,13 +399,15 @@
 
 		<!-- ── 6. POLISH CONVERGENCE ───────────────────────────── -->
 		<div class="rounded-xl border border-border-subtle bg-bg-card p-5 card-elevated">
-			<h3 class="mb-2 text-lg font-semibold text-text-primary">Polish convergence</h3>
+			<h3 class="mb-2 text-lg font-semibold text-text-primary">Polish convergence: starting point determines outcome</h3>
 			<p class="mb-4 text-[15px] leading-relaxed text-text-secondary">
-				Starting from Sinkhorn&rsquo;s best raw MSE {data.methods.best_raw.mse.toExponential(2)},
-				greedy pairwise swap polish converges to the exact solution
-				in {data.polish_trace.filter(t => t.mse > 1e-10).length - 1} improving iterations.
-				Each order of magnitude in MSE reduction corresponds to correcting
-				a few more block positions.
+				The dashed line shows polish from a random ordering: given the same
+				{data.polish_trace.filter(t => t.mse > 1e-10).length - 1}-iteration budget,
+				it barely moves (MSE ~{data.random_polish_trace[0].mse.toFixed(1)}
+				&rarr; ~{data.random_polish_trace[data.random_polish_trace.length - 1].mse.toFixed(2)}).
+				From Sinkhorn&rsquo;s starting point (MSE {data.methods.best_raw.mse.toExponential(1)}),
+				the same polish reaches {data.methods.polished.mse.toExponential(2)}.
+				Sinkhorn identifies the right basin; polish finishes the job.
 			</p>
 
 			{#if polishOptions}

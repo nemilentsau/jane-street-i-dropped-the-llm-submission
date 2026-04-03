@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Placeholder from './Placeholder.svelte';
+	import OrderingOverview from './OrderingOverview.svelte';
 	import OrderingDeltaGreedy from './OrderingDeltaGreedy.svelte';
 	import OrderingPairwise from './OrderingPairwise.svelte';
 	import OrderingSinkhorn from './OrderingSinkhorn.svelte';
@@ -8,10 +9,8 @@
 </script>
 
 {#if subtab === 'overview'}
-	<div class="grid grid-cols-2 gap-4">
-		<Placeholder phase="ordering" icon="▦" title="Ordering Comparison Table" subtitle="Method | Raw positions | Polished | Raw MSE | Polished MSE" colspan={2} />
-		<Placeholder phase="ordering" icon="▲" title="Raw vs Polished Positions" subtitle="Grouped bar chart: raw vs 97/97 polished" delay={0.05} />
-		<Placeholder phase="ordering" icon="▬" title="Stiffness by Block Position" subtitle="Frobenius norm through GT ordering" delay={0.1} />
+	<div class="fade-in-up">
+		<OrderingOverview />
 	</div>
 {:else if subtab === '01-delta-greedy'}
 	<div class="fade-in-up">
