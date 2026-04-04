@@ -166,6 +166,25 @@ One part of the spectral-flow claim is directly testable: does it preserve the c
 
 All three meaningful orderings place the stiffest blocks late — far above random. But stiffness alone is not enough: a pure Frobenius sort has perfect stiffness alignment and still gets only **15/97** raw positions with raw MSE **0.569**. Stiffness is a coarse scaffold, not a full ordering principle.
 
+### The basin is real and has a surprising shape
+
+All five ordering methods land in the same basin of attraction: local swap polish converges to the exact ground-truth ordering from every one of them. Random permutations do not — they get stuck at MSE ~0.17 after 10 polish iterations, never approaching zero. The basin boundary is somewhere between the methods' raw orderings and random.
+
+The surprising finding is what distinguishes basin membership. Cayley distance (minimum number of transpositions to reach ground truth) does *not* separate methods from random:
+
+| Ordering | Kendall tau to GT | Cayley to GT | Mean block displacement |
+|----------|------------------|-------------|------------------------|
+| Delta-greedy | 5 | 5 | 0.2 |
+| Beam search | 120 | 34 | 3.9 |
+| Pairwise tournament | 132 | 42 | 4.2 |
+| Sinkhorn | 160 | 38 | 4.8 |
+| Spectral flow | 269 | 41 | 8.3 |
+| Random (5 seeds) | 500–570 | 40–44 | — |
+
+Methods and random permutations require roughly the same number of swaps to reach ground truth (Cayley ~40). Yet the methods polish to exact and random does not. What separates them is the *pattern* of displacement: methods displace a few blocks by many positions but keep the majority in roughly the right neighborhood, while random permutations displace every block uniformly. Kendall tau — which counts pairwise inversions rather than raw swap count — captures this distinction: methods range from 120 to 269, while random starts at 500.
+
+The polish convergence paths confirm this asymmetry. All five methods reach MSE = 0 within 2–8 polish iterations, with monotonically decreasing Kendall distance at each step. Random permutations make slow progress on MSE (from ~0.7 to ~0.17 in 10 iterations) while their Kendall distance barely moves (from ~500 to ~310). The basin is not a hypersphere in swap space — it is an elongated region aligned with the coarse time direction that all five methods partially recover.
+
 **Ordering is recoverable by multiple methods, but none recover the exact sequence directly. They recover enough coarse structure — dynamical magnitude, pairwise time direction, or spectral smoothness — that greedy full-data swap polish can finish the job.**
 
 ## Proposition 3: The Recovered Network Has the Structure of a Trading Model
