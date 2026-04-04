@@ -377,32 +377,34 @@
 
 		<!-- ── 7. BASIN NARRATIVE ──────────────────────────────── -->
 		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<h3 class="mb-4 text-lg font-semibold text-text-primary">What the basin comparison reveals</h3>
+			<h3 class="mb-4 text-lg font-semibold text-text-primary">What this tells us about the ordering landscape</h3>
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
 				<div class="rounded-lg border border-border-subtle px-5 py-4">
-					<h4 class="mb-2 text-base font-semibold text-text-primary">Correct positions are misleading</h4>
+					<h4 class="mb-2 text-base font-semibold text-text-primary">The basin is not a sphere</h4>
 					<p class="text-[15px] leading-relaxed text-text-secondary">
-						Spectral flow and pairwise methods both show 9/97 correct positions,
-						but their Cayley distances to GT differ significantly. Position count
-						is a poor proxy for basin membership &mdash; what matters is whether
-						the blocks are <em>close</em> to their correct positions, not exactly there.
+						Spectral flow is 41 swaps from GT &mdash; almost the same as random (40&ndash;44 swaps) &mdash;
+						yet it polishes to exact and random does not. The basin of attraction is an
+						irregularly shaped region in permutation space: being inside depends on
+						<em>which</em> blocks are displaced, not on the total number of displacements.
 					</p>
 				</div>
 				<div class="rounded-lg border border-border-subtle px-5 py-4">
-					<h4 class="mb-2 text-base font-semibold text-text-primary">Methods are closer to each other than to random</h4>
+					<h4 class="mb-2 text-base font-semibold text-text-primary">Displacement profile, not distance</h4>
 					<p class="text-[15px] leading-relaxed text-text-secondary">
-						The distance heatmap shows a clear cluster: all 5 methods are structurally
-						closer to GT (and to each other) than random orderings are. Even spectral
-						flow, which uses no MSE signal at all, lands in the same neighborhood.
+						Method orderings have most blocks within a few positions of their GT location,
+						with a small number of larger displacements. Random orderings displace
+						<em>every</em> block uniformly. Polish can fix a few large displacements by
+						sequential swaps, but cannot globally rearrange a uniformly scrambled ordering.
 					</p>
 				</div>
 				<div class="rounded-lg border border-border-subtle px-5 py-4">
-					<h4 class="mb-2 text-base font-semibold text-text-primary">One funnel, many entry points</h4>
+					<h4 class="mb-2 text-base font-semibold text-text-primary">Five independent confirmations</h4>
 					<p class="text-[15px] leading-relaxed text-text-secondary">
-						The Cayley convergence chart shows all methods entering the same
-						funnel toward GT. The random start makes progress too &mdash; but its funnel
-						leads to a local minimum, not the global one. The basin boundary
-						is the critical threshold that methods cross and random orderings do not.
+						These five methods use fundamentally different signals: perturbation magnitude,
+						pairwise MSE margins, soft permutation optimization, beam search, and
+						eigenvalue smoothness. That all five land in the same basin from such different
+						starting points is strong evidence that this basin is a robust structural feature
+						of the network, not an artifact of any single approach.
 					</p>
 				</div>
 			</div>
