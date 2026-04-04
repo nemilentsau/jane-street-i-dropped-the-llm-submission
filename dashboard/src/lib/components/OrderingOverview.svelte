@@ -38,20 +38,36 @@
 		elapsed_s: number;
 	};
 
+	type BSData = {
+		beam_widths: number[];
+		beam_results: { width: number; raw_mse: number; raw_positions: number }[];
+		best_width_idx: number;
+		methods: {
+			best_raw: { correct_positions: number; total_positions: number; mse: number };
+			polished: { correct_positions: number; total_positions: number; mse: number };
+		};
+		polish_trace: PolishPoint[];
+		random_polish_trace?: PolishPoint[];
+		elapsed_s: number;
+	};
+
 	let dg: DGData | null = $state(null);
 	let pt: PTData | null = $state(null);
 	let sk: SKData | null = $state(null);
+	let bs: BSData | null = $state(null);
 	let loaded = $state(false);
 
 	async function loadAll() {
-		const [r1, r2, r3] = await Promise.all([
+		const [r1, r2, r3, r4] = await Promise.all([
 			fetch('/data/ordering_01_delta_greedy.json'),
 			fetch('/data/ordering_02_pairwise_tournament.json'),
 			fetch('/data/ordering_03_sinkhorn_ranking.json'),
+			fetch('/data/ordering_04_beam_search.json'),
 		]);
 		if (r1.ok) dg = await r1.json();
 		if (r2.ok) pt = await r2.json();
 		if (r3.ok) sk = await r3.json();
+		if (r4.ok) bs = await r4.json();
 		loaded = true;
 	}
 	loadAll();
@@ -91,12 +107,19 @@
 			polished_positions: sk.methods.polished.correct_positions, polished_mse: sk.methods.polished.mse,
 			polish_iters: sk.polish_trace.length - 1, time_s: sk.elapsed_s,
 		});
+		if (bs) rows.push({
+			id: '04', name: 'Beam Search',
+			description: `Insertion beam (width ${bs.beam_widths[bs.best_width_idx]}) over pairwise margins`,
+			raw_positions: bs.methods.best_raw.correct_positions, raw_mse: bs.methods.best_raw.mse,
+			polished_positions: bs.methods.polished.correct_positions, polished_mse: bs.methods.polished.mse,
+			polish_iters: bs.polish_trace.length - 1, time_s: bs.elapsed_s,
+		});
 		return rows;
 	});
 
 	/* ── Combined polish convergence chart ──────────────────── */
 	let polishOptions = $derived.by(() => {
-		if (!pt && !sk) return null;
+		if (!pt && !sk && !bs) return null;
 
 		const series: Record<string, unknown>[] = [];
 
@@ -122,8 +145,19 @@
 			});
 		}
 
-		/* Use the longer random trace (from 02, which has more polish iterations) */
-		const rand = pt?.random_polish_trace ?? sk?.random_polish_trace;
+		if (bs?.polish_trace) {
+			series.push({
+				name: 'Beam search',
+				type: 'line',
+				data: bs.polish_trace.map(p => [p.iteration, Math.max(p.mse, 1e-15)]),
+				lineStyle: { color: '#f0883e', width: 2.5 },
+				symbol: 'triangle', symbolSize: 8,
+				itemStyle: { color: '#f0883e' },
+			});
+		}
+
+		/* Use the longest random trace */
+		const rand = pt?.random_polish_trace ?? bs?.random_polish_trace ?? sk?.random_polish_trace;
 		if (rand && rand.length > 0) {
 			series.push({
 				name: 'Random start',
@@ -206,7 +240,7 @@
 
 		<!-- ── 1. HEADLINE ─────────────────────────────────────── -->
 		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<h3 class="mb-3 text-xl font-semibold text-text-primary">Three methods, one basin of attraction</h3>
+			<h3 class="mb-3 text-xl font-semibold text-text-primary">Four methods, one basin of attraction</h3>
 			<p class="text-[15px] leading-relaxed text-text-secondary">
 				The ordering problem &mdash; in what sequence do 48 blocks act &mdash; has 48! &asymp; 10<sup>61</sup> possible permutations.
 				Each method below produces a coarse initial ordering (as few as 9/97 correct positions),

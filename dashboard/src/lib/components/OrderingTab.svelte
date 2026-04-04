@@ -4,6 +4,7 @@
 	import OrderingDeltaGreedy from './OrderingDeltaGreedy.svelte';
 	import OrderingPairwise from './OrderingPairwise.svelte';
 	import OrderingSinkhorn from './OrderingSinkhorn.svelte';
+	import OrderingBeamSearch from './OrderingBeamSearch.svelte';
 
 	let { subtab }: { subtab: string } = $props();
 </script>
@@ -23,6 +24,10 @@
 {:else if subtab === '03-sinkhorn'}
 	<div class="fade-in-up">
 		<OrderingSinkhorn />
+	</div>
+{:else if subtab === '04-beam-search'}
+	<div class="fade-in-up">
+		<OrderingBeamSearch />
 	</div>
 {:else}
 	<div class="grid grid-cols-2 gap-4">

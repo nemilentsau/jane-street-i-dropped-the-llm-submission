@@ -184,6 +184,23 @@ def insertion_ordering(seed_nodes, margin):
     return ordering
 
 
+def insertion_beam(seed_nodes, margin, width, progress_every: int | None = 12):
+    beams = [([], 0.0)]
+    for step, node in enumerate(seed_nodes):
+        candidates = []
+        for ordering, _ in beams:
+            for pos in range(len(ordering) + 1):
+                candidate = list(ordering)
+                candidate.insert(pos, node)
+                candidates.append((candidate, pairwise_objective(candidate, margin)))
+
+        candidates.sort(key=lambda item: item[1], reverse=True)
+        beams = candidates[:width]
+        if progress_every and (step + 1) % progress_every == 0:
+            print(f"  width={width:2d}, step={step + 1}, best_score={beams[0][1]:.6f}")
+    return beams[0]
+
+
 def refine_pairwise(ordering, margin, verbose=True):
     best = list(ordering)
     best_score = pairwise_objective(best, margin)
