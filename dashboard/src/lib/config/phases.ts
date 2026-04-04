@@ -34,7 +34,7 @@ export const tabs = [
 	{
 		id: 'ordering' as const,
 		label: 'Ordering',
-		desc: 'In what sequence the 48 blocks act — 5 methods, all converge after polish',
+		desc: 'In what sequence the 48 paired blocks act — scored on the final 97-piece permutation',
 		subtabs: [
 			{ id: 'overview', label: 'Overview' },
 			{ id: '01-delta-greedy', label: '01 Delta Greedy' },

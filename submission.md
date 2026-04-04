@@ -87,7 +87,7 @@ Methods that collapse or miss the shared 96-D space do not solve pairing exactly
 
 Once the blocks are paired correctly, the remaining problem is ordering: in what sequence do the 48 blocks act? There are `48!` possible orderings, and unlike pairing, no raw ordering method tested recovers the exact sequence directly. Every successful method lands close enough that a simple greedy polish finishes the job.
 
-The polish step is the same everywhere: try every pairwise swap of block positions, keep swaps that reduce MSE on the full 10,000-row dataset, repeat until no improving swap remains. It typically converges in 2–5 iterations.
+The polish step is the same everywhere: try every pairwise swap of block positions, keep swaps that reduce MSE on the full 10,000-row dataset, repeat until no improving swap remains. In the current runs it converges in 2–9 iterations.
 
 Three genuinely different ordering methods work:
 
@@ -276,7 +276,7 @@ Without the puzzle wrapper, this model reads as a factor-compressing residual fo
 
 ## Conclusion
 
-The recovered permutation is locally unique: all **2,256** single-swap neighbors (both pairing swaps and ordering swaps) are strictly worse on the full dataset. The closest competitor — a single adjacent block swap — has MSE **0.000042**, nine orders of magnitude above the solution's **3.16e-14**. The puzzle is also over-determined: the exact answer is recoverable from as few as **500** of the 10,000 provided rows.
+Across the experiments in this repo, all 25 pairing × ordering combinations reconstruct the same exact 97-piece permutation, and random-start polish stalls around MSE 0.17–0.19 instead of reaching zero. The end-to-end evidence is robustness across independent methods, not one lucky path.
 
 Two boundaries are worth stating. The uniqueness evidence is local, not a global proof — we have not exhaustively checked all `10^122` alternatives. And the trading-model interpretation in Proposition 3 is structural, not a recovered training objective — the network's dynamics are consistent with a factor-filtering forecaster, but we cannot prove that was the intent behind its training.
 

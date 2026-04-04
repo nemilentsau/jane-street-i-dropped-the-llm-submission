@@ -2,8 +2,8 @@
 	const stages: { icon: string; label: string; value: string; borderClass: string; bgClass: string; textClass: string }[] = [
 		{ icon: '?',  label: '97 Shuffled\nLayers', value: '',         borderClass: 'border-border-medium', bgClass: 'bg-bg-inset',        textClass: 'text-text-tertiary' },
 		{ icon: '▦',  label: 'Pairing',             value: '48/48',    borderClass: 'border-phase-pairing/30', bgClass: 'bg-phase-pairing/5', textClass: 'text-phase-pairing' },
-		{ icon: '▲',  label: 'Ordering',             value: '77/97 raw', borderClass: 'border-phase-ordering/30', bgClass: 'bg-phase-ordering/5', textClass: 'text-phase-ordering' },
-		{ icon: '▶',  label: 'Polish',               value: '97/97',    borderClass: 'border-phase-e2e/30', bgClass: 'bg-phase-e2e/5',     textClass: 'text-phase-e2e' },
+		{ icon: '▲',  label: 'Ordering',             value: '77/97 pieces', borderClass: 'border-phase-ordering/30', bgClass: 'bg-phase-ordering/5', textClass: 'text-phase-ordering' },
+		{ icon: '▶',  label: 'Polish',               value: '97/97 pieces', borderClass: 'border-phase-e2e/30', bgClass: 'bg-phase-e2e/5',     textClass: 'text-phase-e2e' },
 		{ icon: '✓', label: 'Verified',             value: 'MSE 3e-14', borderClass: 'border-accent-green/40', bgClass: 'bg-accent-green/10', textClass: 'text-accent-green' },
 	];
 </script>

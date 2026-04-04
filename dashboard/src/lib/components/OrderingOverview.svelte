@@ -247,9 +247,12 @@
 		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
 			<h3 class="mb-3 text-xl font-semibold text-text-primary">Five methods, one basin of attraction</h3>
 			<p class="text-[15px] leading-relaxed text-text-secondary">
-				The ordering problem &mdash; in what sequence do 48 blocks act &mdash; has 48! &asymp; 10<sup>61</sup> possible permutations.
-				Each method below produces a coarse initial ordering (as few as 9/97 correct positions),
-				yet greedy MSE polish from any of them converges to the <em>exact</em> solution in under 10 iterations.
+				The ordering problem is to arrange 48 recovered residual blocks, so the raw search space is
+				48! &asymp; 10<sup>61</sup>. For consistency with the final puzzle answer, raw quality is
+				reported on the unpacked 97-piece permutation (48 <span class="font-mono">inp</span>,
+				48 <span class="font-mono">out</span>, 1 final readout). Each method below produces a
+				coarse initial ordering (as few as 9/97 correct positions), yet greedy MSE polish from any
+				of them reaches the <em>exact</em> solution in 2&ndash;9 iterations in the current runs.
 				Polish from a random starting point, given the same budget, gets stuck above MSE&nbsp;0.1.
 				The methods do not solve the problem directly &mdash; they identify the right basin of attraction.
 			</p>

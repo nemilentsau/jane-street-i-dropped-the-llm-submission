@@ -60,23 +60,25 @@
 				Beyond the puzzle: do these techniques generalize?
 			</h3>
 			<p class="text-[15px] leading-relaxed text-text-secondary">
-				The pairing and interpretability methods developed for this 48-block residual network
-				rely on a specific mechanism: <strong>co-training fingerprints</strong> left by shared
-				gradient flow through bilinear couplings. If this mechanism is general, the same
-				techniques should work on other architectures &mdash; wherever two weight matrices
-				interact through a dot product during the forward pass. Two preliminary experiments
-				tested this on billion-parameter language models.
+				The pairing fingerprint and phase-structure analyses developed for this 48-block
+				residual network rely on a specific mechanism: <strong>co-training fingerprints</strong>
+				left by shared gradient flow through bilinear couplings. These experiments test whether
+				that mechanism transfers to other architectures. Two preliminary experiments on
+				billion-parameter language models show a mixed answer: strong in some couplings, weak
+				or absent in others.
 			</p>
 		</div>
 
 		<!-- ── COMPARISON TABLE ────────────────────────────────── -->
 		{#if g01 && g02}
 			<div class="rounded-xl border border-border-subtle bg-bg-card p-5 card-elevated">
-				<h3 class="mb-1 text-lg font-semibold text-text-primary">Three architectures, one mechanism</h3>
+				<h3 class="mb-1 text-lg font-semibold text-text-primary">Three architectures, mixed-strength fingerprints</h3>
 				<p class="mb-4 text-sm text-text-tertiary">
 					The Frobenius inner product <code class="text-xs">|tr(W&#x2090;&#x1d40; W&#x2091;)|</code>
 					was computed for every pair of projection matrices, then the Hungarian algorithm
-					attempted to recover correct layer pairings from shuffled weights alone.
+					attempted to recover correct layer pairings from shuffled weights alone. The puzzle
+					is exact, Qwen3 attention is strong but incomplete, and Qwen3.5 splits cleanly by
+					coupling type.
 				</p>
 				<div class="overflow-x-auto">
 					<table class="w-full text-left text-[15px]">
@@ -150,10 +152,10 @@
 					<h4 class="mb-2 text-base font-semibold text-accent-green">Generalizes</h4>
 					<ul class="space-y-2 text-[15px] leading-relaxed text-text-secondary">
 						<li>
-							<strong>Co-training fingerprint.</strong> The Frobenius inner product detects
-							same-layer projection pairs wherever a bilinear coupling exists in the forward
-							pass. Works on standard attention (Q-K), Gated DeltaNet (alpha-beta), and
-							residual blocks (W_out-W_inp).
+							<strong>Co-training fingerprint, sometimes.</strong> The Frobenius inner product
+							works exactly on the puzzle, exactly on Qwen3.5 DeltaNet alpha-beta, and strongly
+							but not perfectly on Qwen3 attention (24/28). Tight bilinear couplings can leave
+							recoverable fingerprints in weight space.
 						</li>
 						<li>
 							<strong>Phase structure.</strong> Late layers make larger corrections than middle
@@ -212,9 +214,10 @@
 				which could inform layer pruning and model merging strategies.
 			</p>
 			<p class="mt-3 text-[15px] leading-relaxed text-text-secondary">
-				The core prediction is simple: <strong>any architecture with bilinear projection
-				couplings in the forward pass will exhibit recoverable co-training fingerprints
-				in the weight matrices.</strong> The coupling tightness predicts the fingerprint strength.
+				The current evidence supports a narrower working hypothesis: <strong>some architectures
+				with tight bilinear projection couplings exhibit recoverable co-training fingerprints in
+				their weight matrices.</strong> Coupling type appears to matter; bilinear structure alone
+				is not sufficient.
 			</p>
 		</div>
 

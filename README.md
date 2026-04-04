@@ -70,9 +70,9 @@ Or build a static site: `npm run build` (output in `dashboard/build/`).
 | Script | Method | Raw positions |
 |--------|--------|--------------|
 | `ordering/01_delta_greedy.py` | Min-perturbation greedy | 77/97 |
-| `ordering/02_pairwise_tournament.py` | Insertion + pairwise refinement | ~15/97 |
-| `ordering/03_sinkhorn_ranking.py` | Soft permutation optimization | ~9/97 |
-| `ordering/04_insertion_beam_search.py` | Beam search over insertions | ~11/97 |
+| `ordering/02_pairwise_tournament.py` | Insertion + pairwise refinement | 9/97 |
+| `ordering/03_sinkhorn_ranking.py` | Soft permutation optimization | 9/97 |
+| `ordering/04_insertion_beam_search.py` | Beam search over insertions | 11/97 |
 | `ordering/05_spectral_flow.py` | Eigenvalue-jitter minimization | 9/97 |
 
 ### Distillation (network interpretability)

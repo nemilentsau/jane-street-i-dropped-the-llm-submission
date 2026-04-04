@@ -8,7 +8,7 @@
 		<h2 class="font-display text-[28px] font-bold tracking-tight text-text-primary">Reassembling a Dropped Trading Model</h2>
 		<p class="mt-2 text-[15px] leading-relaxed text-text-secondary">
 			A residual neural network used for trading fell apart into 97 shuffled linear layers.
-			The search space is <span class="font-mono text-text-primary">(48!)&#178; &#8776; 10&#185;&#178;&#185;</span>.
+			The joint pairing + ordering search space is <span class="font-mono text-text-primary">(48!)&#178; &#8776; 1.5 &times; 10<sup>122</sup></span>.
 			The recovered answer is verified at <span class="font-mono text-accent-green glow-green">MSE = 3.16e-14</span>.
 		</p>
 	</div>
@@ -21,7 +21,7 @@
 		</div>
 		<div class="card-elevated rounded-lg border border-border-subtle bg-bg-card px-4 py-5 text-center fade-in-up" style="animation-delay: 0.1s">
 			<span class="font-mono text-3xl font-bold text-text-primary">(48!)&#178;</span>
-			<span class="mt-0.5 block font-mono text-[13px] text-text-tertiary">&#8776; 10&#185;&#178;&#185;</span>
+			<span class="mt-0.5 block font-mono text-[13px] text-text-tertiary">&#8776; 1.5 &times; 10<sup>122</sup></span>
 			<span class="mt-1.5 block text-xs font-semibold uppercase tracking-wider text-text-tertiary">Search Space</span>
 		</div>
 		<div class="card-elevated rounded-lg border border-border-subtle bg-bg-card px-4 py-5 text-center fade-in-up" style="animation-delay: 0.15s">
@@ -31,10 +31,15 @@
 		</div>
 		<div class="card-elevated rounded-lg border border-border-subtle bg-bg-card px-4 py-5 text-center fade-in-up" style="animation-delay: 0.2s">
 			<span class="font-mono text-3xl font-bold text-accent-blue glow-blue">77/97</span>
-			<span class="mt-0.5 block font-mono text-[13px] text-text-tertiary">before polish</span>
+			<span class="mt-0.5 block font-mono text-[13px] text-text-tertiary">97-piece permutation</span>
 			<span class="mt-1.5 block text-xs font-semibold uppercase tracking-wider text-text-tertiary">Best Raw Ordering</span>
 		</div>
 	</div>
+
+	<p class="mb-8 text-[13px] leading-relaxed text-text-tertiary fade-in-up" style="animation-delay: 0.22s">
+		Ordering methods search over 48 recovered blocks, but raw and polished scores are reported on the
+		final 97-piece permutation: 48 <span class="font-mono">inp</span> pieces, 48 <span class="font-mono">out</span> pieces, and the final readout.
+	</p>
 
 	<!-- Pipeline diagram -->
 	<div class="mb-8 fade-in-up" style="animation-delay: 0.25s">
@@ -84,11 +89,14 @@
 			<h3 class="mb-1 text-base font-semibold text-text-primary">Ordering: Land Near, Then Polish</h3>
 			<p class="mb-3 text-xs font-semibold uppercase tracking-wider text-phase-ordering">All methods &#8594; exact after polish</p>
 			<p class="mb-3 text-[15px] leading-relaxed text-text-secondary">
-				No raw ordering method recovers the exact sequence. Every successful one lands close enough that greedy pairwise swap polish (try every swap, keep improvements, repeat) finishes the job in 2–5 iterations.
+				No raw ordering method recovers the exact sequence. Ordering is searched over 48 recovered blocks,
+				but the score shown here is on the final 97-piece permutation. Every successful method lands
+				close enough that greedy pairwise swap polish (try every swap, keep improvements, repeat)
+				reaches exact in 2–9 iterations in the current runs.
 			</p>
 			<div class="space-y-1.5 text-sm text-text-secondary">
 				<div class="flex justify-between"><span>Delta Greedy</span><span class="text-right font-mono text-text-primary">77/97 raw</span></div>
-				<div class="flex justify-between"><span>Pairwise Tournament</span><span class="text-right font-mono text-text-primary">~15/97 raw</span></div>
+				<div class="flex justify-between"><span>Pairwise Tournament</span><span class="text-right font-mono text-text-primary">9/97 raw</span></div>
 				<div class="flex justify-between"><span>Sinkhorn Ranking</span><span class="text-right font-mono text-text-primary">9/97 raw</span></div>
 				<div class="flex justify-between"><span>Beam Search</span><span class="text-right font-mono text-text-primary">11/97 raw</span></div>
 				<div class="flex justify-between"><span>Spectral Flow</span><span class="text-right font-mono text-text-primary">9/97 raw</span></div>
@@ -116,11 +124,16 @@
 		</div>
 	</div>
 
-	<!-- Uniqueness -->
+	<!-- Cross-checks -->
 	<div class="rounded-xl border border-border-subtle bg-bg-card px-5 py-5 card-elevated fade-in-up" style="animation-delay: 0.5s">
-		<h3 class="mb-3 text-base font-semibold text-text-primary">Local Uniqueness</h3>
+		<h3 class="mb-3 text-base font-semibold text-text-primary">Robustness Checks</h3>
 		<p class="text-[15px] leading-relaxed text-text-secondary">
-			All <span class="font-mono text-text-primary">2,256</span> single-swap neighbors are strictly worse. The closest competitor — a single adjacent block swap — has MSE <span class="font-mono text-text-primary">0.000042</span>, nine orders of magnitude above the solution. The exact answer is recoverable from as few as <span class="font-mono text-text-primary">500</span> of the 10,000 provided rows.
+			Across the generated artifacts, all <span class="font-mono text-text-primary">25</span> pairing &times;
+			ordering pipelines reconstruct the same exact <span class="font-mono text-text-primary">97-piece</span>
+			permutation. In the ordering experiments, random-start polish stalls around
+			<span class="font-mono text-text-primary">MSE 0.17&ndash;0.19</span>, while method-derived starts reach
+			<span class="font-mono text-text-primary">3.16e-14</span>. The end-to-end evidence is robustness across
+			independent methods, not one lucky path.
 		</p>
 	</div>
 </div>

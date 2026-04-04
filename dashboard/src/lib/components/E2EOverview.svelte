@@ -200,9 +200,12 @@
 					{nPerfectPairing} of 5 pairing methods produce the exact canonical pairing
 					(48/48).
 				{/if}
-				All 5 ordering methods, after local polish, converge to the exact ground-truth ordering
-				(97/97 correct, MSE &approx; 0). The question isn't <em>which</em> method works &mdash;
-				they all do &mdash; but <em>how fast</em> each pipeline reaches perfect.
+				All 5 ordering methods, after local polish, converge to the exact ground-truth piece permutation
+				(97/97 correct, MSE = 3.16e-14). The ordering search itself runs over 48 paired blocks; the
+				97/97 score shown here is after unpacking those blocks back into 48 <span class="font-mono">inp</span>
+				pieces, 48 <span class="font-mono">out</span> pieces, and the final readout. The question
+				isn't <em>which</em> method works &mdash; they all do &mdash; but <em>how fast</em> each
+				pipeline reaches perfect.
 			</p>
 			<div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
 				<div class="rounded-lg border border-phase-e2e/30 px-5 py-4 text-center">
@@ -286,7 +289,8 @@
 			<div class="rounded-xl border border-border-subtle bg-bg-card p-5 card-elevated">
 				<h3 class="mb-1 text-lg font-semibold text-text-primary">Ordering Methods</h3>
 				<p class="mb-4 text-sm text-text-tertiary">
-					All start rough, all polish to exact (97/97). Times include polish.
+					All start rough, all polish to exact (97/97). Scores are on the unpacked 97-piece permutation,
+					even though the search runs over 48 paired blocks. Times include polish.
 				</p>
 				<div class="overflow-x-auto">
 					<table class="w-full text-left text-[15px]">
@@ -379,9 +383,9 @@
 				<div class="rounded-lg border border-border-subtle px-5 py-4">
 					<h4 class="mb-2 text-base font-semibold text-[#d2a8ff]">Polish is King</h4>
 					<p class="text-[15px] leading-relaxed text-text-secondary">
-						No matter how good (or bad) the initial ordering, local swap-polish
-						converges to the exact solution. The basin of attraction is wide enough
-						that all 5 methods land inside it. Only random starts get trapped.
+						Across the five method-derived starts, local swap-polish converges to the exact solution.
+						The basin of attraction is wide enough that all 5 methods land inside it.
+						The random starts in these runs get trapped instead.
 					</p>
 				</div>
 			</div>
