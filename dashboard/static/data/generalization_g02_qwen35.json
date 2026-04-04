@@ -1,0 +1,77 @@
+{
+  "model": "Qwen/Qwen3.5-2B",
+  "n_layers": 24,
+  "n_attn_layers": 6,
+  "attn_layer_indices": [
+    3,
+    7,
+    11,
+    15,
+    19,
+    23
+  ],
+  "n_delta_layers": 18,
+  "delta_layer_indices": [
+    0,
+    1,
+    2,
+    4,
+    5,
+    6,
+    8,
+    9,
+    10,
+    12,
+    13,
+    14,
+    16,
+    17,
+    18,
+    20,
+    21,
+    22
+  ],
+  "test1_fingerprint": {
+    "attn_qk": {
+      "ratio": 83.25529994160902,
+      "hungarian": 6,
+      "total": 6
+    },
+    "attn_qv": {
+      "ratio": 1.1262900343713143,
+      "hungarian": 1,
+      "total": 6
+    },
+    "delta_io": {
+      "ratio": 0.8520430813748995,
+      "hungarian": 0,
+      "total": 18
+    },
+    "delta_qz": {
+      "ratio": 1.6071691737371883,
+      "hungarian": 2,
+      "total": 18
+    },
+    "delta_ab": {
+      "ratio": 5.527464712976559,
+      "hungarian": 18,
+      "total": 18
+    },
+    "mlp_gd": {
+      "ratio": 1.0044174380978967,
+      "hungarian": 0,
+      "total": 24
+    }
+  },
+  "test2_eff_rank_first": 619.6,
+  "test2_eff_rank_last": 240.7,
+  "test4_spectral_ratio": 3.26,
+  "test5_shuffle_recover": {
+    "attn_qk": 6.0,
+    "delta_io": 0.0,
+    "delta_qz": 2.0,
+    "delta_ab": 18.0,
+    "mlp_gd": 0.0
+  },
+  "test3_late_middle_ratio": 2.19
+}

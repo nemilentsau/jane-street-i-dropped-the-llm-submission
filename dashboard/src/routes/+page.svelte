@@ -5,6 +5,7 @@
 	import OrderingTab from '$lib/components/OrderingTab.svelte';
 	import E2ETab from '$lib/components/E2ETab.svelte';
 	import InterpretTab from '$lib/components/InterpretTab.svelte';
+	import GeneralizationTab from '$lib/components/GeneralizationTab.svelte';
 
 	let activeTab: TabId = $state('summary');
 	let activeSubtabs: Record<string, string> = $state({
@@ -100,6 +101,8 @@
 							<E2ETab subtab={currentSubtab} />
 						{:else if activeTab === 'interpretability'}
 							<InterpretTab subtab={currentSubtab} />
+						{:else if activeTab === 'generalization'}
+							<GeneralizationTab />
 						{/if}
 					</div>
 					{/key}

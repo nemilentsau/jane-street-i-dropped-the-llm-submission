@@ -1,0 +1,27 @@
+{
+  "model": "Qwen/Qwen3-1.7B",
+  "n_layers": 28,
+  "n_heads": 16,
+  "n_kv_heads": 8,
+  "hidden": 2048,
+  "test1_qk_ratio": 13.03,
+  "test1_hungarian_correct": 24,
+  "test1_hungarian_total": 28,
+  "test1_missed_layers": [
+    2,
+    8,
+    17,
+    26
+  ],
+  "test2_attn_rank_first": 812.6,
+  "test2_attn_rank_last": 794.3,
+  "test2_mlp_rank_first": 890.1,
+  "test2_mlp_rank_last": 971.2,
+  "test3_early_delta": 1716.3,
+  "test3_middle_delta": 262.8,
+  "test3_late_delta": 2831.9,
+  "test3_late_middle_ratio": 10.78,
+  "test4_trained_concentration": 0.0157,
+  "test4_random_concentration": 0.0057,
+  "test4_ratio": 2.75
+}

@@ -4,6 +4,7 @@ export const phases = {
 	ordering:         { icon: '▲', borderClass: 'border-phase-ordering',   textClass: 'text-phase-ordering',   glowClass: 'glow-blue',   placeholderBorder: 'border-phase-ordering/30',    placeholderHover: 'hover:border-phase-ordering/50'   },
 	e2e:              { icon: '▶', borderClass: 'border-phase-e2e',        textClass: 'text-phase-e2e',        glowClass: 'glow-amber',  placeholderBorder: 'border-phase-e2e/30',         placeholderHover: 'hover:border-phase-e2e/50'        },
 	interpretability: { icon: '●', borderClass: 'border-phase-interpret',  textClass: 'text-phase-interpret',  glowClass: 'glow-purple', placeholderBorder: 'border-phase-interpret/30',   placeholderHover: 'hover:border-phase-interpret/50'  },
+	generalization:   { icon: '◇', borderClass: 'border-phase-interpret',  textClass: 'text-phase-interpret',  glowClass: 'glow-purple', placeholderBorder: 'border-phase-interpret/30',   placeholderHover: 'hover:border-phase-interpret/50'  },
 } as const;
 
 export type PhaseId = keyof typeof phases;
@@ -63,6 +64,13 @@ export const tabs = [
 			{ id: '02-shock', label: '02 Shock Response' },
 			{ id: '03-observer', label: '03 Latent Observer' },
 		],
+		hasData: true,
+	},
+	{
+		id: 'generalization' as const,
+		label: 'Generalization',
+		desc: 'Do the techniques generalize beyond this puzzle?',
+		subtabs: [] as { id: string; label: string }[],
 		hasData: true,
 	},
 ] as const;
