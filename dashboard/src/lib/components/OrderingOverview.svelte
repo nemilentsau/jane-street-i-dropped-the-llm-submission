@@ -377,7 +377,7 @@
 
 		<!-- ── 7. BASIN NARRATIVE ──────────────────────────────── -->
 		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<h3 class="mb-4 text-lg font-semibold text-text-primary">What this tells us about the ordering landscape</h3>
+			<h3 class="mb-4 text-lg font-semibold text-text-primary">What this reveals about the ordering landscape</h3>
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
 				<div class="rounded-lg border border-border-subtle px-5 py-4">
 					<h4 class="mb-2 text-base font-semibold text-text-primary">The basin is not a sphere</h4>

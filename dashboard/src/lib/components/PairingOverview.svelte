@@ -127,7 +127,7 @@
 
 		<!-- ── 3. WHAT THIS TELLS US ──────────────────────────── -->
 		<div class="rounded-xl border border-border-subtle bg-bg-card px-6 py-5 card-elevated">
-			<h3 class="mb-4 text-lg font-semibold text-text-primary">What five exact methods tell us about the problem</h3>
+			<h3 class="mb-4 text-lg font-semibold text-text-primary">What five exact methods reveal about the problem</h3>
 
 			<div class="grid grid-cols-2 gap-4">
 				<div class="rounded-lg border border-border-subtle px-5 py-4">
