@@ -34,7 +34,7 @@ def compute_weight_correlation_matrix(pieces):
     return matrix
 
 
-def compute_effective_rank_matrix(pieces, progress_every=12):
+def compute_effective_rank_matrix(pieces, progress_every: int | None = 12):
     matrix = np.zeros((48, 48), dtype=np.float64)
     for i, inp_idx in enumerate(INP_PIECES):
         w_inp = pieces[inp_idx]["weight"].numpy()
@@ -49,7 +49,7 @@ def compute_effective_rank_matrix(pieces, progress_every=12):
     return matrix
 
 
-def compute_geodesic_matrix(pieces, progress_every=12):
+def compute_geodesic_matrix(pieces, progress_every: int | None = 12):
     inp_subspaces = []
     for inp_idx in INP_PIECES:
         u, _, _ = torch.linalg.svd(pieces[inp_idx]["weight"], full_matrices=False)

@@ -50,12 +50,8 @@ export const tabs = [
 		desc: 'Full pipeline demonstrations — pairing + ordering + polish',
 		subtabs: [
 			{ id: 'overview', label: 'Overview' },
-			{ id: '01-fastest', label: '01 Fastest Solve' },
-			{ id: '02-all-pairing', label: '02 All Pairing Methods' },
-			{ id: '03-all-ordering', label: '03 All Ordering Methods' },
-			{ id: '04-full-grid', label: '04 Full Grid' },
 		],
-		hasData: false,
+		hasData: true,
 	},
 	{
 		id: 'interpretability' as const,

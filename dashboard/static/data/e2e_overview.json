@@ -1,0 +1,312 @@
+{
+ "pairing_results": [
+  {
+   "id": "01",
+   "name": "Weight Correlation",
+   "accuracy": 48,
+   "elapsed_s": 0.11,
+   "needs_data": false
+  },
+  {
+   "id": "02",
+   "name": "Operator Moments",
+   "accuracy": 48,
+   "elapsed_s": 449.28,
+   "needs_data": false
+  },
+  {
+   "id": "03",
+   "name": "SVD Alignment",
+   "accuracy": 48,
+   "elapsed_s": 98.19,
+   "needs_data": false
+  },
+  {
+   "id": "04",
+   "name": "Affine Linearization",
+   "accuracy": 48,
+   "elapsed_s": 487.43,
+   "needs_data": true
+  },
+  {
+   "id": "05",
+   "name": "Multi-View Fusion",
+   "accuracy": 48,
+   "elapsed_s": 5.38,
+   "needs_data": true
+  }
+ ],
+ "ordering_results": [
+  {
+   "id": "01",
+   "name": "Delta Greedy",
+   "raw_positions": 77,
+   "raw_mse": 0.0002878574014175683,
+   "elapsed_s": 57.86
+  },
+  {
+   "id": "02",
+   "name": "Pairwise Tournament",
+   "raw_positions": 9,
+   "raw_mse": 0.11111513525247574,
+   "elapsed_s": 751.44
+  },
+  {
+   "id": "03",
+   "name": "Sinkhorn Ranking",
+   "raw_positions": 9,
+   "raw_mse": 0.1230725571513176,
+   "elapsed_s": 606.77
+  },
+  {
+   "id": "04",
+   "name": "Beam Search",
+   "raw_positions": 11,
+   "raw_mse": 0.08909770846366882,
+   "elapsed_s": 285.94
+  },
+  {
+   "id": "05",
+   "name": "Spectral Flow",
+   "raw_positions": 9,
+   "raw_mse": 0.6632705330848694,
+   "elapsed_s": 456.29
+  }
+ ],
+ "all_canonical": true,
+ "fastest_pipeline": {
+  "pairing_method": "Weight Correlation",
+  "ordering_method": "Delta Greedy",
+  "pairing_elapsed": 0.11,
+  "ordering_elapsed": 57.86,
+  "total_time": 58.0
+ },
+ "grid": [
+  {
+   "pairing_id": "01",
+   "pairing_name": "Weight Correlation",
+   "ordering_id": "01",
+   "ordering_name": "Delta Greedy",
+   "pairing_elapsed": 0.11,
+   "ordering_elapsed": 57.86,
+   "total_time": 58.0
+  },
+  {
+   "pairing_id": "02",
+   "pairing_name": "Operator Moments",
+   "ordering_id": "01",
+   "ordering_name": "Delta Greedy",
+   "pairing_elapsed": 449.28,
+   "ordering_elapsed": 57.86,
+   "total_time": 507.0
+  },
+  {
+   "pairing_id": "03",
+   "pairing_name": "SVD Alignment",
+   "ordering_id": "01",
+   "ordering_name": "Delta Greedy",
+   "pairing_elapsed": 98.19,
+   "ordering_elapsed": 57.86,
+   "total_time": 156.0
+  },
+  {
+   "pairing_id": "04",
+   "pairing_name": "Affine Linearization",
+   "ordering_id": "01",
+   "ordering_name": "Delta Greedy",
+   "pairing_elapsed": 487.43,
+   "ordering_elapsed": 57.86,
+   "total_time": 545.0
+  },
+  {
+   "pairing_id": "05",
+   "pairing_name": "Multi-View Fusion",
+   "ordering_id": "01",
+   "ordering_name": "Delta Greedy",
+   "pairing_elapsed": 5.38,
+   "ordering_elapsed": 57.86,
+   "total_time": 63.0
+  },
+  {
+   "pairing_id": "01",
+   "pairing_name": "Weight Correlation",
+   "ordering_id": "02",
+   "ordering_name": "Pairwise Tournament",
+   "pairing_elapsed": 0.11,
+   "ordering_elapsed": 751.44,
+   "total_time": 752.0
+  },
+  {
+   "pairing_id": "02",
+   "pairing_name": "Operator Moments",
+   "ordering_id": "02",
+   "ordering_name": "Pairwise Tournament",
+   "pairing_elapsed": 449.28,
+   "ordering_elapsed": 751.44,
+   "total_time": 1201.0
+  },
+  {
+   "pairing_id": "03",
+   "pairing_name": "SVD Alignment",
+   "ordering_id": "02",
+   "ordering_name": "Pairwise Tournament",
+   "pairing_elapsed": 98.19,
+   "ordering_elapsed": 751.44,
+   "total_time": 850.0
+  },
+  {
+   "pairing_id": "04",
+   "pairing_name": "Affine Linearization",
+   "ordering_id": "02",
+   "ordering_name": "Pairwise Tournament",
+   "pairing_elapsed": 487.43,
+   "ordering_elapsed": 751.44,
+   "total_time": 1239.0
+  },
+  {
+   "pairing_id": "05",
+   "pairing_name": "Multi-View Fusion",
+   "ordering_id": "02",
+   "ordering_name": "Pairwise Tournament",
+   "pairing_elapsed": 5.38,
+   "ordering_elapsed": 751.44,
+   "total_time": 757.0
+  },
+  {
+   "pairing_id": "01",
+   "pairing_name": "Weight Correlation",
+   "ordering_id": "03",
+   "ordering_name": "Sinkhorn Ranking",
+   "pairing_elapsed": 0.11,
+   "ordering_elapsed": 606.77,
+   "total_time": 607.0
+  },
+  {
+   "pairing_id": "02",
+   "pairing_name": "Operator Moments",
+   "ordering_id": "03",
+   "ordering_name": "Sinkhorn Ranking",
+   "pairing_elapsed": 449.28,
+   "ordering_elapsed": 606.77,
+   "total_time": 1056.0
+  },
+  {
+   "pairing_id": "03",
+   "pairing_name": "SVD Alignment",
+   "ordering_id": "03",
+   "ordering_name": "Sinkhorn Ranking",
+   "pairing_elapsed": 98.19,
+   "ordering_elapsed": 606.77,
+   "total_time": 705.0
+  },
+  {
+   "pairing_id": "04",
+   "pairing_name": "Affine Linearization",
+   "ordering_id": "03",
+   "ordering_name": "Sinkhorn Ranking",
+   "pairing_elapsed": 487.43,
+   "ordering_elapsed": 606.77,
+   "total_time": 1094.0
+  },
+  {
+   "pairing_id": "05",
+   "pairing_name": "Multi-View Fusion",
+   "ordering_id": "03",
+   "ordering_name": "Sinkhorn Ranking",
+   "pairing_elapsed": 5.38,
+   "ordering_elapsed": 606.77,
+   "total_time": 612.0
+  },
+  {
+   "pairing_id": "01",
+   "pairing_name": "Weight Correlation",
+   "ordering_id": "04",
+   "ordering_name": "Beam Search",
+   "pairing_elapsed": 0.11,
+   "ordering_elapsed": 285.94,
+   "total_time": 286.0
+  },
+  {
+   "pairing_id": "02",
+   "pairing_name": "Operator Moments",
+   "ordering_id": "04",
+   "ordering_name": "Beam Search",
+   "pairing_elapsed": 449.28,
+   "ordering_elapsed": 285.94,
+   "total_time": 735.0
+  },
+  {
+   "pairing_id": "03",
+   "pairing_name": "SVD Alignment",
+   "ordering_id": "04",
+   "ordering_name": "Beam Search",
+   "pairing_elapsed": 98.19,
+   "ordering_elapsed": 285.94,
+   "total_time": 384.0
+  },
+  {
+   "pairing_id": "04",
+   "pairing_name": "Affine Linearization",
+   "ordering_id": "04",
+   "ordering_name": "Beam Search",
+   "pairing_elapsed": 487.43,
+   "ordering_elapsed": 285.94,
+   "total_time": 773.0
+  },
+  {
+   "pairing_id": "05",
+   "pairing_name": "Multi-View Fusion",
+   "ordering_id": "04",
+   "ordering_name": "Beam Search",
+   "pairing_elapsed": 5.38,
+   "ordering_elapsed": 285.94,
+   "total_time": 291.0
+  },
+  {
+   "pairing_id": "01",
+   "pairing_name": "Weight Correlation",
+   "ordering_id": "05",
+   "ordering_name": "Spectral Flow",
+   "pairing_elapsed": 0.11,
+   "ordering_elapsed": 456.29,
+   "total_time": 456.0
+  },
+  {
+   "pairing_id": "02",
+   "pairing_name": "Operator Moments",
+   "ordering_id": "05",
+   "ordering_name": "Spectral Flow",
+   "pairing_elapsed": 449.28,
+   "ordering_elapsed": 456.29,
+   "total_time": 906.0
+  },
+  {
+   "pairing_id": "03",
+   "pairing_name": "SVD Alignment",
+   "ordering_id": "05",
+   "ordering_name": "Spectral Flow",
+   "pairing_elapsed": 98.19,
+   "ordering_elapsed": 456.29,
+   "total_time": 554.0
+  },
+  {
+   "pairing_id": "04",
+   "pairing_name": "Affine Linearization",
+   "ordering_id": "05",
+   "ordering_name": "Spectral Flow",
+   "pairing_elapsed": 487.43,
+   "ordering_elapsed": 456.29,
+   "total_time": 944.0
+  },
+  {
+   "pairing_id": "05",
+   "pairing_name": "Multi-View Fusion",
+   "ordering_id": "05",
+   "ordering_name": "Spectral Flow",
+   "pairing_elapsed": 5.38,
+   "ordering_elapsed": 456.29,
+   "total_time": 462.0
+  }
+ ],
+ "caveat": "Timings are ballpark estimates from single-run wall-clock measurements of individual scripts, collected at different times on a laptop under varying processor load and power state. No statistical testing with repeated trials was performed. Summed pipeline times double-count shared overhead like data loading."
+}
