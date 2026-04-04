@@ -5,6 +5,7 @@
 	import OrderingPairwise from './OrderingPairwise.svelte';
 	import OrderingSinkhorn from './OrderingSinkhorn.svelte';
 	import OrderingBeamSearch from './OrderingBeamSearch.svelte';
+	import OrderingSpectralFlow from './OrderingSpectralFlow.svelte';
 
 	let { subtab }: { subtab: string } = $props();
 </script>
@@ -28,6 +29,10 @@
 {:else if subtab === '04-beam-search'}
 	<div class="fade-in-up">
 		<OrderingBeamSearch />
+	</div>
+{:else if subtab === '05-spectral-flow'}
+	<div class="fade-in-up">
+		<OrderingSpectralFlow />
 	</div>
 {:else}
 	<div class="grid grid-cols-2 gap-4">

@@ -1,0 +1,926 @@
+{
+ "method_names": [
+  "gt",
+  "01_delta_greedy",
+  "02_pairwise",
+  "03_sinkhorn",
+  "04_beam",
+  "05_spectral",
+  "random_0",
+  "random_1",
+  "random_2",
+  "random_3",
+  "random_4"
+ ],
+ "raw_stats": {
+  "gt": {
+   "mse": 3.160553348441168e-14,
+   "correct_positions": 97
+  },
+  "01_delta_greedy": {
+   "mse": 0.0002878574014175683,
+   "correct_positions": 77
+  },
+  "02_pairwise": {
+   "mse": 0.11111513525247574,
+   "correct_positions": 9
+  },
+  "03_sinkhorn": {
+   "mse": 0.1230725571513176,
+   "correct_positions": 9
+  },
+  "04_beam": {
+   "mse": 0.08909770846366882,
+   "correct_positions": 11
+  },
+  "05_spectral": {
+   "mse": 0.6632705330848694,
+   "correct_positions": 9
+  },
+  "random_0": {
+   "mse": 0.7015700936317444,
+   "correct_positions": 5
+  },
+  "random_1": {
+   "mse": 0.7924011945724487,
+   "correct_positions": 3
+  },
+  "random_2": {
+   "mse": 0.7288171648979187,
+   "correct_positions": 3
+  },
+  "random_3": {
+   "mse": 0.8096410036087036,
+   "correct_positions": 3
+  },
+  "random_4": {
+   "mse": 0.7292212843894958,
+   "correct_positions": 3
+  }
+ },
+ "kendall_matrix": [
+  [
+   0,
+   5,
+   132,
+   160,
+   120,
+   269,
+   505,
+   538,
+   555,
+   570,
+   500
+  ],
+  [
+   5,
+   0,
+   133,
+   161,
+   119,
+   270,
+   504,
+   539,
+   556,
+   569,
+   495
+  ],
+  [
+   132,
+   133,
+   0,
+   86,
+   58,
+   287,
+   531,
+   554,
+   591,
+   516,
+   530
+  ],
+  [
+   160,
+   161,
+   86,
+   0,
+   72,
+   305,
+   543,
+   564,
+   579,
+   500,
+   502
+  ],
+  [
+   120,
+   119,
+   58,
+   72,
+   0,
+   303,
+   513,
+   536,
+   567,
+   502,
+   524
+  ],
+  [
+   269,
+   270,
+   287,
+   305,
+   303,
+   0,
+   574,
+   567,
+   540,
+   507,
+   583
+  ],
+  [
+   505,
+   504,
+   531,
+   543,
+   513,
+   574,
+   0,
+   531,
+   568,
+   615,
+   559
+  ],
+  [
+   538,
+   539,
+   554,
+   564,
+   536,
+   567,
+   531,
+   0,
+   543,
+   528,
+   648
+  ],
+  [
+   555,
+   556,
+   591,
+   579,
+   567,
+   540,
+   568,
+   543,
+   0,
+   563,
+   639
+  ],
+  [
+   570,
+   569,
+   516,
+   500,
+   502,
+   507,
+   615,
+   528,
+   563,
+   0,
+   610
+  ],
+  [
+   500,
+   495,
+   530,
+   502,
+   524,
+   583,
+   559,
+   648,
+   639,
+   610,
+   0
+  ]
+ ],
+ "cayley_matrix": [
+  [
+   0,
+   5,
+   42,
+   38,
+   34,
+   41,
+   41,
+   44,
+   43,
+   42,
+   40
+  ],
+  [
+   5,
+   0,
+   43,
+   37,
+   35,
+   42,
+   42,
+   45,
+   44,
+   45,
+   43
+  ],
+  [
+   42,
+   43,
+   0,
+   30,
+   26,
+   43,
+   43,
+   40,
+   45,
+   44,
+   44
+  ],
+  [
+   38,
+   37,
+   30,
+   0,
+   36,
+   43,
+   45,
+   44,
+   43,
+   42,
+   46
+  ],
+  [
+   34,
+   35,
+   26,
+   36,
+   0,
+   43,
+   45,
+   44,
+   45,
+   44,
+   42
+  ],
+  [
+   41,
+   42,
+   43,
+   43,
+   43,
+   0,
+   44,
+   43,
+   44,
+   43,
+   45
+  ],
+  [
+   41,
+   42,
+   43,
+   45,
+   45,
+   44,
+   0,
+   43,
+   42,
+   45,
+   43
+  ],
+  [
+   44,
+   45,
+   40,
+   44,
+   44,
+   43,
+   43,
+   0,
+   45,
+   46,
+   46
+  ],
+  [
+   43,
+   44,
+   45,
+   43,
+   45,
+   44,
+   42,
+   45,
+   0,
+   43,
+   45
+  ],
+  [
+   42,
+   45,
+   44,
+   42,
+   44,
+   43,
+   45,
+   46,
+   43,
+   0,
+   42
+  ],
+  [
+   40,
+   43,
+   44,
+   46,
+   42,
+   45,
+   43,
+   46,
+   45,
+   42,
+   0
+  ]
+ ],
+ "displacement": {
+  "01_delta_greedy": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   1,
+   1,
+   0,
+   0,
+   0,
+   0,
+   1,
+   1,
+   1,
+   1,
+   0,
+   0,
+   0,
+   0,
+   1,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   1,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "02_pairwise": [
+   0,
+   1,
+   2,
+   2,
+   3,
+   4,
+   0,
+   4,
+   7,
+   9,
+   3,
+   3,
+   5,
+   3,
+   4,
+   4,
+   9,
+   6,
+   3,
+   9,
+   5,
+   2,
+   0,
+   1,
+   3,
+   1,
+   5,
+   19,
+   1,
+   7,
+   10,
+   19,
+   2,
+   9,
+   2,
+   0,
+   3,
+   3,
+   6,
+   2,
+   2,
+   2,
+   2,
+   3,
+   1,
+   4,
+   1,
+   8
+  ],
+  "03_sinkhorn": [
+   0,
+   1,
+   2,
+   2,
+   3,
+   4,
+   0,
+   11,
+   5,
+   5,
+   2,
+   6,
+   4,
+   2,
+   4,
+   4,
+   9,
+   6,
+   10,
+   6,
+   1,
+   1,
+   2,
+   4,
+   5,
+   1,
+   5,
+   7,
+   16,
+   1,
+   7,
+   5,
+   10,
+   2,
+   1,
+   3,
+   2,
+   1,
+   5,
+   1,
+   6,
+   0,
+   2,
+   40,
+   7,
+   0,
+   1,
+   8
+  ],
+  "04_beam": [
+   0,
+   1,
+   2,
+   2,
+   3,
+   4,
+   0,
+   7,
+   0,
+   6,
+   8,
+   1,
+   5,
+   6,
+   7,
+   12,
+   5,
+   4,
+   2,
+   2,
+   8,
+   4,
+   0,
+   1,
+   3,
+   2,
+   3,
+   1,
+   8,
+   17,
+   0,
+   11,
+   3,
+   2,
+   2,
+   2,
+   4,
+   3,
+   6,
+   4,
+   3,
+   3,
+   2,
+   3,
+   1,
+   4,
+   1,
+   8
+  ],
+  "05_spectral": [
+   21,
+   21,
+   2,
+   14,
+   21,
+   8,
+   26,
+   24,
+   18,
+   6,
+   0,
+   18,
+   1,
+   4,
+   8,
+   14,
+   13,
+   15,
+   10,
+   5,
+   16,
+   9,
+   15,
+   18,
+   8,
+   7,
+   3,
+   8,
+   8,
+   1,
+   5,
+   4,
+   2,
+   4,
+   4,
+   11,
+   2,
+   3,
+   5,
+   3,
+   5,
+   0,
+   3,
+   0,
+   2,
+   3,
+   2,
+   0
+  ]
+ },
+ "polish_paths": {
+  "01_delta_greedy": [
+   {
+    "iteration": 0,
+    "mse": 0.0002878574014175683,
+    "kendall_tau": 5,
+    "cayley": 5,
+    "correct_positions": 77
+   },
+   {
+    "iteration": 1,
+    "mse": 3.160553348441168e-14,
+    "kendall_tau": 0,
+    "cayley": 0,
+    "correct_positions": 97
+   },
+   {
+    "iteration": 2,
+    "mse": 3.160553348441168e-14,
+    "kendall_tau": 0,
+    "cayley": 0,
+    "correct_positions": 97
+   }
+  ],
+  "02_pairwise": [
+   {
+    "iteration": 0,
+    "mse": 0.11111513525247574,
+    "kendall_tau": 132,
+    "cayley": 42,
+    "correct_positions": 9
+   },
+   {
+    "iteration": 1,
+    "mse": 0.02470821887254715,
+    "kendall_tau": 94,
+    "cayley": 32,
+    "correct_positions": 25
+   },
+   {
+    "iteration": 2,
+    "mse": 0.008663497865200043,
+    "kendall_tau": 60,
+    "cayley": 32,
+    "correct_positions": 27
+   },
+   {
+    "iteration": 3,
+    "mse": 0.004352173302322626,
+    "kendall_tau": 40,
+    "cayley": 28,
+    "correct_positions": 29
+   },
+   {
+    "iteration": 4,
+    "mse": 0.001954762265086174,
+    "kendall_tau": 25,
+    "cayley": 21,
+    "correct_positions": 49
+   },
+   {
+    "iteration": 5,
+    "mse": 0.0017554345540702343,
+    "kendall_tau": 21,
+    "cayley": 21,
+    "correct_positions": 51
+   },
+   {
+    "iteration": 6,
+    "mse": 0.0007332239765673876,
+    "kendall_tau": 13,
+    "cayley": 13,
+    "correct_positions": 57
+   },
+   {
+    "iteration": 7,
+    "mse": 0.0001311642990913242,
+    "kendall_tau": 2,
+    "cayley": 2,
+    "correct_positions": 91
+   },
+   {
+    "iteration": 8,
+    "mse": 3.160553348441168e-14,
+    "kendall_tau": 0,
+    "cayley": 0,
+    "correct_positions": 97
+   },
+   {
+    "iteration": 9,
+    "mse": 3.160553348441168e-14,
+    "kendall_tau": 0,
+    "cayley": 0,
+    "correct_positions": 97
+   }
+  ],
+  "03_sinkhorn": [
+   {
+    "iteration": 0,
+    "mse": 0.1230725571513176,
+    "kendall_tau": 160,
+    "cayley": 38,
+    "correct_positions": 9
+   },
+   {
+    "iteration": 1,
+    "mse": 0.02013798989355564,
+    "kendall_tau": 91,
+    "cayley": 33,
+    "correct_positions": 19
+   },
+   {
+    "iteration": 2,
+    "mse": 0.004967414308339357,
+    "kendall_tau": 52,
+    "cayley": 30,
+    "correct_positions": 27
+   },
+   {
+    "iteration": 3,
+    "mse": 0.0017755276057869196,
+    "kendall_tau": 24,
+    "cayley": 20,
+    "correct_positions": 45
+   },
+   {
+    "iteration": 4,
+    "mse": 0.0003926143981516361,
+    "kendall_tau": 7,
+    "cayley": 7,
+    "correct_positions": 73
+   },
+   {
+    "iteration": 5,
+    "mse": 3.160553348441168e-14,
+    "kendall_tau": 0,
+    "cayley": 0,
+    "correct_positions": 97
+   },
+   {
+    "iteration": 6,
+    "mse": 3.160553348441168e-14,
+    "kendall_tau": 0,
+    "cayley": 0,
+    "correct_positions": 97
+   }
+  ],
+  "04_beam": [
+   {
+    "iteration": 0,
+    "mse": 0.08909770846366882,
+    "kendall_tau": 120,
+    "cayley": 34,
+    "correct_positions": 11
+   },
+   {
+    "iteration": 1,
+    "mse": 0.012858954258263111,
+    "kendall_tau": 59,
+    "cayley": 31,
+    "correct_positions": 21
+   },
+   {
+    "iteration": 2,
+    "mse": 0.0024072090163826942,
+    "kendall_tau": 27,
+    "cayley": 23,
+    "correct_positions": 37
+   },
+   {
+    "iteration": 3,
+    "mse": 0.00027795517235063016,
+    "kendall_tau": 5,
+    "cayley": 5,
+    "correct_positions": 77
+   },
+   {
+    "iteration": 4,
+    "mse": 3.160553348441168e-14,
+    "kendall_tau": 0,
+    "cayley": 0,
+    "correct_positions": 97
+   },
+   {
+    "iteration": 5,
+    "mse": 3.160553348441168e-14,
+    "kendall_tau": 0,
+    "cayley": 0,
+    "correct_positions": 97
+   }
+  ],
+  "05_spectral": [
+   {
+    "iteration": 0,
+    "mse": 0.6632705330848694,
+    "kendall_tau": 269,
+    "cayley": 41,
+    "correct_positions": 9
+   },
+   {
+    "iteration": 1,
+    "mse": 0.04352857545018196,
+    "kendall_tau": 137,
+    "cayley": 37,
+    "correct_positions": 15
+   },
+   {
+    "iteration": 2,
+    "mse": 0.007684293203055859,
+    "kendall_tau": 62,
+    "cayley": 30,
+    "correct_positions": 23
+   },
+   {
+    "iteration": 3,
+    "mse": 0.0028237290680408478,
+    "kendall_tau": 26,
+    "cayley": 18,
+    "correct_positions": 53
+   },
+   {
+    "iteration": 4,
+    "mse": 0.0007469826960004866,
+    "kendall_tau": 11,
+    "cayley": 11,
+    "correct_positions": 67
+   },
+   {
+    "iteration": 5,
+    "mse": 3.160553348441168e-14,
+    "kendall_tau": 0,
+    "cayley": 0,
+    "correct_positions": 97
+   },
+   {
+    "iteration": 6,
+    "mse": 3.160553348441168e-14,
+    "kendall_tau": 0,
+    "cayley": 0,
+    "correct_positions": 97
+   }
+  ],
+  "random_0": [
+   {
+    "iteration": 0,
+    "mse": 0.7015700936317444,
+    "kendall_tau": 505,
+    "cayley": 41,
+    "correct_positions": 5
+   },
+   {
+    "iteration": 1,
+    "mse": 0.4027007818222046,
+    "kendall_tau": 447,
+    "cayley": 43,
+    "correct_positions": 5
+   },
+   {
+    "iteration": 2,
+    "mse": 0.24939385056495667,
+    "kendall_tau": 401,
+    "cayley": 45,
+    "correct_positions": 3
+   },
+   {
+    "iteration": 3,
+    "mse": 0.20431125164031982,
+    "kendall_tau": 379,
+    "cayley": 43,
+    "correct_positions": 3
+   },
+   {
+    "iteration": 4,
+    "mse": 0.19680063426494598,
+    "kendall_tau": 360,
+    "cayley": 44,
+    "correct_positions": 1
+   },
+   {
+    "iteration": 5,
+    "mse": 0.18916574120521545,
+    "kendall_tau": 341,
+    "cayley": 43,
+    "correct_positions": 1
+   },
+   {
+    "iteration": 6,
+    "mse": 0.1762741208076477,
+    "kendall_tau": 326,
+    "cayley": 44,
+    "correct_positions": 5
+   },
+   {
+    "iteration": 7,
+    "mse": 0.17278167605400085,
+    "kendall_tau": 317,
+    "cayley": 43,
+    "correct_positions": 7
+   },
+   {
+    "iteration": 8,
+    "mse": 0.1689406931400299,
+    "kendall_tau": 313,
+    "cayley": 43,
+    "correct_positions": 5
+   },
+   {
+    "iteration": 9,
+    "mse": 0.1682480275630951,
+    "kendall_tau": 314,
+    "cayley": 44,
+    "correct_positions": 5
+   },
+   {
+    "iteration": 10,
+    "mse": 0.15932145714759827,
+    "kendall_tau": 312,
+    "cayley": 42,
+    "correct_positions": 5
+   }
+  ]
+ },
+ "elapsed_s": 1412.29927277565
+}
