@@ -9,6 +9,7 @@ how the network responds through all 48 blocks:
 The network selectively preserves factor-like directions and suppresses
 nuisance directions, consistently across the input distribution.
 """
+import json
 import os
 import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'lib'))
@@ -68,6 +69,7 @@ with Timer("Total") as t:
     print("\n--- Regime Stability ---")
     regime_data = build_regime_splits(X, y_pred)
     regimes = regime_data["regimes"]
+    regime_results: dict[str, dict] = {}
     for regime_name, row_idx in sorted(regimes.items()):
         if regime_name == "all_rows":
             continue
@@ -80,7 +82,41 @@ with Timer("Total") as t:
         b_shift = sub_summary.get("pca_bottom", {}).get("mean_abs_pred_shift", 1e-12)
         t_damp = sub_summary.get("pca_top", {}).get("mean_damping_ratio", 0)
         b_damp = sub_summary.get("pca_bottom", {}).get("mean_damping_ratio", 0)
+        regime_results[regime_name] = {
+            "top_bottom_ratio": round(t_shift / b_shift, 1),
+            "top_damping": round(t_damp, 4),
+            "bot_damping": round(b_damp, 4),
+            "top_pred_shift": t_shift,
+            "bot_pred_shift": b_shift,
+        }
         print(f"  {regime_name:<20s}: top/bottom shift ratio={t_shift/b_shift:.1f}x, "
               f"top_damp={t_damp:.2f}, bot_damp={b_damp:.2f}")
 
-print(f"\nDone in {t.elapsed:.2f}s")
+# ── Write dashboard JSON ──────────────────────────────────────
+# Per-shock response curves (norms at each depth step)
+shock_curves = []
+for r in results:
+    shock_curves.append({
+        "name": r["name"],
+        "kind": r["kind"],
+        "damping_ratio": r["damping_ratio"],
+        "mean_abs_pred_shift": r["mean_abs_pred_shift"],
+        "peak_step": r["peak_step"],
+        "response_norms": r["response_norms"],
+    })
+
+DASH_DIR = os.path.join(os.path.dirname(__file__), '..', 'dashboard', 'static', 'data')
+result_json = {
+    "group_summary": summary,
+    "top_bottom_ratio": round(top_shift / bot_shift, 1),
+    "shock_curves": shock_curves,
+    "regime_stability": regime_results,
+    "elapsed_s": t.elapsed,
+}
+
+os.makedirs(DASH_DIR, exist_ok=True)
+out_path = os.path.join(DASH_DIR, "distillation_02_shock_response.json")
+with open(out_path, "w") as f:
+    json.dump(result_json, f, indent=1)
+print(f"\nDashboard data -> {out_path}")
+print(f"Done in {t.elapsed:.2f}s")

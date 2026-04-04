@@ -63,7 +63,7 @@ export const tabs = [
 			{ id: '02-shock', label: '02 Shock Response' },
 			{ id: '03-observer', label: '03 Latent Observer' },
 		],
-		hasData: false,
+		hasData: true,
 	},
 ] as const;
 

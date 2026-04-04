@@ -226,7 +226,7 @@ The recovered order is not just "small perturbations first, large last." The com
 - late blocks (positions 32–47): about **1.10** — sharply larger
 - largest single block perturbation: **3.22** at the final position
 
-Early and late blocks also modify different features. Late blocks have **6.4x** more per-feature variance than middle blocks, and the sets of most-affected features are disjoint between early and late phases. The network processes different aspects of the input at different depths.
+Early and late blocks also modify different features. Late blocks have **9.8x** more per-feature variance than middle blocks, and the sets of most-affected features are disjoint between early and late phases. The network processes different aspects of the input at different depths.
 
 This phased structure is not an average-case artifact. The late/early contribution ratio was measured across six regime splits — low/high prediction magnitude, low/high input norm, low/high first principal component score — and stays between **2.00** and **2.24** in every regime. The phase structure persists and slightly sharpens in higher-signal regimes.
 
