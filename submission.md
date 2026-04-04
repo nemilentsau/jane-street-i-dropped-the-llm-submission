@@ -280,6 +280,27 @@ The recovered permutation is locally unique: all **2,256** single-swap neighbors
 
 Two boundaries are worth stating. The uniqueness evidence is local, not a global proof — we have not exhaustively checked all `10^122` alternatives. And the trading-model interpretation in Proposition 3 is structural, not a recovered training objective — the network's dynamics are consistent with a factor-filtering forecaster, but we cannot prove that was the intent behind its training.
 
+## Generalization: beyond this puzzle
+
+The key technique behind the pairing solution — the Frobenius inner product `|tr(W_A^T W_B)|` as a co-training fingerprint — relies on a specific mechanism: shared gradient flow through bilinear couplings during training creates coordinated weight structure that persists in the final model. If this mechanism is general, the same technique should work on other architectures wherever two weight matrices interact through a dot product in the forward pass.
+
+Preliminary experiments on two billion-parameter language models confirm this:
+
+| | Puzzle (48-block ResNet) | Qwen3-1.7B (28L transformer) | Qwen3.5-2B (24L hybrid) |
+|---|---|---|---|
+| Bilinear coupling | W_out · W_inp | Q · K | Q · K, alpha · beta |
+| Fingerprint SNR | 23x | 13x | 83x / 5.5x |
+| Shuffle & recover | 48/48 (100%) | 24/28 (86%) | 6/6, 18/18 (100%) |
+| Phase structure (late/mid) | 2.6x | 10.78x | 2.19x |
+
+The Frobenius fingerprint recovers correct Q-K layer pairings from shuffled weights on a standard 28-layer transformer (86% accuracy, chance = 3.6%). On the hybrid Qwen3.5-2B — which alternates Gated DeltaNet (linear attention) with standard softmax attention — two distinct fingerprints appear: the Q-K coupling (83x SNR, 6/6 perfect) and a novel DeltaNet alpha-beta coupling (5.5x SNR, 18/18 perfect). The alpha-beta fingerprint was not predicted in advance; it emerged because the DeltaNet state update rule creates a bilinear interaction between these projections, analogous to the Q-K dot product.
+
+Phase structure also generalizes: late layers make larger corrections than middle layers across all three architectures.
+
+Not everything transfers. Effective rank collapse (47 → 9 in the puzzle) does not appear in LLMs, which maintain near-full rank because they serve diverse tasks. MLP projection pairs (gate-down, up-down) show no fingerprint — the elementwise multiplication coupling is too diffuse.
+
+The core prediction: **any architecture with bilinear projection couplings in the forward pass will exhibit recoverable co-training fingerprints in the weight matrices.** The coupling tightness predicts the fingerprint strength. A systematic study across model families, scales, and training regimes is left for future work.
+
 ## The Answer
 
 ```text
